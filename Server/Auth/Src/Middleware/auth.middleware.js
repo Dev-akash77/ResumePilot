@@ -1,4 +1,5 @@
 import { verifyToken } from "../Service/jwt.service.js";
+import logger from './../Config/logger.config.js';
 
 export const authMiddleware = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ export const authMiddleware = async (req, res, next) => {
         success: false,
         message: "Unauthorized: Please login first",
       });
-    }
+    } 
 
     const decode = verifyToken(token);
     req.user = decode;

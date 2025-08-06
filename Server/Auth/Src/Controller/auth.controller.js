@@ -16,7 +16,7 @@ export const register = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All fields are required" });
     }
-
+ 
     const lowerEmail = email.trim().toLowerCase();
 
     //! Check if user already exists

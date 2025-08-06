@@ -6,18 +6,21 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginStatus } from "./../Hook/useLoginStatus";
 import { FaRegUser } from "react-icons/fa";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { loginApi, registeredApi } from "../Api/api";
+import toast from "react-hot-toast";
+import Button_Loader from "../UI/Button_Loader";
+import { GoLock } from "react-icons/go";
 import {
   isAuthenticate,
   LoginAuth,
+  LogoutAuth,
   regesterAuth,
   updateFormData,
 } from "../Slice/AuthSlice";
-import { loginApi, registeredApi } from "../Api/api";
-import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
-import Button_Loader from "../UI/Button_Loader";
-import { GoLock } from "react-icons/go";
+
+
+
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -103,12 +106,17 @@ const Auth = () => {
   };
 
   // ! get user is authenticaed or not
-  const { data } = useLoginStatus();
-
+  const { data,isError } = useLoginStatus();
+  const queryClient = useQueryClient();
   useEffect(() => {
     if (data?.success) {
       dispatch(isAuthenticate());
-    }
+    } else {
+          dispatch(LogoutAuth());
+        }
+        if (isError) {
+          dispatch(LogoutAuth());
+        }
   }, [data]);
 
   const isLoading = registerMutation.isPending || loginMutation.isPending;

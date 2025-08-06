@@ -14,8 +14,6 @@ const Profile = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useLoginStatus();
-
   const logoutMutation = useMutation({
     mutationFn: logoutApi,
     onSuccess: (data) => {
@@ -27,6 +25,7 @@ const Profile = () => {
       }
     },
   });
+  const { data, isLoading, isError } = useLoginStatus();
 
   useEffect(() => {
     if (isLoading) return;
@@ -34,6 +33,9 @@ const Profile = () => {
     if (data?.success) {
       dispatch(isAuthenticate());
     } else {
+      dispatch(LogoutAuth());
+    }
+    if (isError) {
       dispatch(LogoutAuth());
     }
   }, [data]);
@@ -46,13 +48,11 @@ const Profile = () => {
     }
   }, [isLogin]);
 
-  console.log("profile", isLogin);
 
   const handleLogout = () => {
     logoutMutation.mutate();
   };
 
-  console.log("profile", isLogin);
   return (
     <div className="h-screen w-screen cc">
       <button

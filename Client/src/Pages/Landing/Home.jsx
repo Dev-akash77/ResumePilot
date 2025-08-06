@@ -5,22 +5,26 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { useEffect } from "react";
-import Features from './Features';
-import { useLoginStatus } from './../../Hook/useLoginStatus';
+import Features from "./Features";
+import { useLoginStatus } from "./../../Hook/useLoginStatus";
 
 const Home = () => {
   const dispatch = useDispatch();
   const isLoginUser = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
 
-  const { data, isLoading } = useLoginStatus();
+  const { data, isError } = useLoginStatus();
 
   useEffect(() => {
     if (data?.success) {
       dispatch(isAuthenticate());
+    } else {
+      dispatch(LogoutAuth());
+    }
+    if (isError) {
+      dispatch(LogoutAuth());
     }
   }, [data]);
-  
 
   const company = [
     "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/netflix.svg",
