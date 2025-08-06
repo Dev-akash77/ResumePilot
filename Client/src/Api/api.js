@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BACKND_URL,
   withCredentials: true,
-});
+}); 
 
 // ! for registerd api
 export const registeredApi = async (data) => {
