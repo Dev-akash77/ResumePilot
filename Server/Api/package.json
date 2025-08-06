@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "This is ResumePolite API Gateway Service",
+  "keywords": [
+    "Api",
+    "Gate",
+    "way"
+  ],
+  "license": "ISC",
+  "author": "Akash Biswas",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node --watch server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "http-proxy": "^1.18.1",
+    "http-proxy-middleware": "^3.0.5",
+    "winston": "^3.17.0"
+  }
+}

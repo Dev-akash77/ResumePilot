@@ -1,0 +1,156 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap");
+@import "tailwindcss";
+
+code {
+  white-space: pre-wrap !important;
+}
+
+* {
+  font-family: "Outfit", serif;
+}
+
+@theme {
+  --color-text: #121212;
+  --color-white: #ffffff;
+  --color-blue: #5044e5;
+  --color-grayBlack: #314158;
+}
+
+/* ! all the color */
+:root {
+  --text: #121212;
+  --white: #ffffff;
+  --blue: #5044e5;
+  --grayBlack: #314158;
+}
+
+html {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  font-family: "Outfit", serif;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Outfit", serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  color: var(--text);
+  background-color: var(--white);
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+::selection {
+  background-color: black;
+  color: var(--white);
+}
+
+.container {
+  width: 85%;
+  height: 100%;
+}
+
+.cc {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.fc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fcb {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+@media (max-width: 450px) {
+  .container {
+    width: 90%;
+    height: 100%;
+  }
+}
+
+/* ! company logo */
+
+.logo-scroll-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+.logo-scroll-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.logo-strip {
+  display: inline-flex;
+  gap: 4rem;
+  min-width: max-content;
+  animation: scroll-left 75s linear infinite;
+}
+
+.logo-img {
+  width: 7rem;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* Smooth side gradient fade */
+.left-gradient {
+  background: linear-gradient(to right, white 0%, transparent 100%);
+}
+
+.right-gradient {
+  background: linear-gradient(to left, white 0%, transparent 100%);
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.bss {
+  box-shadow: rgba(151, 149, 165, 0.2) 0px 8px 24px;
+}
+.bs {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+    rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+}
+
+/* ! button loader */
+
+.loader {
+  width:20px;
+  height:20px;
+  border: .15rem dashed #ededed;
+  border-radius: 50%;
+  animation: rotation 0.8s linear infinite;
+  display: inline-block;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ! button loader */
+
+
