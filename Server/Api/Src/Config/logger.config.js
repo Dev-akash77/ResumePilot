@@ -5,7 +5,7 @@ import fs from "fs";
 //! Create logs directory
 const logDir = "./src/Logs";
 if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir);
+  fs.mkdirSync(logDir, { recursive: true });
 }
 
 //! Base log format (without color)
@@ -40,7 +40,7 @@ const logger = winston.createLogger({
       filename: path.join(logDir, "error.log"),
       level: "error",
     }),
- 
+
     //! Only warnings
     new winston.transports.File({
       filename: path.join(logDir, "warn.log"),
