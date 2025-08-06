@@ -21,7 +21,7 @@ router.use(
 
       res.end("Something went wrong with proxy.");
     },
-  })
+  }) 
 );
 
 export const authRoutes = router;
