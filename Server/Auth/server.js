@@ -9,6 +9,7 @@ import logger from "./Src/Config/logger.config.js";
 import { authRouter } from "./Src/Routes/auh.routes.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
 
+app.set("trust proxy", 1);
 const app = express();
 const PORT = process.env.PORT;
 
@@ -20,7 +21,7 @@ redisConnection()
 //! Common Middleware
 app.use(cookieParser()); 
 app.use(express.json());
-app.set("trust proxy", 1);
+
 
 
 app.use(
