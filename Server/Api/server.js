@@ -1,8 +1,8 @@
 import  express  from 'express';
 import "dotenv/config"
 import cors  from 'cors';
-import logger from '../Auth/Src/Config/logger.config.js';
 import { authRoutes } from './Src/Routes/auth.routes.js';
+import logger from './Src/Config/logger.config.js';
 
 const app = express();
 

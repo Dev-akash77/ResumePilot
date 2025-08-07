@@ -13,7 +13,7 @@ const Home = () => {
   const isLoginUser = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
 
-  const { data, isError } = useLoginStatus();
+  const { data, isError, isLoading } = useLoginStatus();
 
   useEffect(() => {
     if (data?.success) {
@@ -35,6 +35,11 @@ const Home = () => {
     "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/framer.svg",
     "https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/companyLogo/slack.svg",
   ];
+
+  if (isLoading) {
+    return <div className="h-screen w-screen cc">Loading....</div>;
+  }
+
 
   return (
     <>
