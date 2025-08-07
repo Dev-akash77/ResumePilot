@@ -6,8 +6,6 @@ import logger from './Src/Config/logger.config.js';
 
 const app = express();
 
-app.set('trust proxy', 1);
-
 // ! SERVER PORT
 const PORT = process.env.PORT;
 
