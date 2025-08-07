@@ -16,7 +16,7 @@ export const register = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All fields are required" });
     }
-  
+
     const lowerEmail = email.trim().toLowerCase();
 
     //! Check if user already exists
@@ -110,7 +110,14 @@ export const googleOAuthController = async (req, res) => {
     };
 
     const token = generateToken(payload);
-    setCookie(res, token);
+    if (token) {
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true, // force true in production
+        sameSite: "none", // important for cross-origin
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+    }
     logger.info(`User Registerd via Google With this Email: ${authData.email}`);
 
     return res.redirect(`${process.env.CLIENT_URL}`);
@@ -210,7 +217,7 @@ export const login = async (req, res) => {
         .status(400)
         .json({ success: false, message: "All Fields Are Required" });
     }
- 
+
     //! Check if user exists
     const existingAuthData = await authModel.findOne({ email });
 
@@ -220,7 +227,7 @@ export const login = async (req, res) => {
         .status(404)
         .json({ success: false, message: "Invalid Credentials" });
     }
- 
+
     //! Check if registered manually
     if (existingAuthData && existingAuthData.provider !== "manual") {
       logger.warn(
@@ -288,7 +295,7 @@ export const logout = async (req, res) => {
 
 // ! Check User Is Authenticated OR Not
 export const isAuthenticate = async (req, res) => {
-  try {    
+  try {
     if (!req.user) {
       return res.status(401).json({
         success: false,
