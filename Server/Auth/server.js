@@ -1,21 +1,17 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import passport from "passport";
 import "dotenv/config";
 import { mongo_connection } from "./Src/Config/mongo.config.js";
 import logger from "./Src/Config/logger.config.js";
 import { authRouter } from "./Src/Routes/auh.routes.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
-import { passport_config } from './Src/Config/passsport.config.js';
 
 
 const app = express();
 const PORT = process.env.PORT;
- app.set("trust proxy", 1);
 
 // ! config and connection fn
-passport_config();
 mongo_connection();
 redisConnection()
 
@@ -32,8 +28,6 @@ app.use(
   })
 );
 
-//! Initialize Passport
-app.use(passport.initialize());
 
 
 // ! router implement

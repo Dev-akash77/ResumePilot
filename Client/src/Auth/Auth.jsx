@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { MdKeyboardBackspace, MdOutlineEmail } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
-import { FaEye, FaEyeSlash, FaGithub } from "react-icons/fa";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginStatus } from "./../Hook/useLoginStatus";
 import { FaRegUser } from "react-icons/fa";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { loginApi, registeredApi } from "../Api/api";
 import toast from "react-hot-toast";
 import Button_Loader from "../UI/Button_Loader";
@@ -26,20 +25,6 @@ const Auth = () => {
   const formData = useSelector((state) => state.auth.formData);
   const isLoginUser = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
-  const location = useLocation();
-  const toastShown = useRef(false);
-
-  //! Show error toast once for provider mismatch and clear URL params
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const error = params.get("error");
-    const registeredProvider = params.get("registered_provider");
-    if (error === "provider_mismatch" && !toastShown.current) {
-      toastShown.current = true;
-      toast.error(`Login with ${registeredProvider} only.`);
-      navigate(location.pathname, { replace: true });
-    }
-  }, [location, navigate]);
 
   useEffect(() => {
     if (isLoginUser) {
@@ -273,28 +258,6 @@ const Auth = () => {
             >{`Click here`}</span>
           </p>
         )}
-        {/*  @devide by or */}
-        <div className="fc mt-5 text-gray-500 gap-2 text-[.7rem]">
-          <div className="w-[100%] h-[.1rem] bg-gray-300"></div>
-          OR
-          <div className="w-[100%] h-[.1rem] bg-gray-300"></div>
-        </div>
-
-        {/*  @auth 2.0 google and github */}
-        <div className="fc mt-5 gap-5">
-          <a
-            href={`${import.meta.env.VITE_AUTH_URL}/auth/google`}
-            className="h-[3rem] decoration-0 overflow-hidden cursor-pointer w-full rounded-md gap-5 fc bg-gray-50 border border-gray-500"
-          >
-            <FcGoogle className="text-2xl" />
-          </a>
-          <a
-            href={`${import.meta.env.VITE_AUTH_URL}/auth/github`}
-            className="h-[3rem] overflow-hidden cursor-pointer w-full rounded-md gap-5 fc bg-gray-50 border border-gray-500"
-          >
-            <FaGithub className="text-2xl" />
-          </a>
-        </div>
       </div>
     </div>
   );
