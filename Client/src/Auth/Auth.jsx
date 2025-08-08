@@ -19,9 +19,6 @@ import {
   updateFormData,
 } from "../Slice/AuthSlice";
 
-
-
-
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
@@ -29,6 +26,20 @@ const Auth = () => {
   const formData = useSelector((state) => state.auth.formData);
   const isLoginUser = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
+  const location = useLocation();
+  const toastShown = useRef(false);
+
+  //! Show error toast once for provider mismatch and clear URL params
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const error = params.get("error");
+    const registeredProvider = params.get("registered_provider");
+    if (error === "provider_mismatch" && !toastShown.current) {
+      toastShown.current = true;
+      toast.error(`Login with ${registeredProvider} only.`);
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location, navigate]);
 
   useEffect(() => {
     if (isLoginUser) {
@@ -91,16 +102,16 @@ const Auth = () => {
   };
 
   // ! get user is authenticaed or not
-  const { data,isError } = useLoginStatus();
+  const { data, isError } = useLoginStatus();
   useEffect(() => {
     if (data?.success) {
       dispatch(isAuthenticate());
     } else {
-          dispatch(LogoutAuth());
-        }
-        if (isError) {
-          dispatch(LogoutAuth());
-        }
+      dispatch(LogoutAuth());
+    }
+    if (isError) {
+      dispatch(LogoutAuth());
+    }
   }, [data]);
 
   const isLoading = registerMutation.isPending || loginMutation.isPending;
@@ -262,6 +273,28 @@ const Auth = () => {
             >{`Click here`}</span>
           </p>
         )}
+        {/*  @devide by or */}
+        <div className="fc mt-5 text-gray-500 gap-2 text-[.7rem]">
+          <div className="w-[100%] h-[.1rem] bg-gray-300"></div>
+          OR
+          <div className="w-[100%] h-[.1rem] bg-gray-300"></div>
+        </div>
+
+        {/*  @auth 2.0 google and github */}
+        <div className="fc mt-5 gap-5">
+          <a
+            href={`${import.meta.env.VITE_AUTH_URL}/auth/google`}
+            className="h-[3rem] decoration-0 overflow-hidden cursor-pointer w-full rounded-md gap-5 fc bg-gray-50 border border-gray-500"
+          >
+            <FcGoogle className="text-2xl" />
+          </a>
+          <a
+            href={`${import.meta.env.VITE_AUTH_URL}/auth/github`}
+            className="h-[3rem] overflow-hidden cursor-pointer w-full rounded-md gap-5 fc bg-gray-50 border border-gray-500"
+          >
+            <FaGithub className="text-2xl" />
+          </a>
+        </div>
       </div>
     </div>
   );
