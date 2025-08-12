@@ -1,26 +1,29 @@
 {
-  "name": "auth",
+  "name": "profile",
   "version": "1.0.0",
-  "description": "resume pilot auth service",
+  "description": "ResumePilot Profile Page",
+  "keywords": [
+    "Resume",
+    "Pilot",
+    "Profile",
+    "Page"
+  ],
   "license": "ISC",
   "author": "Akash Biswas",
   "type": "module",
   "main": "server.js",
   "scripts": {
-    "dev": "node --watch server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js"
   },
   "dependencies": {
     "amqplib": "^0.10.8",
-    "bcrypt": "^6.0.0",
-    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.1",
     "ioredis": "^5.7.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.17.0",
+    "mongoose": "^8.17.1",
     "rate-limit-redis": "^4.2.1",
     "rate-limiter-flexible": "^7.2.0",
     "winston": "^3.17.0"

@@ -1,4 +1,4 @@
-import { verifyToken } from "../Service/jwt.service.js";
+import jwt from "jsonwebtoken";
 import logger from './../Config/logger.config.js';
 
 export const authMiddleware = async (req, res, next) => {
@@ -11,15 +11,14 @@ export const authMiddleware = async (req, res, next) => {
         success: false,
         message: "Unauthorized: Please login first",
       });
-    } 
+    }
 
-    const decode = verifyToken(token);
-    const {email,id,name} = decode;
-  
-    req.user = {email,name,authId:id};
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
+    const { email, id, name } = decode;
+
+    req.user = { email, name, authId: id };
     
     next();
-
   } catch (error) {
     logger.error(`Auth Middleware Error: ${error.message}`);
     return res.status(401).json({

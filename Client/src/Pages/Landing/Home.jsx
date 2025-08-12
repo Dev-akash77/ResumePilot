@@ -7,8 +7,11 @@ import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { useEffect } from "react";
 import Features from "./Features";
 import { useLoginStatus } from "./../../Hook/useLoginStatus";
+import useLenisScroll from './../../Animation/Lenis';
 
 const Home = () => {
+    const lenisRef = useLenisScroll();
+
   const dispatch = useDispatch();
   const isLoginUser = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();

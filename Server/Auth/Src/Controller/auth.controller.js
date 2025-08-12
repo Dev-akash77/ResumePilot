@@ -3,19 +3,21 @@ import bcrypt from "bcrypt";
 import logger from "../Config/logger.config.js";
 import { generateToken } from "./../Service/jwt.service.js";
 import { clearCookie, setCookie } from "../Utils/cookies.utils.js";
+import { publishEvent } from "../Config/rabitmq.config.js";
+import { EXCHANGES, ROUTING_KEYS } from './../Constant/rabitmq.constant.js';
 
 //! Manual Register Controller
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
+  
     //! Validate input
     if (!name || !email || !password) {
       logger.error("Missing Field in Register");
       return res
         .status(400)
         .json({ success: false, message: "All fields are required" });
-    }
+    } 
 
     const lowerEmail = email.trim().toLowerCase();
 
@@ -48,6 +50,8 @@ export const register = async (req, res) => {
     });
     await authData.save();
 
+    await publishEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.CREATE,authData);
+
     //! Generate JWT Token
     const payload = { name, email: lowerEmail, id: authData._id };
     const token = generateToken(payload);
@@ -71,7 +75,6 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     //! Validate input
     if (!email || !password) {
       logger.error("Missing Fields in Login");
@@ -153,6 +156,7 @@ export const isAuthenticate = async (req, res) => {
         message: "User not authenticated",
       });
     }
+    
 
     return res.status(200).json({
       success: true,

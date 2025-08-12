@@ -225,10 +225,7 @@ const Auth = () => {
             className="cc md:mt-[.5rem] bg-blue text-white p-3 rounded-md md:py-2 py-[.6rem] md:text-base text-xl cursor-pointer"
           >
             {isLoading ? (
-              <div className="flex items-center gap-2">
-                <Button_Loader />
-                Processing...
-              </div>
+              <Button_Loader />
             ) : isLogin ? (
               "Login"
             ) : (

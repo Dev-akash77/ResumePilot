@@ -5,8 +5,8 @@ export const useLoginStatus = () => {
   return useQuery({
     queryKey: ["loginStatus"],
     queryFn: statusApi,
-    staleTime: 0,
-    retry: false,
+    // staleTime: 0,
+    // retry: false,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
   });

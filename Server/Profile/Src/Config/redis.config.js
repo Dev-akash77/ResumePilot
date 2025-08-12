@@ -7,9 +7,9 @@ export const redisConnection = async () => {
   try {
     const redisOptions = {
       maxRetriesPerRequest: 20,
-     ...(process.env.NODE_ENV === "production" ? { tls: {} } : {}),
+      ...(process.env.NODE_ENV === "production" ? { tls: {} } : {}),
     };
-
+ 
     redis = new Redis(process.env.REDIS_URI, redisOptions);
 
     //! REDIS CONNECTED SUCCESSFULLY

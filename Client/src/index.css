@@ -14,6 +14,7 @@ code {
   --color-white: #ffffff;
   --color-blue: #5044e5;
   --color-grayBlack: #314158;
+  --color-background:#ffffff;
 }
 
 /* ! all the color */
@@ -22,6 +23,7 @@ code {
   --white: #ffffff;
   --blue: #5044e5;
   --grayBlack: #314158;
+  --background: #ffffff;
 }
 
 html {
