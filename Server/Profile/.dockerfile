@@ -17,7 +17,7 @@ COPY . .
 RUN mkdir -p ./src/Logs
 
 # EXPOSE PORT 4001
-EXPOSE 4001
+EXPOSE 4002
 
 # START THE SERVICE
 CMD [ "node","server.js" ]
