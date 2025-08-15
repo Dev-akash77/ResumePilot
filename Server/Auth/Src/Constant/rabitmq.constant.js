@@ -8,6 +8,7 @@ export const EXCHANGES = {
 export const ROUTING_KEYS = {
   PROFILE: {
     CREATE: "profile.create",
+    VERIFY:"profile.verify"
   },
   AUTH:{
     UPDATE_USER_ID:"auth.update_user_id"

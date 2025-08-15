@@ -13,8 +13,8 @@ const AuthSchema = new Schema(
       enum: ["active", "suspend", "ban"],
       default: "active",
     },
-    otp: { type: String, default: "" },
-    otpExp: { type: Date, default: Date.now },
+    otp: { type: String, default: null },
+    otpExp: { type: Date, default: null },
   },
   { timestamps: true }
 ); 

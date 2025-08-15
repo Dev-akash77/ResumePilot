@@ -84,7 +84,6 @@ const Profile = () => {
     createdAt,
   } = profileData?.data || {};
 
-  console.log(profileData);
   
 
   const dateObj = new Date(createdAt);
