@@ -15,6 +15,7 @@ code {
   --color-blue: #5044e5;
   --color-grayBlack: #314158;
   --color-background:#ffffff;
+  --color-backgroundGray:#f4f7fb;
 }
 
 /* ! all the color */
@@ -24,6 +25,7 @@ code {
   --blue: #5044e5;
   --grayBlack: #314158;
   --background: #ffffff;
+  --backgroundGray:#f4f7fb;
 }
 
 html {
@@ -52,6 +54,11 @@ body {
 
 .container {
   width: 85%;
+  height: 100%;
+}
+
+.dcontainer {
+  width: 95%;
   height: 100%;
 }
 

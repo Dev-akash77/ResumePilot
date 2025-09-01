@@ -1,8 +1,9 @@
-import amqp from "amqplib";
 import logger from "./logger.config.js";
+import amqp from "amqplib";
 
-export let connection, channel; 
+export let connection, channel;
 
+// ! connect rabitmq
 export const connectRabbitMQ = async (exchangeName) => {
   try {
     connection = await amqp.connect(process.env.RABITMQ_URI);
@@ -23,7 +24,7 @@ export const publishEvent = async (exchange, routingKey, message) => {
     if (!channel) {
       await connectRabbitMQ(exchange);
     }
-    // ! publish channel
+
     await channel.publish(
       exchange,
       routingKey,
@@ -39,23 +40,24 @@ export const publishEvent = async (exchange, routingKey, message) => {
   }
 };
 
-// ! consume event
+// ! Comnsume Events
+
 export const consumeEvent = async (exchange, routingKey, callback) => {
   try {
     if (!channel) {
-      await connectRabbitMQ(exchange);
+      await connectRabbitMQ();
     }
+
     const q = await channel.assertQueue("", { exclusive: true });
     await channel.bindQueue(q.queue, exchange, routingKey);
 
     channel.consume(q.queue, (msg) => {
-      if (msg != null) {
+      if (msg !== null) {
         const content = JSON.parse(msg.content.toString());
         callback(content);
         channel.ack(msg);
       }
     });
-
     logger.info(
       `Message consume with exchange name "${exchange}" and routing key "${routingKey}"`
     );

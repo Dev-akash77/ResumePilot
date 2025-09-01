@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useLoginStatus } from "../../Hook/useLoginStatus";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logoutApi } from "../../Api/api";
+import { logoutApi, send_otp_verify } from "../../Api/api";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
+import { isAuthenticate, LogoutAuth, openOtp } from "../../Slice/AuthSlice";
 import Button_Loader from "../../UI/Button_Loader";
 import logo from "../../assets/Images/favicon.svg";
 import {
@@ -21,10 +21,12 @@ import { IoMdKey } from "react-icons/io";
 import { IoPower } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useGetProfile } from "./../../Hook/useProfile";
+import Otp from "../../Components/Otp";
 
 const Profile = () => {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isAuthenticated);
+  const isOpenOtp = useSelector((state) => state.auth.openOtpBox);
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
@@ -39,6 +41,18 @@ const Profile = () => {
       }
     },
   });
+
+  // ! handle click verify account
+  const sendOtpMutation = useMutation({
+    mutationFn: send_otp_verify,
+    onSuccess: (data) => {
+      if (data?.success) {
+        dispatch(openOtp());
+        toast.success(data?.message);
+      }
+    },
+  });
+
   const { data, isLoading, isError } = useLoginStatus();
 
   useEffect(() => {
@@ -84,8 +98,6 @@ const Profile = () => {
     createdAt,
   } = profileData?.data || {};
 
-  
-
   const dateObj = new Date(createdAt);
   const formattedDateJoined = `${
     dateObj.getMonth() + 1
@@ -117,6 +129,10 @@ const Profile = () => {
     return "just now";
   }
 
+  const handleVerifyEmail = () => {
+    sendOtpMutation.mutate();
+  };
+
   return (
     <div className="h-screen w-screen bg-gray-50 cc">
       <header className="cc h-[5rem] w-full ">
@@ -133,7 +149,12 @@ const Profile = () => {
             </h2>
           </div>
 
-          <button className="bg-blue text-white rounded-md md:px-10 px-3 py-3 cursor-pointer fc gap-2">
+          <button
+            className="bg-blue text-white rounded-md md:px-10 px-3 py-3 cursor-pointer fc gap-2"
+            onClick={() => {
+              navigate("/dashboard");
+            }}
+          >
             Dashboard <MdDashboard className="text-xl text-gray-100" />
           </button>
         </div>
@@ -211,9 +232,12 @@ const Profile = () => {
             <RiPencilFill />
             Edit Profile
           </button>
-          <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
+          <button
+            className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md"
+            onClick={handleVerifyEmail}
+          >
             <MdOutlineSecurity />
-            Verify Email
+            {sendOtpMutation.isPending ? <Button_Loader /> : "Verify Email"}
           </button>
           <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
             <IoMdKey className="text-lg" />
@@ -231,6 +255,8 @@ const Profile = () => {
           </button>
         </div>
       </div>
+
+      {isOpenOtp && <Otp />}
     </div>
   );
 };

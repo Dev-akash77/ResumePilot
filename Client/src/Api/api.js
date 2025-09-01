@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 export const api = axios.create({
   baseURL: import.meta.env.VITE_BACKND_URL,
   withCredentials: true,
-}); 
+});
 
 // ! for registerd api
 export const registeredApi = async (data) => {
@@ -43,6 +43,26 @@ export const logoutApi = async () => {
 export const statusApi = async () => {
   try {
     const res = await api.get("/auth/status");
+    return res?.data;
+  } catch (error) {
+    console.log(error?.response?.data?.message || error.message);
+  }
+};
+
+// ! send otp for verify account
+export const send_otp_verify = async () => {
+  try {
+    const res = await api.post(`/auth/otp/send`);
+    return res?.data;
+  } catch (error) {
+    console.log(error?.response?.data?.message || error.message);
+  }
+};
+
+// ! verify account Via OTP
+export const verify_account = async (otp) => {
+  try {
+    const res = await api.post(`/auth/otp/verify`, { otp });
     return res?.data;
   } catch (error) {
     console.log(error?.response?.data?.message || error.message);

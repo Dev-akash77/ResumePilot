@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   formData: { name: "", email: "", password: "" },
+  openOtpBox:false,
+  otp:"",
 };
 
 const authSlice = createSlice({
@@ -10,7 +12,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     //* check is authenticate
-    isAuthenticate: (state, action) => {
+    isAuthenticate: (state,) => {
       state.isAuthenticated = true;
     },
 
@@ -40,6 +42,30 @@ const authSlice = createSlice({
     LogoutAuth: (state) => {
       state.isAuthenticated = false;
     },
+
+    //*  open otp dilauge box
+    openOtp:(state)=>{
+      state.openOtpBox = true;
+    },
+
+    //*  close otp dilauge box
+    closeOtp:(state)=>{
+      state.openOtpBox = false;
+    },
+
+    //* Update otp
+    updateOtp:(state,action)=>{
+      state.otp = action.payload;
+    },
+
+    //* reset otp
+    resetOtp:(state)=>{
+      state.otp = "";
+    },
+
+
+
+
   },
 });
 
@@ -50,6 +76,10 @@ export const {
   regesterAuth,
   LoginAuth,
   LogoutAuth,
+  openOtp,
+  closeOtp,
+  updateOtp,
+  resetOtp
 } = authSlice.actions;
 
 export const authSlices = authSlice.reducer;

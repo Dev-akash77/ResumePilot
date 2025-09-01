@@ -11,7 +11,7 @@ import { redisConnection } from "./Src/Config/redis.config.js";
 
 
 const app = express();
-const PORT = process.env.PORT;
+const PORT = process.env.PORT; 
 
 // ! config and connection fn
 mongo_connection();
@@ -42,3 +42,4 @@ app.use("/profile",profileRoutes)
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT} : {Profile Service}`);
 });
+   

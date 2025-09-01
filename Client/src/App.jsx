@@ -6,6 +6,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Auth from "./Auth/Auth";
 import { Toaster } from "react-hot-toast";
 import Profile from "./Pages/Profile/Profile";
+import Layout from "./Layout/layout";
+import Dashboard from './Pages/Home/Dashboard';
+import About from './Pages/Home/About';
+import All_resume from './Pages/Home/All_resume';
+import Ats from "./Pages/Home/Ats";
 
 const App = () => {
 
@@ -22,6 +27,28 @@ const App = () => {
       path: "/profile",
       element: <Profile />,
     },
+    {
+      path:"/dashboard",
+      element:<Layout />,
+      children: [
+        {
+          index: true,
+          element: <Dashboard />,
+        },
+        {
+          path: "about",
+          element: <About />,
+        },
+        {
+          path: "all_resume",
+          element: <All_resume />,
+        },
+        {
+          path: "review",
+          element: <Ats />,
+        },
+      ],
+    }
   ]);
 
   const queryClient = new QueryClient();

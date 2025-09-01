@@ -14,7 +14,7 @@ import { updaProfileId } from "./Src/Event/update.event.js";
 const app = express();  
 const PORT = process.env.PORT;
 
-// ! config and connection fn
+// ! config and connection fn 
 mongo_connection();
 redisConnection();
 (async () => {
@@ -44,3 +44,4 @@ app.use("/auth",otpVerifyRouter)
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT}, : {Auth Service}`);
 });
+   

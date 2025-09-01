@@ -6,11 +6,11 @@ import { deleteCached } from "../Utils/cached.utils.js";
 import { authModel } from "./../Model/auth.model.js";
 import bcrypt from "bcrypt";
 
-// ! Send OTP For User Verification
+// ! Send OTP For User Verification 6 digit otp
 export const sendOtpVerification = async (req, res) => {
   try {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const { authId } = req.user;
+    const { authId,name,email } = req.user;
 
     const result = await authModel.findById(authId);
 
@@ -28,11 +28,16 @@ export const sendOtpVerification = async (req, res) => {
     await result.save();
 
     await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
-
+    await publishEvent(EXCHANGES.NOTIFICATION,ROUTING_KEYS.NOTIFICATION.VERIFICATION_EMAIL,{
+      email,
+      name,
+      otp
+    })
     res.status(200).json({
       success: true,
-      message: "OTP sent successfully",
+      message: "OTP sent to your email",
     });
+    
   } catch (error) {
     res.status(500).json({
       success: false,

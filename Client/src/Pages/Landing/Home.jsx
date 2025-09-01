@@ -60,7 +60,7 @@ const Home = () => {
           <div className="container fcb">
             <div className="w-max fc gap-1">
               <img src={logo} alt="logo" />
-              <h2 className="md:text-[1.7rem] text-[1.4rem] text-blue font-semibold">
+              <h2 className="md:text-[1.7rem] text-[1.4rem] text-blue font-semibold cursor-pointer" onClick={()=>{navigate("/")}}>
                 ResumePilot
               </h2>
             </div>
@@ -100,7 +100,7 @@ const Home = () => {
           </p>
 
           <div className="flex items-center flex-col md:flex-row justify-center gap-4 mt-[1.5rem]">
-            <button className="w-[15rem] text-[1rem] py-3 rounded-md bg-blue text-white cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+            <button className="w-[15rem] text-[1rem] py-3 rounded-md bg-blue text-white cursor-pointer hover:scale-[1.02] transition-transform duration-300" onClick={()=>{navigate("/dashboard")}}>
               Start building resume
             </button>
             <button className="w-[15rem] text-[1rem] py-3 rounded-md bg-white border-2 border-gray-300 cursor-pointer hover:scale-[1.02] transition-transform duration-300">
