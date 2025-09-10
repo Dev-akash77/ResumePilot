@@ -11,6 +11,7 @@ import Dashboard from './Pages/Home/Dashboard';
 import About from './Pages/Home/About';
 import All_resume from './Pages/Home/All_resume';
 import Ats from "./Pages/Home/Ats";
+import Resume from "./Pages/Resume/Resume";
 
 const App = () => {
 
@@ -26,6 +27,10 @@ const App = () => {
     {
       path: "/profile",
       element: <Profile />,
+    },
+    {
+      path: "/resume",
+      element: <Resume />,
     },
     {
       path:"/dashboard",

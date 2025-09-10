@@ -1,0 +1,140 @@
+import logger from "../Config/logger.config.js";
+import { resumeModel } from "../Models/resume.model.js";
+
+// ! Create Resume
+export const createResume = async (req, res) => {
+  try {
+    const { title } = req.body;
+    const authId = req.header("x-auth-data");
+
+    if (!title) {
+      logger.error(
+        `Resume Title Not Found — Missing field 'title' in resume creation`
+      );
+      return res.status(400).json({
+        success: false,
+        message: "Title is required",
+      });
+    }
+    if (!authId) {
+      logger.error(`Resume Creator Not Found`);
+      return res.status(400).json({
+        success: false,
+        message: "Something Went wrong",
+      });
+    }
+
+    const resume = await resumeModel.create({ title, creator: authId });
+
+    logger.info(`Resume Created Successfully with ID: ${resume._id}`);
+
+    return res.status(201).json({
+      success: true,
+      message: "Resume created successfully",
+      data: resume,
+    });
+  } catch (error) {
+    logger.error(`Error Creating Resume: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// ! create Header Part Of Resume
+export const resumeHeader = async (req, res) => {
+  try {
+    const { name, number, portfolio, linkedin, email, github, id } = req.body;
+
+    // ! fields that must required to creat resume header
+    const requiredFields = { number, name, email, linkedin };
+
+    for (const [key, value] of Object.entries(requiredFields)) {
+      if (!value) {
+        logger.error(`Missing field '${key}' in resume header creation`);
+        return res.status(400).json({
+          success: false,
+          message: `${key} is required`,
+        });
+      }
+    }
+
+    const resume = await resumeModel.findById(id);
+    // ! resume not found
+    if (!resume) {
+      logger.error(`No resume found for resume id: ${id}`);
+      return res.status(404).json({
+        success: false,
+        message: `Resume not found id: ${id}`,
+      });
+    }
+
+    // ! Update Resume Header
+    resume.name = name;
+    resume.number = number;
+    resume.email = email;
+    resume.linkedin = linkedin;
+    resume.portfolio = portfolio || "";
+    resume.github = github || "";
+
+    await resume.save();
+
+    logger.info(`Resume header updated successfully for resume id: ${id}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "Resume header updated",
+    });
+  } catch (error) {
+    logger.error(`Error Creating Header Part Of Resume: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// ! create Summary Part Of Resume
+export const resumeSummary = async (req, res) => {
+  try {
+    const { summary, id } = req.body;
+
+    // ! fields that must required to create resume header
+    if (!summary) {
+      logger.error(`Missing field 'summary' in resume summary creation`);
+      return res.status(400).json({
+        success: false,
+        message: `summary is required`,
+      });
+    }
+
+    const resume = await resumeModel.findById(id);
+    // ! resume not found
+    if (!resume) {
+      logger.error(`No resume found for resume id: ${id}`);
+      return res.status(404).json({
+        success: false,
+        message: `Resume not found id: ${id}`,
+      });
+    }
+
+    // ! Update Resume Header
+    resume.summary = summary;
+
+    await resume.save();
+
+    logger.info(`Resume summary updated successfully for resume id: ${id}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "Resume summary updated",
+    });
+  } catch (error) {
+    logger.error(`Error Creating Summary Part Of Resume: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

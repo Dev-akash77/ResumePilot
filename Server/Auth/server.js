@@ -10,7 +10,7 @@ import { redisConnection } from "./Src/Config/redis.config.js";
 import { connectRabbitMQ, consumeEvent } from "./Src/Config/rabitmq.config.js";
 import { EXCHANGES, ROUTING_KEYS } from "./Src/Constant/rabitmq.constant.js";
 import { updaProfileId } from "./Src/Event/update.event.js";
-
+ 
 const app = express();  
 const PORT = process.env.PORT;
 
@@ -44,4 +44,4 @@ app.use("/auth",otpVerifyRouter)
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT}, : {Auth Service}`);
 });
-   
+     

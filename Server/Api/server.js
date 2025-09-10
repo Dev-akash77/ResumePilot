@@ -5,6 +5,7 @@ import { authRoutes } from "./Src/Routes/auth.routes.js";
 import logger from "./Src/Config/logger.config.js";
 import { profileRoutes } from "./Src/Routes/profile.route.js";
 import cookieParser from "cookie-parser";
+import { resumeRoutes } from "./Src/Routes/resume.routes.js";
 
 const app = express();
 
@@ -23,7 +24,9 @@ app.use(cookieParser());
 // ! PROXY ROUTES STUP
 app.use(authRoutes);
 app.use(profileRoutes);
+app.use(resumeRoutes);
 
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT}, : {Api Gateway Service}`);
 });
+ 
