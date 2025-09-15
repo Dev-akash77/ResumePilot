@@ -12,6 +12,7 @@ import About from './Pages/Home/About';
 import All_resume from './Pages/Home/All_resume';
 import Ats from "./Pages/Home/Ats";
 import Resume from "./Pages/Resume/Resume";
+import Header from "./Pages/Resume/FromData/Header";
 
 const App = () => {
 
@@ -29,8 +30,14 @@ const App = () => {
       element: <Profile />,
     },
     {
-      path: "/resume",
+      path: "/resume/:id/:section",
       element: <Resume />,
+      children:[
+        {
+          index:true,
+          element:<Header/>
+        },
+      ]
     },
     {
       path:"/dashboard",

@@ -1,16 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { CiSquarePlus } from "react-icons/ci";
 import ResumeCard from "../../Common/ResumeCard";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useLoginStatus } from "./../../Hook/useLoginStatus";
+import { useDispatch } from "react-redux";
+import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 
 const Dashboard = () => {
+  const isLogin = useSelector((state) => {
+    return state.auth.isAuthenticated;
+  });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { data: loginData, isLoading, isError } = useLoginStatus();
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (loginData?.success) {
+      dispatch(isAuthenticate());
+    } else {
+      dispatch(LogoutAuth());
+    }
+    if (isError) {
+      dispatch(LogoutAuth());
+    }
+  }, [loginData]);
+
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!isLogin ) {
+      navigate("/auth");
+    }
+  }, [isLogin,isError]);
+
+
+
   const data = [
-    { color: "#2563eb", role: "Software Developer" },  
-    { color: "#ef4444", role: "Data Scientist" },      
-    { color: "#ff0082", role: "DevOps Engineer" },     
-    { color: "#8b5cf6", role: "AI/ML Engineer" },     
-    { color: "#00a32d", role: "Cloud Computing" },     
+    { color: "#2563eb", role: "Software Developer" },
+    { color: "#ef4444", role: "Data Scientist" },
+    { color: "#ff0082", role: "DevOps Engineer" },
+    { color: "#8b5cf6", role: "AI/ML Engineer" },
+    { color: "#00a32d", role: "Cloud Computing" },
   ];
-  
+
   return (
     <div className="w-full h-full z-40 cc pb-18">
       <div className="py-4 h-full w-[95%] overflow-y-auto">

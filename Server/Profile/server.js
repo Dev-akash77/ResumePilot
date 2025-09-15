@@ -15,7 +15,7 @@ const PORT = process.env.PORT;
 
 // ! config and connection fn
 mongo_connection();
-redisConnection();
+redisConnection(); 
   
  
 //! rabitmq connection and consume event

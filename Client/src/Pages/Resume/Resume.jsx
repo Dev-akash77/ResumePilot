@@ -1,16 +1,52 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import logo from "../../assets/Images/favicon.svg"
+import React, { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
 import MainResume from "../../Components/MainResume";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginStatus } from "../../Hook/useLoginStatus";
+import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
+import { IoHomeOutline } from "react-icons/io5";
+import { GrLinkNext } from "react-icons/gr";
+import { IoMdArrowBack } from "react-icons/io";
 
 const Resume = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const isLogin = useSelector((state) => {
+    return state.auth.isAuthenticated;
+  });
+  const dispatch = useDispatch();
+
+  // ! check is login or not
+
+  const { data: loginData, isLoading, isError } = useLoginStatus();
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (loginData?.success) {
+      dispatch(isAuthenticate());
+    } else {
+      dispatch(LogoutAuth());
+    }
+    if (isError) {
+      dispatch(LogoutAuth());
+    }
+  }, [loginData]);
+
+  //! Redirect if not logged in
+  useEffect(() => {
+    if (isLoading) return;
+
+    if (!isLogin) {
+      navigate("/auth");
+    }
+  }, [isLogin, isError]);
 
   return (
     <div className="w-screen">
       <header className="cc h-[5rem] w-full">
-        <div className="container fcb">
+        <div className="w-[87%] fcb">
           <div
             className="w-max fc gap-1 cursor-pointer"
             onClick={() => {
@@ -36,11 +72,28 @@ const Resume = () => {
 
       {/* main resume lay out */}
       <div className="cc py-10">
-        <div className="container flex justify gap-5">
-            {/* left side from data */}
-            <div className="border w-[40%] h-[35rem] cc text-4xl font-bold">Comming Soon</div>
-            {/* main resume */}
-            <MainResume />
+        <div className="w-[87%] flex justify gap-5">
+          {/* left side from data */}
+          <div className="w-[45%]">
+            <div className="fcb mb-7">
+              <button className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md">
+                <IoHomeOutline className="text-xl" />
+              </button>
+              <div className="fc gap-5">
+                <button className="cc bg-blue text-white rounded-md cursor-pointer w-[4rem] h-[2.5rem]">
+                  <IoMdArrowBack className="text-xl" />
+                </button>
+                <button className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer">
+                  Next
+                  <GrLinkNext />
+                </button>
+              </div>
+            </div>
+            <Outlet />
+          </div>
+
+          {/* main resume */}
+          <MainResume />
         </div>
       </div>
     </div>

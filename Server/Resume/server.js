@@ -25,7 +25,7 @@ app.use(
 );
 
 
-app.use("/resume",creationRoutes)
+app.use("/resume",creationRoutes);
 
 
 

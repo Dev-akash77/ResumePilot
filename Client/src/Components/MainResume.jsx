@@ -2,7 +2,7 @@ import React from "react";
 
 const MainResume = () => {
   return (
-    <div className="bs w-[8.5in] h-[11in] pt-10 pb-5 cc">
+    <div className="bs w-[8.5in] h-[11in] pt-10 pb-5 cc relative">
       <div className="w-[92%] h-full">
         {/* resume header section */}
         <header>

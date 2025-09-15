@@ -138,3 +138,104 @@ export const resumeSummary = async (req, res) => {
     });
   }
 };
+
+// ! Adding Education Details
+export const resumeEducation = async (req, res) => {
+  try {
+    const { id, college, degree, location, start, end, cgpa } = req.body;
+
+    // ! Required Fields
+    const requiredFields = { id, college, degree, location, start, end, cgpa };
+    for (const [key, value] of Object.entries(requiredFields)) {
+      if (!value) {
+        logger.error(`Missing field '${key}' in resume education creation`);
+        return res.status(400).json({
+          success: false,
+          message: `${key} is required`,
+        });
+      }
+    }
+
+    const resume = await resumeModel.findById(id);
+    // ! resume not found
+    if (!resume) {
+      logger.error(`No resume found for resume id: ${id}`);
+      return res.status(404).json({
+        success: false,
+        message: `Resume not found id: ${id}`,
+      });
+    }
+
+    // ! Update Resume Header
+    if (resume.education.length === 0) {
+      resume.education.push({
+        college,
+        degree,
+        location,
+        start,
+        end,
+        cgpa,
+      });
+    } else {
+      const index = 0;
+      resume.education[index].college = college;
+      resume.education[index].degree = degree;
+      resume.education[index].location = location;
+      resume.education[index].start = start;
+      resume.education[index].end = end;
+      resume.education[index].cgpa = cgpa;
+    }
+
+    await resume.save();
+
+    logger.info(`Resume education updated successfully for resume id: ${id}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "Resume education updated",
+    });
+  } catch (error) {}
+};
+
+// ! Adding Education Details
+export const resumeSkills = async (req, res) => {
+  try {
+    const { id, technical, tools } = req.body;
+
+    // ! Required Fields
+    const requiredFields = { id, technical, tools };
+    for (const [key, value] of Object.entries(requiredFields)) {
+      if (!value) {
+        logger.error(`Missing field '${key}' in resume skill creation`);
+        return res.status(400).json({
+          success: false,
+          message: `${key} is required`,
+        });
+      }
+    }
+
+    const resume = await resumeModel.findById(id);
+    // ! resume not found
+    if (!resume) {
+      logger.error(`No resume found for resume id: ${id}`);
+      return res.status(404).json({
+        success: false,
+        message: `Resume not found id: ${id}`,
+      });
+    }
+
+    resume.skills.technical = technical;
+    resume.skills.tools = tools;
+
+    await resume.save();
+
+    logger.info(`Resume skill updated successfully for resume id: ${id}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "Resume skill updated",
+      data: resume,
+    });
+  } catch (error) {}
+};
+

@@ -74,7 +74,7 @@ const Profile = () => {
     if (!isLogin) {
       navigate("/");
     }
-  }, [isLogin]);
+  }, [isLogin,isError]);
 
   const handleLogout = () => {
     logoutMutation.mutate();

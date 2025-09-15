@@ -12,7 +12,7 @@ const PORT = process.env.PORT;
 
 
 //! Common Middleware
-app.use(express.json());
+app.use(express.json()); 
 
 app.use(
   cors({
