@@ -17,7 +17,7 @@ const PORT = process.env.PORT;
 mongo_connection();
 redisConnection(); 
   
- 
+  
 //! rabitmq connection and consume event
 (async () => {
   await connectRabbitMQ(EXCHANGES.PROFILE);

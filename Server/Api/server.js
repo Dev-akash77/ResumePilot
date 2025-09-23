@@ -19,7 +19,7 @@ app.use(
     credentials: true,
   }) 
 );  
-app.use(cookieParser()); 
+app.use(cookieParser());  
 
 // ! PROXY ROUTES STUP
 app.use(authRoutes);

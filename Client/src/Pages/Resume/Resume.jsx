@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
 import MainResume from "../../Components/MainResume";
@@ -12,6 +12,7 @@ import { IoMdArrowBack } from "react-icons/io";
 
 const Resume = () => {
   const navigate = useNavigate();
+  const params = useParams();
 
   const isLogin = useSelector((state) => {
     return state.auth.isAuthenticated;
@@ -70,19 +71,28 @@ const Resume = () => {
         </div>
       </header>
 
-      {/* main resume lay out */}
+      {/* main resume layout */}
       <div className="cc py-10">
         <div className="w-[87%] flex justify gap-5">
           {/* left side from data */}
           <div className="w-[45%]">
             <div className="fcb mb-7">
-              <button className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md">
-                <IoHomeOutline className="text-xl" />
-              </button>
-              <div className="fc gap-5">
-                <button className="cc bg-blue text-white rounded-md cursor-pointer w-[4rem] h-[2.5rem]">
-                  <IoMdArrowBack className="text-xl" />
+              {
+                <button className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md">
+                  <IoHomeOutline className="text-xl" />
                 </button>
+              }
+              <div className="fc gap-5">
+                {params?.section != "header" && (
+                  <button
+                    onClick={() => {
+                      navigate(-1);
+                    }}
+                    className="cc bg-blue text-white rounded-md cursor-pointer w-[4rem] h-[2.5rem]"
+                  >
+                    <IoMdArrowBack className="text-xl" />
+                  </button>
+                )}
                 <button className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer">
                   Next
                   <GrLinkNext />

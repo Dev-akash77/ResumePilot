@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useLoginStatus } from "../../Hook/useLoginStatus";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { logoutApi, send_otp_verify } from "../../Api/api";
+import { logoutApi } from "../../Api/api";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -42,17 +42,6 @@ const Profile = () => {
     },
   });
 
-  // ! handle click verify account
-  const sendOtpMutation = useMutation({
-    mutationFn: send_otp_verify,
-    onSuccess: (data) => {
-      if (data?.success) {
-        dispatch(openOtp());
-        toast.success(data?.message);
-      }
-    },
-  });
-
   const { data, isLoading, isError } = useLoginStatus();
 
   useEffect(() => {
@@ -74,7 +63,7 @@ const Profile = () => {
     if (!isLogin) {
       navigate("/");
     }
-  }, [isLogin,isError]);
+  }, [isLogin, isError]);
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -130,7 +119,7 @@ const Profile = () => {
   }
 
   const handleVerifyEmail = () => {
-    sendOtpMutation.mutate();
+    dispatch(openOtp());
   };
 
   return (
@@ -237,7 +226,7 @@ const Profile = () => {
             onClick={handleVerifyEmail}
           >
             <MdOutlineSecurity />
-            {sendOtpMutation.isPending ? <Button_Loader /> : "Verify Email"}
+            {"Verify Email"}
           </button>
           <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
             <IoMdKey className="text-lg" />

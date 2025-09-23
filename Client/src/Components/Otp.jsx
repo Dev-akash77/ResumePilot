@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { closeOtp, updateOtp, resetOtp } from "../Slice/AuthSlice";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { verify_account } from "../Api/api";
+import { send_otp_verify, verify_account } from "../Api/api";
 import Button_Loader from "../UI/Button_Loader";
+import { RxCross1 } from "react-icons/rx";
 
 const Otp = () => {
   const inputRefs = useRef([]);
@@ -39,13 +40,28 @@ const Otp = () => {
 
   const QueryClient = useQueryClient();
 
+  const sendOtpMutation = useMutation({
+    mutationFn: send_otp_verify,
+    onSuccess: (data) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        
+      }
+    },
+  });
+
+  // ! send otp
+  const handleSendOtp = () => {
+    sendOtpMutation.mutate();
+  };
+
   const verifyAccount = useMutation({
     mutationFn: verify_account,
     onSuccess: (data) => {
       if (data?.success) {
         dispatch(closeOtp());
         dispatch(resetOtp());
-         QueryClient.invalidateQueries({ queryKey: ["profileData"] });
+        QueryClient.invalidateQueries({ queryKey: ["profileData"] });
         inputRefs.current.map((input) => (input.value = ""));
         toast.success(data?.message);
       }
@@ -68,7 +84,7 @@ const Otp = () => {
       {/* Overlay */}
       <div className="fixed inset-0 bg-[rgba(0,0,0,.5)] flex items-center justify-center z-50">
         {/* OTP Box */}
-        <div className="bg-white rounded-2xl shadow-lg w-[25rem] p-6 text-center">
+        <div className="bg-white rounded-2xl shadow-lg w-[25rem] p-6 text-center relative">
           <h2 className="text-xl font-semibold mb-4">Enter OTP</h2>
           <p className="text-gray-600 mb-4">
             Please enter the 6-digit OTP sent to your email.
@@ -95,17 +111,18 @@ const Otp = () => {
           <div className="flex justify-between">
             <button
               className="px-4 py-2 bg-gray-200 rounded-md hover:bg-gray-300 cursor-pointer"
-              onClick={handleCancel}
+              onClick={handleSendOtp}
             >
-              Cancel
+              {sendOtpMutation.isPending ? <Button_Loader /> : "Send OTP"}
             </button>
-            
+
             <button
               className="px-4 py-2 bg-blue text-white rounded-md hover:bg-blue-900 cursor-pointer"
               onClick={handleVerify}
             >
-             {verifyAccount.isPending?<Button_Loader/>:"Verify Email"}
+              {verifyAccount.isPending ? <Button_Loader /> : "Verify Email"}
             </button>
+                <RxCross1 className="absolute right-5 top-5 cursor-pointer text-xl" onClick={handleCancel}/>
           </div>
         </div>
       </div>
