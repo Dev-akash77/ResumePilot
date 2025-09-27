@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
@@ -13,6 +13,8 @@ import { IoMdArrowBack } from "react-icons/io";
 const Resume = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const [current, setCurrent] = useState(0);
+  const section = ["", "profile", "education", "skill"];
 
   const isLogin = useSelector((state) => {
     return state.auth.isAuthenticated;
@@ -83,19 +85,31 @@ const Resume = () => {
                 </button>
               }
               <div className="fc gap-5">
-                {params?.section != "header" && (
+                {current > 0 && (
                   <button
                     onClick={() => {
-                      navigate(-1);
+                      setCurrent((prev) => {
+                        const newIndex = Math.max(prev - 1, 0);
+                        navigate(`/resume/${params?.id}/${section[newIndex]}`);
+                        return newIndex;
+                      });
                     }}
                     className="cc bg-blue text-white rounded-md cursor-pointer w-[4rem] h-[2.5rem]"
                   >
                     <IoMdArrowBack className="text-xl" />
                   </button>
                 )}
-                <button className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer">
-                  Next
-                  <GrLinkNext />
+                <button
+                  onClick={() => {
+                    setCurrent((prev) => {
+                      const newIndex = Math.min(prev + 1, section.length - 1);
+                      navigate(`/resume/${params?.id}/${section[newIndex]}`);
+                      return newIndex;
+                    });
+                  }}
+                  className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer"
+                >
+                  Next <GrLinkNext />
                 </button>
               </div>
             </div>

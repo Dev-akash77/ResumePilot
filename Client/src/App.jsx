@@ -13,6 +13,7 @@ import All_resume from './Pages/Home/All_resume';
 import Ats from "./Pages/Home/Ats";
 import Resume from "./Pages/Resume/Resume";
 import Header from "./Pages/Resume/FromData/Header";
+import ProfilePage from './Pages/Resume/FromData/Profile';
 
 const App = () => {
 
@@ -30,12 +31,16 @@ const App = () => {
       element: <Profile />,
     },
     {
-      path: "/resume/:id/:section",
+      path: "/resume/:id",
       element: <Resume />,
       children:[
         {
           index:true,
           element:<Header/>
+        },
+        {
+          path:"profile",
+          element:<ProfilePage/>
         },
       ]
     },
