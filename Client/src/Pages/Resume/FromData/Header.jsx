@@ -25,7 +25,7 @@ const Header = () => {
               name="name"
               required
               placeholder="@Akash Biswas"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+              className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300"
             />
           </div>
 
@@ -35,7 +35,7 @@ const Header = () => {
               type="email"
               name="email"
               placeholder="@akash123@gmail.com"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+              className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300"
             />
           </div>
         </div>
@@ -48,7 +48,7 @@ const Header = () => {
             name="title"
             required
             placeholder="@Software Developer"
-            className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+            className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
           />
         </div>
 
@@ -61,7 +61,7 @@ const Header = () => {
               name="number"
               required
               placeholder="@8101602709"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+              className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
 
@@ -71,7 +71,7 @@ const Header = () => {
               type="link"
               name="github"
               placeholder="@Dev-akash77"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+              className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
         </div>
@@ -85,7 +85,7 @@ const Header = () => {
               name="portfolio"
               required
               placeholder="@link"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+              className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
 
@@ -95,7 +95,7 @@ const Header = () => {
               type="link"
               name="linkedin"
               placeholder="@Akash-Biswas"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border bs"
+              className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
         </div>

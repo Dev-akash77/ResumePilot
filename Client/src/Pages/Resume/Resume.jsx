@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
 import MainResume from "../../Components/MainResume";
@@ -13,16 +13,15 @@ import { IoMdArrowBack } from "react-icons/io";
 const Resume = () => {
   const navigate = useNavigate();
   const params = useParams();
+  const location = useLocation();
   const [current, setCurrent] = useState(0);
-  const section = ["", "profile", "education", "skill"];
 
-  const isLogin = useSelector((state) => {
-    return state.auth.isAuthenticated;
-  });
+  const section = ["", "profile", "education", "skill","experience","projects"]; 
+
+  const isLogin = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
   // ! check is login or not
-
   const { data: loginData, isLoading, isError } = useLoginStatus();
   useEffect(() => {
     if (isLoading) return;
@@ -41,10 +40,18 @@ const Resume = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (!isLogin) {
+    if (isLogin) { // fix: pehle ulta tha
       navigate("/auth");
     }
   }, [isLogin, isError]);
+
+  //! Sync current with URL
+  useEffect(() => {
+    const parts = location.pathname.split("/");
+    const last = parts[parts.length - 1];
+    const index = section.indexOf(last);
+    setCurrent(index === -1 ? 0 : index);
+  }, [location.pathname]);
 
   return (
     <div className="w-screen">
@@ -79,38 +86,38 @@ const Resume = () => {
           {/* left side from data */}
           <div className="w-[45%]">
             <div className="fcb mb-7">
-              {
-                <button className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md">
-                  <IoHomeOutline className="text-xl" />
-                </button>
-              }
+              <button
+                className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md"
+                onClick={() => navigate("/")}
+              >
+                <IoHomeOutline className="text-xl" />
+              </button>
+
               <div className="fc gap-5">
                 {current > 0 && (
                   <button
                     onClick={() => {
-                      setCurrent((prev) => {
-                        const newIndex = Math.max(prev - 1, 0);
-                        navigate(`/resume/${params?.id}/${section[newIndex]}`);
-                        return newIndex;
-                      });
+                      const newIndex = Math.max(current - 1, 0);
+                      navigate(`/resume/${params?.id}/${section[newIndex]}`);
+                      setCurrent(newIndex);
                     }}
                     className="cc bg-blue text-white rounded-md cursor-pointer w-[4rem] h-[2.5rem]"
                   >
                     <IoMdArrowBack className="text-xl" />
                   </button>
                 )}
-                <button
-                  onClick={() => {
-                    setCurrent((prev) => {
-                      const newIndex = Math.min(prev + 1, section.length - 1);
+                {current < section.length - 1 && (
+                  <button
+                    onClick={() => {
+                      const newIndex = Math.min(current + 1, section.length - 1);
                       navigate(`/resume/${params?.id}/${section[newIndex]}`);
-                      return newIndex;
-                    });
-                  }}
-                  className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer"
-                >
-                  Next <GrLinkNext />
-                </button>
+                      setCurrent(newIndex);
+                    }}
+                    className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer"
+                  >
+                    Next <GrLinkNext />
+                  </button>
+                )}
               </div>
             </div>
             <Outlet />

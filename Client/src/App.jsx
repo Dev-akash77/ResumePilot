@@ -14,6 +14,8 @@ import Ats from "./Pages/Home/Ats";
 import Resume from "./Pages/Resume/Resume";
 import Header from "./Pages/Resume/FromData/Header";
 import ProfilePage from './Pages/Resume/FromData/Profile';
+import Education from "./Pages/Resume/FromData/Education";
+import Skill from "./Pages/Resume/FromData/Skill";
 
 const App = () => {
 
@@ -41,6 +43,14 @@ const App = () => {
         {
           path:"profile",
           element:<ProfilePage/>
+        },
+        {
+          path:"education",
+          element:<Education/>
+        },
+        {
+          path:"skill",
+          element:<Skill/>
         },
       ]
     },
