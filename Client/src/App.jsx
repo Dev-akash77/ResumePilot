@@ -16,6 +16,8 @@ import Header from "./Pages/Resume/FromData/Header";
 import ProfilePage from './Pages/Resume/FromData/Profile';
 import Education from "./Pages/Resume/FromData/Education";
 import Skill from "./Pages/Resume/FromData/Skill";
+import Experince from "./Pages/Resume/FromData/Experince";
+import Projects from "./Pages/Resume/FromData/Projects";
 
 const App = () => {
 
@@ -51,6 +53,14 @@ const App = () => {
         {
           path:"skill",
           element:<Skill/>
+        },
+        {
+          path:"experience",
+          element:<Experince/>
+        },
+        {
+          path:"projects",
+          element:<Projects/>
         },
       ]
     },

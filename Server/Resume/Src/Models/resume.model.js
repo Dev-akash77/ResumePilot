@@ -35,7 +35,8 @@ const ResumeSchema = new mongoose.Schema({
     {
       title: { type: String, default: "" },
       role: { type: String, default: "" },
-      duration: { type: String, default: "" },
+      start: { type: Date, default: null },
+      end: { type: Date, default: null },
       location: { type: String, default: "" },
       points: { type: [String], default: [] },
     },
@@ -44,13 +45,13 @@ const ResumeSchema = new mongoose.Schema({
   projects: [
     {
       name: { type: String, default: "" },
-      duration: { type: String, default: "" },
+      about: { type: String, default: "" },
+      start: { type: Date, default: null },
+      end: { type: Date, default: null },
       points: { type: [String], default: [] },
       techStack: { type: [String], default: [] },
-      links: {
-        live: { type: String, default: "" },
-        github: { type: String, default: "" },
-      },
+      live: { type: String, default: "" },
+      github: { type: String, default: "" },
     },
   ],
 

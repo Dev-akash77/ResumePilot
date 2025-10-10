@@ -197,7 +197,7 @@ export const resumeEducation = async (req, res) => {
   } catch (error) {}
 };
 
-// ! Adding Education Details
+// ! Adding  Skill
 export const resumeSkills = async (req, res) => {
   try {
     const { id, technical, tools } = req.body;
