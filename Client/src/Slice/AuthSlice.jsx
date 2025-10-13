@@ -12,7 +12,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     //* check is authenticate
-    isAuthenticate: (state,) => {
+    isAuthenticate: (state) => {
       state.isAuthenticated = true;
     },
 

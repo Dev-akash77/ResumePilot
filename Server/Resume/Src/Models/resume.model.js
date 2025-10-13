@@ -54,8 +54,6 @@ const ResumeSchema = new mongoose.Schema({
       github: { type: String, default: "" },
     },
   ],
-
-  achievements: { type: [String], default: [] },
 });
 
 export const resumeModel = mongoose.model("Resume", ResumeSchema);

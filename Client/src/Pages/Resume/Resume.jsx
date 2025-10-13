@@ -40,7 +40,7 @@ const Resume = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (isLogin) { // fix: pehle ulta tha
+    if (isLogin) { //! fix: pehle ulta tha
       navigate("/auth");
     }
   }, [isLogin, isError]);

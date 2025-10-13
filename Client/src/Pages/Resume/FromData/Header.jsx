@@ -1,9 +1,23 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import FromHeaders from "../../../Common/FromHeaders";
+import { useDispatch, useSelector } from "react-redux";
+import { headerOnChange } from "../../../Slice/ResumeSlice";
 
 const Header = () => {
   const { id, section } = useParams();
+  const resume = useSelector((state) => state.resume);
+  const dispatch = useDispatch();
+
+  // ! Onchange Multipart Form Data
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(headerOnChange({ name, value }));
+  };
+
+  
+
+  
 
   return (
     <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
@@ -23,6 +37,8 @@ const Header = () => {
             <input
               type="text"
               name="name"
+              onChange={handleChange}
+              value={resume.header?.name}
               required
               placeholder="@Akash Biswas"
               className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300"
@@ -34,31 +50,23 @@ const Header = () => {
             <input
               type="email"
               name="email"
+              onChange={handleChange}
+              value={resume.header?.email}
               placeholder="@akash123@gmail.com"
               className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300"
             />
           </div>
         </div>
 
-        {/* Job Title */}
-        <div className="flex flex-col text-[1rem] font-medium w-full">
-          <p>Job Title</p>
-          <input
-            type="text"
-            name="title"
-            required
-            placeholder="@Software Developer"
-            className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-          />
-        </div>
-
-          {/* number and gmail */}
+        {/* number and gmail */}
         <div className="flex w-full gap-3">
           <div className="flex flex-col text-[1rem] font-medium w-full">
             <p>Phone</p>
             <input
               type="number"
               name="number"
+              onChange={handleChange}
+              value={resume.header?.number}
               required
               placeholder="@8101602709"
               className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
@@ -70,21 +78,25 @@ const Header = () => {
             <input
               type="link"
               name="github"
+              onChange={handleChange}
+              value={resume.header?.github}
               placeholder="@Dev-akash77"
               className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
         </div>
 
-          {/* portfolio and linkedin */}
+        {/* portfolio and linkedin */}
         <div className="flex w-full gap-3">
           <div className="flex flex-col text-[1rem] font-medium w-full">
             <p>Portfolio</p>
             <input
               type="link"
               name="portfolio"
+              onChange={handleChange}
+              value={resume.header?.portfolio}
               required
-              placeholder="@link"
+              placeholder="@Link"
               className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
@@ -94,13 +106,19 @@ const Header = () => {
             <input
               type="link"
               name="linkedin"
-              placeholder="@Akash-Biswas"
+              onChange={handleChange}
+              value={resume.header?.linkedin}
+              placeholder="@Link"
               className="outline-0 border-gray-500 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />
           </div>
         </div>
 
-        <div className="flex items-end justify-end"><button className="bg-blue w-[6rem] h-[2.5rem] text-white cc rounded-md cursor-pointer">Save</button></div>
+        <div className="flex items-end justify-end">
+          <button className="bg-blue w-[6rem] h-[2.5rem] text-white cc rounded-md cursor-pointer">
+            Save
+          </button>
+        </div>
       </form>
     </div>
   );
