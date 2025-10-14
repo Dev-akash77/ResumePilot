@@ -1,8 +1,19 @@
 import React from "react";
 import FromHeaders from "../../../Common/FromHeaders";
 import { LuBrain } from "react-icons/lu";
+import { useDispatch, useSelector } from "react-redux";
+import { educationChange } from "../../../Slice/ResumeSlice";
 
 const Education = () => {
+  const resume = useSelector((state) => state.resume);
+  const dispatch = useDispatch();
+
+  // ! HANDLE RESUME EDUCATION FROM DATA CHANGE
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    dispatch(educationChange({ name, value }));
+  };
+
   return (
     <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
       {/* Header of the from */}
@@ -16,6 +27,8 @@ const Education = () => {
           <input
             type="text"
             name="college"
+            value={resume.education.college}
+            onChange={handleChange}
             placeholder="Kalna Polytechnic, WBSCTE"
             required
             className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
@@ -28,6 +41,8 @@ const Education = () => {
           <input
             type="text"
             name="degree"
+            value={resume.education.degree}
+            onChange={handleChange}
             placeholder="Btech in Computer Science"
             required
             className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
@@ -41,6 +56,8 @@ const Education = () => {
             <input
               type="date"
               name="start"
+              value={resume.education.start}
+              onChange={handleChange}
               required
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border text-gray-500 cursor-pointer"
             />
@@ -51,6 +68,8 @@ const Education = () => {
             <input
               type="date"
               name="end"
+              value={resume.education.end}
+              onChange={handleChange}
               required
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border text-gray-500 cursor-pointer"
             />
@@ -64,6 +83,8 @@ const Education = () => {
             <input
               type="number"
               name="cgpa"
+              value={resume.education.cgpa}
+              onChange={handleChange}
               required
               placeholder="8.0"
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
@@ -75,6 +96,8 @@ const Education = () => {
             <input
               type="text"
               name="location"
+              value={resume.education.location}
+              onChange={handleChange}
               placeholder="West Bengal, India"
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
             />

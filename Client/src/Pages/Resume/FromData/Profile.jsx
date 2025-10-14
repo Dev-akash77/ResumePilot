@@ -1,8 +1,19 @@
-import React from "react";
 import FromHeaders from "../../../Common/FromHeaders";
 import { LuBrain } from "react-icons/lu";
+import { useDispatch, useSelector } from 'react-redux';
+import { summaryChange } from "../../../Slice/ResumeSlice";
 
 const Profile = () => {
+  const resume = useSelector((state)=>state.resume);
+  const dispatch = useDispatch();
+
+  // ! ON CHANGE SUMMARY DATA FUNCTION
+  const handleChange=(e)=>{
+    const {name,value} = e.target;
+    dispatch(summaryChange({name,value}));
+  }
+
+  
   return (
     <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
       {/* Header of the from */}
@@ -20,7 +31,7 @@ const Profile = () => {
 
             
         {/* PROFILE FROMDATA */}
-        <textarea name="summary" placeholder="Add Summary" className="p-2 border-2 rounded-md outline-0 focus-0" rows={3}></textarea>
+        <textarea name="summary" value={resume.summary || ""} onChange={handleChange} placeholder="Add Summary" className="p-2 border-2 rounded-md outline-0 focus-0" rows={3}></textarea>
 
 
         <div className="flex items-end justify-end">

@@ -2,13 +2,22 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const MainResume = () => {
-  const resumeData = useSelector((state) => state.resume);
+  const resume = useSelector((state) => state.resume);
 
-  const fullName = resumeData.header.name?.trim() || "";
+  const fullName = resume.header.name?.trim() || "";
   const [firstName, lastName] = fullName.split(" ");
 
   // ! HEADER SECTION OF RESUMEPILOT
-  const { email, number, portfolio, linkedin, github } = resumeData?.header;
+  const { email, number, portfolio, linkedin, github } = resume?.header;
+
+  // ! SUMMARY | PROFILE SECTION OF RESUMEPILOT
+  const { summary } = resume;
+
+  // ! SUMMARY | PROFILE SECTION OF RESUMEPILOT
+  const { college, start, end, cgpa, location, degree } = resume?.education;
+
+  // ! Check if any education field has a non-empty value
+  const hasEducation = college || start || end || cgpa || location || degree;
 
   return (
     <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative">
@@ -24,14 +33,16 @@ const MainResume = () => {
             {number && <p>+91-{number} |</p>}
             {email && <a href={`mailto:${email}`}>{email} |</a>}
             {github && (
-              <a
-                href={`https://github.com/${github}`}
-                target="_blank"
-              >
+              <a href={`https://github.com/${github}`} target="_blank">
                 Github |
               </a>
             )}
-            {portfolio && <a href={portfolio} target="_blank"> Portfolio |</a>}
+            {portfolio && (
+              <a href={portfolio} target="_blank">
+                {" "}
+                Portfolio |
+              </a>
+            )}
             {linkedin && (
               <a className="lowercase" href={linkedin} target="_blank">
                 linkedin.com/in/{firstName + lastName}
@@ -41,41 +52,50 @@ const MainResume = () => {
         </header>
 
         {/* PROFILE */}
-        <div className="mt-2">
-          <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
-            PROFILE
-          </h2>
-          <p className="text-[.85rem]">
-            Self-taught Full Stack Developer crafting SaaS platforms with
-            real-time systems, AI-driven workflows, and microservices
-            architecture, leveraging Docker and advanced AI integration. Proven
-            ability to deliver production-ready products that scale.
-          </p>
-        </div>
+        {summary && (
+          <div className="mt-2">
+            <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
+              PROFILE
+            </h2>
+            <p className="text-[.85rem]">
+              {/* Self-taught Full Stack Developer crafting SaaS platforms with
+              real-time systems, AI-driven workflows, and microservices
+              architecture, leveraging Docker and advanced AI integration.
+              Proven ability to deliver production-ready products that scale. */}
+              {summary}
+            </p>
+          </div>
+        )}
 
         {/* EDUCATION */}
-        <div className="mt-3 flex flex-col text-[.85rem] ">
-          <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
-            EDUCATION
-          </h2>
-          {/* college name */}
-          <div className="fcb">
-            <p>Kalna Polytechnic, WBSCTE </p>
-            <p className="italic">West Bengal, India</p>
-          </div>
-          {/* trade and course */}
-          <div className="fcb">
-            <p>
-              <span className="font-semibold">Diploma</span> in Electronics and
-              communication Engineering
-            </p>
-            <p className="italic">2023 – 2026</p>
-          </div>
+        {hasEducation && (
+          <div className="mt-3 flex flex-col text-[.85rem] ">
+            <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
+              EDUCATION
+            </h2>
+            {/* college name */}
+            <div className="fcb">
+              {/* <p>Kalna Polytechnic, WBSCTE </p> */}
+              <p>{college} </p>
+              <p className="italic">{location}</p>
+            </div>
+            {/* trade and course */}
+            <div className="fcb">
+              <p>
+                <span className="font-semibold">{degree.split(" ")[0]}</span>{" "}
+                {degree.split(" ").slice(1).join(" ")}
+              </p>
+              <p className="italic">
+                {new Date(start).getFullYear()} – {new Date(end).getFullYear()}
+              </p>
+            </div>
 
-          <p>
-            <span className="font-semibold">CGPA</span> 7.5
-          </p>
-        </div>
+            <p>
+              <span className="font-semibold mr-1">CGPA</span>
+              {cgpa}
+            </p>
+          </div>
+        )}
 
         {/* SKILLS */}
         <div className="mt-3 flex flex-col text-[.85rem] ">
@@ -174,7 +194,7 @@ const MainResume = () => {
                     <li>
                       <div className="flex">
                         <span className="font-bold">Live & Github:</span>
-                        <p className="flex items-center gap-1 text-blue-700">
+                        <p className="flex items-center gap-1 text-blue-700 ml-1">
                           <u>
                             <a href="">Live Demo</a>
                           </u>
