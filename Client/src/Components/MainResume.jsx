@@ -19,6 +19,9 @@ const MainResume = () => {
   // ! Check if any education field has a non-empty value
   const hasEducation = college || start || end || cgpa || location || degree;
 
+  // ! SKILLS SECTION OF RESUMPILOT // TECHNICAL & TOLLS \\
+  const { skills } = resume;
+
   return (
     <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative">
       <div className="w-[92%] h-full">
@@ -98,22 +101,29 @@ const MainResume = () => {
         )}
 
         {/* SKILLS */}
-        <div className="mt-3 flex flex-col text-[.85rem] ">
-          <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
-            SKILLS
-          </h2>
-          {/* technical skills */}
-          <p>
-            <span className="font-semibold">Technical:</span> React.js,
-            JavaScript, HTML, Tailwind, Node.js, Express.js, WebSocket,
-            LangChain, MongoDB, AI Integration
-          </p>
-          {/* Tools */}
-          <p>
-            <span className="font-semibold">Tools:</span>Git, GitHub, Docker,
-            Render, Vercel, Cloudinary, Postman, Redis, RabbitMQ
-          </p>
-        </div>
+        {(skills.technical.length !== 0 || skills.tools.length !== 0) && (
+          <div className="mt-3 flex flex-col text-[.85rem]">
+            <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
+              SKILLS
+            </h2>
+
+            {/* Technical Skills */}
+            {skills.technical.length > 0 && (
+              <p className="capitalize">
+                <span className="font-semibold">Technical: </span>
+                {skills.technical.join(", ")}
+              </p>
+            )}
+
+            {/* Tools */}
+            {skills.tools.length > 0 && (
+              <p className="capitalize">
+                <span className="font-semibold">Tools: </span>
+                {skills.tools.join(", ")}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* EXPERIENCE */}
         <div className="mt-3 flex flex-col text-[.85rem] ">

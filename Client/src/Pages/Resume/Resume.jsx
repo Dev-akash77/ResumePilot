@@ -16,7 +16,14 @@ const Resume = () => {
   const location = useLocation();
   const [current, setCurrent] = useState(0);
 
-  const section = ["", "profile", "education", "skill","experience","projects"]; 
+  const section = [
+    "",
+    "profile",
+    "education",
+    "skill",
+    "experience",
+    "projects",
+  ];
 
   const isLogin = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
@@ -40,7 +47,8 @@ const Resume = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (isLogin) { //! fix: pehle ulta tha
+    if (!isLogin) {
+      //! fix: pehle ulta tha
       navigate("/auth");
     }
   }, [isLogin, isError]);
@@ -109,7 +117,10 @@ const Resume = () => {
                 {current < section.length - 1 && (
                   <button
                     onClick={() => {
-                      const newIndex = Math.min(current + 1, section.length - 1);
+                      const newIndex = Math.min(
+                        current + 1,
+                        section.length - 1
+                      );
                       navigate(`/resume/${params?.id}/${section[newIndex]}`);
                       setCurrent(newIndex);
                     }}

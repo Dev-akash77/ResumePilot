@@ -1,40 +1,46 @@
 import React, { useState } from "react";
 import FromHeaders from "../../../Common/FromHeaders";
 import { RxCross2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  technicalSkillAdd,
+  technicalSkillRemove,
+  toolsSkillAdd,
+  toolsSkillRemove,
+} from "../../../Slice/ResumeSlice";
 
 const Skill = () => {
-  const [skills, setSkills] = useState([]);
   const [input, setInput] = useState("");
+  const resume = useSelector((state) => state.resume);
+  const dispatch = useDispatch();
 
   //   ! delete skill
   const handleDeletSkill = (id) => {
-    setSkills((prev) => prev.filter((_, i) => i !== id));
+    dispatch(technicalSkillRemove({ id }));
   };
 
   //   ! Add skill
   const handleAddSkill = (e) => {
     e.preventDefault();
     if (input.trim() !== "") {
-      setSkills((prev) => [...prev, input.trim()]);
-      setInput(""); 
+      dispatch(technicalSkillAdd({ technical: input }));
+      setInput("");
     }
   };
 
-  const [tools, setTools] = useState([]);
   const [inputTools, setInputTools] = useState("");
-
 
   //   ! delete skill
   const handleDeletTools = (id) => {
-    setTools((prev) => prev.filter((_, i) => i !== id));
+    dispatch(toolsSkillRemove({ id }));
   };
 
   //   ! Add skill
   const handleAddTools = (e) => {
     e.preventDefault();
     if (inputTools.trim() !== "") {
-      setTools((prev) => [...prev, inputTools.trim()]);
-      setInputTools(""); 
+      dispatch(toolsSkillAdd({ tools: inputTools }));
+      setInputTools("");
     }
   };
 
@@ -54,14 +60,14 @@ const Skill = () => {
             Technical
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-7 gap-x-2 gap-y-3">
-            {skills.map((cur, id) => {
+          <div className="flex flex-wrap gap-y-3 gap-x-2">
+            {resume.skills?.technical.map((cur, id) => {
               return (
                 <div
                   key={id}
                   className="rounded-md capitalize text-gray-700 bg-gray-200 py-[.2rem] gap-2 px-2 text-[.7rem] text-center flex w-max items-center justify-center"
                 >
-                  {cur}{" "}
+                  {cur}
                   <RxCross2
                     className="cursor-pointer"
                     onClick={() => {
@@ -82,7 +88,10 @@ const Skill = () => {
               placeholder="React, Node, C++, Python, Java, Javacript, Etc.."
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal w-full"
             />
-            <button className="py-2 px-5 rounded-md cursor-pointer bg-blue cc text-white" onClick={handleAddSkill}>
+            <button
+              className="py-2 px-5 rounded-md cursor-pointer bg-blue cc text-white"
+              onClick={handleAddSkill}
+            >
               Add
             </button>
           </div>
@@ -94,14 +103,14 @@ const Skill = () => {
             Tools
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-7 gap-x-2 gap-y-3">
-            {tools.map((cur, id) => {
+          <div className="flex flex-wrap gap-y-3 gap-x-2">
+            {resume.skills?.tools.map((cur, id) => {
               return (
                 <div
                   key={id}
                   className="rounded-md capitalize text-gray-700 bg-gray-200 py-[.2rem] gap-2 px-2 text-[.7rem] text-center flex w-max items-center justify-center"
                 >
-                  {cur}{" "}
+                  {cur}
                   <RxCross2
                     className="cursor-pointer"
                     onClick={() => {
@@ -122,7 +131,10 @@ const Skill = () => {
               placeholder="React, Node, C++, Python, Java, Javacript, Etc.."
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal w-full"
             />
-            <button className="py-2 px-5 rounded-md cursor-pointer bg-blue cc text-white" onClick={handleAddTools}>
+            <button
+              className="py-2 px-5 rounded-md cursor-pointer bg-blue cc text-white"
+              onClick={handleAddTools}
+            >
               Add
             </button>
           </div>

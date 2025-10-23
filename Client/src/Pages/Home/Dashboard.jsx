@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CiSquarePlus } from "react-icons/ci";
 import ResumeCard from "../../Common/ResumeCard";
 import { useSelector } from "react-redux";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useLoginStatus } from "./../../Hook/useLoginStatus";
 import { useDispatch } from "react-redux";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
+import { toogleDialogBox } from "../../Slice/ResumeSlice";
+import { useAllResume } from "../../Hook/ResumeHooks";
 
 const Dashboard = () => {
   const isLogin = useSelector((state) => {
@@ -31,20 +33,13 @@ const Dashboard = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (!isLogin ) {
+    if (!isLogin) {
       navigate("/auth");
     }
-  }, [isLogin,isError]);
+  }, [isLogin, isError]);
 
-
-
-  const data = [
-    { color: "#2563eb", role: "Software Developer" },
-    { color: "#ef4444", role: "Data Scientist" },
-    { color: "#ff0082", role: "DevOps Engineer" },
-    { color: "#8b5cf6", role: "AI/ML Engineer" },
-    { color: "#00a32d", role: "Cloud Computing" },
-  ];
+  // ! Get All Resume
+  const {data:allResume} = useAllResume();
 
   return (
     <div className="w-full h-full z-40 cc pb-18">
@@ -54,12 +49,15 @@ const Dashboard = () => {
           Start creating AI resume for your next job role
         </h3>
         <div className="grid grid-cols-6 gap-7 mt-8">
-          <div className="h-[15rem] bg-gray-200 cc hover:scale-[1.02] duration-150 rounded-md cursor-pointer">
+          <div
+            className="h-[15rem] bg-gray-200 cc hover:scale-[1.02] duration-150 rounded-md cursor-pointer"
+            onClick={()=>{dispatch(toogleDialogBox())}}
+          >
             <CiSquarePlus className="text-3xl" />
           </div>
 
-          {data.map((cur, id) => {
-            return <ResumeCard color={cur.color} role={cur.role} key={id} />;
+          {allResume?.data.map((cur, id) => {
+            return <ResumeCard color={cur.color} role={cur.title} key={id} />;
           })}
         </div>
       </div>

@@ -1,13 +1,28 @@
 import logger from "../Config/logger.config.js";
 import { resumeModel } from "../Models/resume.model.js";
 
+// ! GET ALL RESUME
+export const getAllResume = async (req, res) => {
+  try {
+    const resume = await resumeModel.find();
+
+    return res.status(200).json({ success: true, data: resume });
+  } catch (error) {
+    logger.error(`Error Geting Resume: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
 // ! Create Resume
 export const createResume = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, color } = req.body;
     const authId = req.header("x-auth-data");
 
-    if (!title) {
+    if (!title?.trim()) {
       logger.error(
         `Resume Title Not Found — Missing field 'title' in resume creation`
       );
@@ -24,7 +39,7 @@ export const createResume = async (req, res) => {
       });
     }
 
-    const resume = await resumeModel.create({ title, creator: authId });
+    const resume = await resumeModel.create({ title, color, creator: authId });
 
     logger.info(`Resume Created Successfully with ID: ${resume._id}`);
 
@@ -32,7 +47,7 @@ export const createResume = async (req, res) => {
       success: true,
       message: "Resume created successfully",
       data: resume,
-    });
+    }); 
   } catch (error) {
     logger.error(`Error Creating Resume: ${error.message}`);
     return res.status(500).json({
@@ -93,7 +108,7 @@ export const resumeHeader = async (req, res) => {
       message: "Internal server error",
     });
   }
-};
+}; 
 
 // ! create Summary Part Of Resume
 export const resumeSummary = async (req, res) => {
@@ -238,4 +253,3 @@ export const resumeSkills = async (req, res) => {
     });
   } catch (error) {}
 };
-
