@@ -56,8 +56,37 @@ export const verifyProfile = async (data) => {
     await result.save();
 
     await deleteCached(authId);
-    logger.info(`profile verified : ${result._id}`)
+    logger.info(`profile verified : ${result._id}`);
   } catch (error) {
     logger.error("Error in profile Verify:", error.message || error);
+  }
+};
+
+export const updateResumeCount = async (data) => {
+  try {
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      logger.warn("profile update resume count: No data received");
+      return;
+    }
+
+    const { creator, resumeId } = data;
+    const user = await profileModel.findOne({ authId: creator });
+
+    if (!user || (Array.isArray(user) && user.length === 0)) {
+      return logger.warn(`user not find in resumecount profile event`);
+    }
+
+    user.cradit = (user.cradit ?? 0) - 5;
+
+    user.resume.push(resumeId);
+
+    await user.save();
+
+    logger.info("Credit deducted & resume added successfully");
+  } catch (error) {
+    logger.error(
+      "Error in profile update resume count:",
+      error.message || error
+    );
   }
 };

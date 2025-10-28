@@ -54,7 +54,7 @@ export const register = async (req, res) => {
     await publishEvent(
       EXCHANGES.PROFILE,
       ROUTING_KEYS.PROFILE.CREATE,
-      authData
+      authData 
     );
 
     //! Generate JWT Token

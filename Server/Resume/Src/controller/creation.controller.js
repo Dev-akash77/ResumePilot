@@ -1,5 +1,10 @@
 import logger from "../Config/logger.config.js";
+import { EXCHANGES, ROUTING_KEYS } from "../Constant/rabitmq.constant.js";
+import { REDIS_KEYS } from "../Constant/redis.constant.js";
 import { resumeModel } from "../Models/resume.model.js";
+import { deleteCached } from "../Utils/cached.utils.js";
+import { publishEvent } from "./../Config/rabitmq.config.js";
+import axios  from "axios";
 
 // ! GET ALL RESUME
 export const getAllResume = async (req, res) => {
@@ -22,6 +27,25 @@ export const createResume = async (req, res) => {
     const { title, color } = req.body;
     const authId = req.header("x-auth-data");
 
+    const { data: creditResponse } = await axios.get(
+      `${process.env.PROFILE_URL}/profile/credit/${authId}`
+    );
+    
+
+    if (!creditResponse.success) {
+      return res.status(400).json({
+        success: false,
+        message: "Unable to fetch user credit",
+      });
+    }
+
+    if (creditResponse.credit < 5) {
+      return res.status(403).json({
+        success: false,
+        message: "Not enough credits to create resume",
+      });
+    }
+
     if (!title?.trim()) {
       logger.error(
         `Resume Title Not Found — Missing field 'title' in resume creation`
@@ -43,13 +67,25 @@ export const createResume = async (req, res) => {
 
     logger.info(`Resume Created Successfully with ID: ${resume._id}`);
 
+    // ! PUBLISH A CHANEL TO PROFILE SERVICES TO UPDATE USER RESUME CREATION COUNT
+    await publishEvent(
+      EXCHANGES.PROFILE,
+      ROUTING_KEYS.PROFILE.UPDATE_USER_RESUME_CREATION,
+      { creator: authId, resumeId: resume._id }
+    );
+
+    // ! DELET REDIS CACHING FILE
+    await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
+
+
     return res.status(201).json({
       success: true,
       message: "Resume created successfully",
       data: resume,
-    }); 
+    });
   } catch (error) {
     logger.error(`Error Creating Resume: ${error.message}`);
+    
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -108,7 +144,7 @@ export const resumeHeader = async (req, res) => {
       message: "Internal server error",
     });
   }
-}; 
+};
 
 // ! create Summary Part Of Resume
 export const resumeSummary = async (req, res) => {

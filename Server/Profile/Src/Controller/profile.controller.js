@@ -54,3 +54,34 @@ export const profileData = async (req, res) => {
     });
   }
 };
+
+
+
+//! Get User Credit
+export const getUserCredit = async (req, res) => {
+  try {
+    const { authId } = req.params; 
+
+    const user = await profileModel.findOne({ authId }).select("cradit");
+    
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      credit: user.cradit,
+    });
+  } catch (error) {
+    logger.error("Error getting user credit:", error.message);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+

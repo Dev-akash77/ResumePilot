@@ -4,7 +4,7 @@ import "dotenv/config";
 import logger from './Src/Config/logger.config.js';
 import { connectRabbitMQ, consumeEvent } from "./Src/Config/rabitmq.config.js";
 import { EXCHANGES, ROUTING_KEYS } from './Src/Constant/rabitmq.constant.js';
-import { profileCreate, verifyProfile } from "./Src/Event/profile.event.js";
+import { profileCreate, updateResumeCount, verifyProfile } from "./Src/Event/profile.event.js";
 import { mongo_connection } from './Src/Config/db.config.js';
 import { profileRoutes } from "./Src/Routes/profile.routes.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
@@ -23,6 +23,7 @@ redisConnection();
   await connectRabbitMQ(EXCHANGES.PROFILE);
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.CREATE,profileCreate);
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.VERIFY,verifyProfile);
+  await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.UPDATE_USER_RESUME_CREATION,updateResumeCount);
 })();
 
 //! Common Middleware
