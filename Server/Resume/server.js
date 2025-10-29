@@ -7,6 +7,7 @@ import { creationRoutes } from "./Src/Routes/cration.routes.js";
 import { connectRabbitMQ } from "./Src/Config/rabitmq.config.js";
 import { EXCHANGES } from "./Src/Constant/rabitmq.constant.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
+import { readRoutes } from "./Src/Routes/read.routes.js";
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(
 
 
 app.use("/resume",creationRoutes);
+app.use("/resume",readRoutes);
 
 
 

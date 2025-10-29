@@ -2,9 +2,6 @@ import toast from "react-hot-toast";
 import { api } from "./api";
 
 
-
-
-
 // ! GET ALL REUSME
 export const getAllResume = async () => {
   try {
@@ -17,8 +14,6 @@ export const getAllResume = async () => {
 };
 
 
-
-
 // ! Create Resume
 export const creatResume = async ({title,color}) => {
   try {
@@ -29,3 +24,28 @@ export const creatResume = async ({title,color}) => {
     console.log(error?.response?.data?.message || error.message);
   }
 };
+
+
+
+// ! GET HEADER DATA
+export const getPerticularResume = async(id)=>{
+  if (!id) return null;
+  try {
+    const {data} = await api.get(`/resume/${id}`);
+    return data || {};
+  } catch (error) {
+     toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+}
+
+// ! UPDATE HEADER DATA
+export const updateResumeHeader = async(fromData)=>{
+  try {
+    const {data} = await api.post(`/resume/header`,fromData);
+    return data || {};
+  } catch (error) {
+     toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+}

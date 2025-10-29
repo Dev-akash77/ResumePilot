@@ -1,13 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import FromHeaders from "../../../Common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
-import { headerOnChange } from "../../../Slice/ResumeSlice";
+import {
+  headerOnChange,
+  seHeaderData,
+  setNextSection,
+} from "../../../Slice/ResumeSlice";
+import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { updateResumeHeader } from "../../../Api/resumeApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import Button_Loader from "./../../../UI/Button_Loader";
 
 const Header = () => {
   const { id, section } = useParams();
   const resume = useSelector((state) => state.resume);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  // ! GET HEADER DATA FOM DATABASE AND SET IN REDUX STATE
+  const { data: headerDataRead, isLoading, isError } = usePerticularResume(id);
+
+  //! Safely extract fields with defaults
+  const {
+    name = "",
+    email = "",
+    number = "",
+    portfolio = "",
+    github = "",
+    linkedin = "",
+  } = headerDataRead?.data || {};
+
+  useEffect(() => {
+    if (headerDataRead?.data) {
+      dispatch(
+        seHeaderData({ name, email, number, portfolio, github, linkedin })
+      );
+    }
+  }, [headerDataRead, dispatch]);
 
   // ! Onchange Multipart Form Data
   const handleChange = (e) => {
@@ -15,9 +46,30 @@ const Header = () => {
     dispatch(headerOnChange({ name, value }));
   };
 
-  
+  const resumeHeaderMutation = useMutation({
+    mutationFn: updateResumeHeader,
+    onSuccess: (data) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.removeQueries({ queryKey: ["perticularResume"] });
+        dispatch(setNextSection(false));
+      }
+    },
+  });
 
-  
+  // ! HANDLE SAVE HEADER DATA
+  const handleSaveHeader = (e) => {
+    e.preventDefault();
+
+    dispatch(setNextSection(true));
+
+    resumeHeaderMutation.mutate({...resume.header,id}, {
+      onSettled: () => {
+        dispatch(setNextSection(false));
+      },
+    });
+  };
+
 
   return (
     <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
@@ -114,9 +166,9 @@ const Header = () => {
           </div>
         </div>
 
-        <div className="flex items-end justify-end">
-          <button className="bg-blue w-[6rem] h-[2.5rem] text-white cc rounded-md cursor-pointer">
-            Save
+        <div className="flex items-end justify-end" onClick={handleSaveHeader}>
+          <button className="bg-blue w-[8rem] h-[2.5rem] text-white cc rounded-md cursor-pointer">
+            {resumeHeaderMutation.isPending ? <Button_Loader /> : "Save"}
           </button>
         </div>
       </form>

@@ -4,7 +4,7 @@ const ResumeSchema = new mongoose.Schema({
   title: { type: String, required: true },
   color: { type: String, default: "#2563eb" },
   name: { type: String, default: "" },
-  number: { type: String, default: "0000000000" },
+  number: { type: String, default: "" },
   email: { type: String, default: "" },
   portfolio: { type: String, default: "" },
   github: { type: String, default: "" },

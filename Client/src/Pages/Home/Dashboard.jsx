@@ -57,7 +57,7 @@ const Dashboard = () => {
           </div>
 
           {allResume?.data.map((cur, id) => {
-            return <ResumeCard color={cur.color} role={cur.title} key={id} />;
+            return <ResumeCard data={cur} key={id} />;
           })}
         </div>
       </div>

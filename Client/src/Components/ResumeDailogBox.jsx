@@ -22,6 +22,7 @@ const ResumeDailogBox = () => {
         toast.success(data?.message);
         dispatch(toogleDialogBox());
          queryClient.invalidateQueries({ queryKey: ["allResume"] });
+         queryClient.invalidateQueries({ queryKey: ["profileData"] });
       }
     },
   });

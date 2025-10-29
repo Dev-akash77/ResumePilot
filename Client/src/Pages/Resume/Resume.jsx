@@ -26,6 +26,7 @@ const Resume = () => {
   ];
 
   const isLogin = useSelector((state) => state.auth.isAuthenticated);
+  const resume = useSelector((state) => state.resume);
   const dispatch = useDispatch();
 
   // ! check is login or not
@@ -124,7 +125,10 @@ const Resume = () => {
                       navigate(`/resume/${params?.id}/${section[newIndex]}`);
                       setCurrent(newIndex);
                     }}
-                    className="w-[7rem] h-[2.5rem] bg-blue text-white rounded-md text-md fc gap-2 cursor-pointer"
+                    className={`w-[7rem] h-[2.5rem] ${
+                      resume.nextSection ? "bg-blue-100" : "bg-blue"
+                    } text-white rounded-md text-md fc gap-2 cursor-pointer`}
+                    disabled={resume.nextSection}
                   >
                     Next <GrLinkNext />
                   </button>
