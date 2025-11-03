@@ -9,6 +9,8 @@ import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { IoHomeOutline } from "react-icons/io5";
 import { GrLinkNext } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
+import { usePerticularResume } from "../../Hook/ResumeHooks";
+import { seHeaderData, setSummaryData } from "../../Slice/ResumeSlice";
 
 const Resume = () => {
   const navigate = useNavigate();
@@ -61,6 +63,33 @@ const Resume = () => {
     const index = section.indexOf(last);
     setCurrent(index === -1 ? 0 : index);
   }, [location.pathname]);
+
+  // ! ADDING DATA INTO RESUME FROM DATABAES
+  const { id } = useParams();
+
+  // ! GET HEADER DATA FOM DATABASE AND SET IN REDUX STATE
+  const { data: resumeData } = usePerticularResume(id);
+
+  //! Safely extract fields with defaults
+  const {
+    name = "",
+    email = "",
+    number = "",
+    portfolio = "",
+    github = "",
+    linkedin = "",
+    summary = "",
+  } = resumeData?.data || {};
+
+  useEffect(() => {
+    if (resumeData?.data) {
+      // ! Header DATA SET
+      dispatch(seHeaderData({ name, email, number, portfolio, github, linkedin }));
+      // ! SUMMARY DATA SET
+      dispatch(setSummaryData(summary));
+        
+    }
+  }, [resumeData, dispatch]);
 
   return (
     <div className="w-screen">

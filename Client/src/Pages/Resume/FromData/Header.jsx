@@ -14,13 +14,13 @@ import toast from "react-hot-toast";
 import Button_Loader from "./../../../UI/Button_Loader";
 
 const Header = () => {
-  const { id, section } = useParams();
+  const { id } = useParams();
   const resume = useSelector((state) => state.resume);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
   // ! GET HEADER DATA FOM DATABASE AND SET IN REDUX STATE
-  const { data: headerDataRead, isLoading, isError } = usePerticularResume(id);
+  const { data: headerDataRead } = usePerticularResume(id);
 
   //! Safely extract fields with defaults
   const {
@@ -38,7 +38,23 @@ const Header = () => {
         seHeaderData({ name, email, number, portfolio, github, linkedin })
       );
     }
+
   }, [headerDataRead, dispatch]);
+
+  // ! CHECK NEXT SECTION
+  useEffect(() => {
+
+    const allFilled = [name, email, number, github, linkedin, portfolio].every(
+      Boolean
+    );
+
+    if (allFilled) {
+      dispatch(setNextSection(false));
+    } else {
+      dispatch(setNextSection(true));
+    }
+  }, [name, email, number, github, linkedin, portfolio, dispatch]);
+
 
   // ! Onchange Multipart Form Data
   const handleChange = (e) => {
@@ -53,6 +69,8 @@ const Header = () => {
         toast.success(data?.message);
         queryClient.removeQueries({ queryKey: ["perticularResume"] });
         dispatch(setNextSection(false));
+      } else {
+        dispatch(setNextSection(true));
       }
     },
   });
@@ -61,15 +79,8 @@ const Header = () => {
   const handleSaveHeader = (e) => {
     e.preventDefault();
 
-    dispatch(setNextSection(true));
-
-    resumeHeaderMutation.mutate({...resume.header,id}, {
-      onSettled: () => {
-        dispatch(setNextSection(false));
-      },
-    });
+    resumeHeaderMutation.mutate({ ...resume.header, id });
   };
-
 
   return (
     <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">

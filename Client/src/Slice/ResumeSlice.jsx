@@ -23,7 +23,7 @@ const initialState = {
     tools: [],
   },
   openDialog: false,
-  nextSection: true, 
+  nextSection: true,
 };
 
 const resumeSlice = createSlice({
@@ -97,7 +97,7 @@ const resumeSlice = createSlice({
       state.openDialog = !state.openDialog;
     },
 
-     setNextSection: (state, action) => {
+    setNextSection: (state, action) => {
       state.nextSection = action.payload;
     },
 
@@ -105,12 +105,20 @@ const resumeSlice = createSlice({
 
     // ? ==========================================================================
 
-
     // ! ==========================================================================
     // * SET HEADER DATA FETCH FROM BACKEND
     // ! ==========================================================================
     seHeaderData: (state, action) => {
       state.header = { ...state.header, ...action.payload };
+    },
+
+    // ? ==========================================================================
+
+    // ! ==========================================================================
+    // * SET SUMMARY DATA FETCH FROM BACKEND
+    // ! ==========================================================================
+    setSummaryData: (state, action) => {
+      state.summary = action.payload;
     },
 
     // ? ==========================================================================
@@ -128,7 +136,8 @@ export const {
   toogleDialogBox,
   setNextSection,
   // ! SET RESUME DATA
-  seHeaderData
+  seHeaderData,
+  setSummaryData,
 } = resumeSlice.actions;
 
 export const resumeSlices = resumeSlice.reducer;

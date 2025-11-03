@@ -22,6 +22,7 @@ import { IoPower } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useGetProfile } from "./../../Hook/useProfile";
 import Otp from "../../Components/Otp";
+import Main_Loader from "../../UI/Main_Loader";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -73,7 +74,7 @@ const Profile = () => {
   const { data: profileData, isLoading: loadingProfile } = useGetProfile();
 
   if (loadingProfile) {
-    return <div className="h-screen w-screen cc"> loading....</div>;
+    return <div className="h-screen w-screen cc"> <Main_Loader /></div>;
   }
 
   const {

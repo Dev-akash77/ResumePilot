@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import Features from "./Features";
 import { useLoginStatus } from "./../../Hook/useLoginStatus";
 import useLenisScroll from './../../Animation/Lenis';
+import Main_Loader from "../../UI/Main_Loader";
 
 const Home = () => {
     const lenisRef = useLenisScroll();
@@ -40,7 +41,7 @@ const Home = () => {
   ];
 
   if (isLoading) {
-    return <div className="h-screen w-screen cc">Loading....</div>;
+    return <div className="h-screen w-screen cc"><Main_Loader/></div>;
   }
 
 
