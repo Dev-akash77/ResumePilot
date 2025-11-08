@@ -56,3 +56,14 @@ export const updatResumeSummary = async (fromData) => {
     console.log(error?.response?.data?.message || error.message);
   }
 };
+
+// ! UPDATE EDUCATION DATA
+export const updateResumeEducation = async (fromData) => {
+  try {
+    const {data} = await api.post(`/resume/education`,fromData);
+    return data || {};
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+};

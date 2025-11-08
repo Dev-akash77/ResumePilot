@@ -10,7 +10,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { GrLinkNext } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
 import { usePerticularResume } from "../../Hook/ResumeHooks";
-import { seHeaderData, setSummaryData } from "../../Slice/ResumeSlice";
+import { seHeaderData, setEducationData, setSummaryData } from "../../Slice/ResumeSlice";
 
 const Resume = () => {
   const navigate = useNavigate();
@@ -87,6 +87,10 @@ const Resume = () => {
       dispatch(seHeaderData({ name, email, number, portfolio, github, linkedin }));
       // ! SUMMARY DATA SET
       dispatch(setSummaryData(summary));
+
+        if (resumeData?.data?.education[0]) {
+            dispatch(setEducationData(resumeData?.data?.education[0]));
+        }
         
     }
   }, [resumeData, dispatch]);

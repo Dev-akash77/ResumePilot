@@ -38,12 +38,10 @@ const Header = () => {
         seHeaderData({ name, email, number, portfolio, github, linkedin })
       );
     }
-
   }, [headerDataRead, dispatch]);
 
   // ! CHECK NEXT SECTION
   useEffect(() => {
-
     const allFilled = [name, email, number, github, linkedin, portfolio].every(
       Boolean
     );
@@ -54,7 +52,6 @@ const Header = () => {
       dispatch(setNextSection(true));
     }
   }, [name, email, number, github, linkedin, portfolio, dispatch]);
-
 
   // ! Onchange Multipart Form Data
   const handleChange = (e) => {
@@ -72,6 +69,9 @@ const Header = () => {
       } else {
         dispatch(setNextSection(true));
       }
+    },
+    onError: () => {
+      dispatch(setNextSection(true));
     },
   });
 

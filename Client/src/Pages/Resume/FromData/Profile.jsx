@@ -36,6 +36,7 @@ const Profile = () => {
     }
   }, [summaryDataRead, dispatch]);
 
+  // ! CHECK NEXT SECTION
   useEffect(() => {
     if (summaryDataRead?.data.summary) {
       dispatch(setNextSection(false));
@@ -58,6 +59,7 @@ const Profile = () => {
       dispatch(setNextSection(true));
     },
   });
+
 
   // ! AFTER SAVING
   const handleClickSave = (e) => {
