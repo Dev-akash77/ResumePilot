@@ -20,7 +20,7 @@ app.use(
     credentials: true,
   })
 );
-
+ 
 //! rabitmq connection and consume event
 (async()=>{
   await connectRabbitMQ(EXCHANGES.NOTIFICATION);

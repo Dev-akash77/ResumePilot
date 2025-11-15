@@ -73,7 +73,7 @@ const Header = () => {
     onError: () => {
       dispatch(setNextSection(true));
     },
-  });
+  }); 
 
   // ! HANDLE SAVE HEADER DATA
   const handleSaveHeader = (e) => {

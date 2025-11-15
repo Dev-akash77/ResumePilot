@@ -2,17 +2,28 @@ import React, { useState } from "react";
 import FromHeaders from "../../../Common/FromHeaders";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import {
+  setNextSection,
+  setSkillsData,
   technicalSkillAdd,
   technicalSkillRemove,
   toolsSkillAdd,
   toolsSkillRemove,
 } from "../../../Slice/ResumeSlice";
+import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { useEffect } from "react";
+import { updateResumeSkill } from "../../../Api/resumeApi";
+import toast from "react-hot-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Button_Loader from "../../../UI/Button_Loader";
 
 const Skill = () => {
+  const { id } = useParams();
   const [input, setInput] = useState("");
   const resume = useSelector((state) => state.resume);
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   //   ! delete skill
   const handleDeletSkill = (id) => {
@@ -42,6 +53,58 @@ const Skill = () => {
       dispatch(toolsSkillAdd({ tools: inputTools }));
       setInputTools("");
     }
+  };
+
+  // ! GET SKILLS DATA
+  const apiSkills = usePerticularResume(id)?.data?.data?.skills;
+  const skillDataRead = apiSkills ?? { technical: [], tools: [] };
+
+  const { technical, tools } = skillDataRead;
+
+
+  //! ---------------------------------------------------------
+  // !SET BACKEND DATA INTO REDUX (RUN ONLY WHEN API CHANGES)
+  //! ---------------------------------------------------------
+  useEffect(() => {
+    if (apiSkills) {
+      dispatch(setSkillsData(apiSkills));
+    }
+  }, [apiSkills, dispatch]);
+
+
+
+
+  // ! CHECK NEXT SECTION
+  useEffect(() => {
+    const allFilled = technical.length > 0 && tools.length > 0;
+
+    dispatch(setNextSection(!allFilled));
+  }, [technical, tools, dispatch]);
+
+
+
+
+    const resumeSkillMutation = useMutation({
+    mutationFn: updateResumeSkill,
+    onError: () => {
+      dispatch(setNextSection(true));
+    },
+    onSuccess: (data) => { 
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.removeQueries({ queryKey: ["perticularResume"] });
+        dispatch(setNextSection(false));
+      } else {
+        dispatch(setNextSection(true));
+      }
+    },
+  });
+
+  // ! HANDLE SAVE SKILLS DATA
+  const handleSaveSkills = (e) => {
+    e.preventDefault();
+
+    resumeSkillMutation.mutate({ ...resume.skills, id });
   };
 
   return (
@@ -143,9 +206,10 @@ const Skill = () => {
         <div className="flex items-end justify-end">
           <button
             type="button"
-            className="bg-blue w-[6rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
+            className="bg-blue w-[10rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
+            onClick={handleSaveSkills}
           >
-            Save
+             {resumeSkillMutation.isPending ? <Button_Loader /> : "Save"}
           </button>
         </div>
       </form>

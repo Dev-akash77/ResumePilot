@@ -57,7 +57,7 @@ const Education = () => {
     onError: () => {
       dispatch(setNextSection(true));
     },
-    onSuccess: (data) => {
+    onSuccess: (data) => { 
       if (data?.success) {
         toast.success(data?.message);
         queryClient.removeQueries({ queryKey: ["perticularResume"] });

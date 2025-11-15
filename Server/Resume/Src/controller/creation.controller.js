@@ -254,9 +254,9 @@ export const resumeSkills = async (req, res) => {
     const { id, technical, tools } = req.body;
 
     // ! Required Fields
-    const requiredFields = { id, technical, tools };
+    const requiredFields = { technical, tools };
     for (const [key, value] of Object.entries(requiredFields)) {
-      if (!value) {
+      if (value.length ===0) {
         logger.error(`Missing field '${key}' in resume skill creation`);
         return res.status(400).json({
           success: false,

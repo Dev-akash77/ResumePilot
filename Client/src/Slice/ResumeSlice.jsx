@@ -131,6 +131,15 @@ const resumeSlice = createSlice({
     }, 
 
     // ? ==========================================================================
+
+    // ! ==========================================================================
+    // * SET SKILL DATA FETCH FROM BACKEND
+    // ! ==========================================================================
+    setSkillsData: (state, action) => {
+      state.skills = {...state.skills,...action.payload};
+    }, 
+
+    // ? ==========================================================================
   },
 });
 
@@ -148,6 +157,7 @@ export const {
   seHeaderData,
   setSummaryData,
   setEducationData,
+  setSkillsData
 } = resumeSlice.actions;
 
 export const resumeSlices = resumeSlice.reducer;

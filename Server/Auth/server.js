@@ -44,4 +44,4 @@ app.use("/auth",otpVerifyRouter)
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT}, : {Auth Service}`);
 });
-      
+        

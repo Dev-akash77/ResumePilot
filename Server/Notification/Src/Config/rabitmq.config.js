@@ -15,7 +15,7 @@ export const connectRabbitMQ = async (exchangeName) => {
       `Error connecting to RabbitMQ or asserting exchange "${exchangeName}":`,
       error
     );
-  }
+  } 
 };
 
 // ! publish event
