@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { createResume, getAllResume, resumeEducation, resumeHeader, resumeSkills, resumeSummary } from '../controller/creation.controller.js';
+import { createResume, getAllResume, resumeEducation, resumeExperince, resumeHeader, resumeSkills, resumeSummary, updateProjects } from '../controller/creation.controller.js';
 
 const router = express.Router();
 
@@ -15,5 +15,8 @@ router.post("/header", resumeHeader);
 router.post("/summary", resumeSummary);
 router.post("/education", resumeEducation);
 router.post("/skills", resumeSkills);
+router.post("/experince",resumeExperince);
+router.post("/project/:id",updateProjects);
+
 
 export const creationRoutes = router;

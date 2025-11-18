@@ -22,6 +22,7 @@ const initialState = {
     technical: [],
     tools: [],
   },
+  experince:{},
   openDialog: false,
   nextSection: true,
 };

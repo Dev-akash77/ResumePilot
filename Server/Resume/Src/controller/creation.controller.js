@@ -4,7 +4,7 @@ import { REDIS_KEYS } from "../Constant/redis.constant.js";
 import { resumeModel } from "../Models/resume.model.js";
 import { deleteCached } from "../Utils/cached.utils.js";
 import { publishEvent } from "./../Config/rabitmq.config.js";
-import axios  from "axios";
+import axios from "axios";
 
 // ! GET ALL RESUME
 export const getAllResume = async (req, res) => {
@@ -30,7 +30,6 @@ export const createResume = async (req, res) => {
     const { data: creditResponse } = await axios.get(
       `${process.env.PROFILE_URL}/profile/credit/${authId}`
     );
-    
 
     if (!creditResponse.success) {
       return res.status(400).json({
@@ -77,7 +76,6 @@ export const createResume = async (req, res) => {
     // ! DELET REDIS CACHING FILE
     await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
 
-
     return res.status(201).json({
       success: true,
       message: "Resume created successfully",
@@ -85,7 +83,7 @@ export const createResume = async (req, res) => {
     });
   } catch (error) {
     logger.error(`Error Creating Resume: ${error.message}`);
-    
+
     return res.status(500).json({
       success: false,
       message: "Internal server error",
@@ -245,7 +243,15 @@ export const resumeEducation = async (req, res) => {
       success: true,
       message: "Resume education updated",
     });
-  } catch (error) {}
+  } catch (error) {
+    logger.error(
+      `Error In Resume Education Update Controller: ${error.message}`
+    );
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
 };
 
 // ! Adding  Skill
@@ -256,7 +262,7 @@ export const resumeSkills = async (req, res) => {
     // ! Required Fields
     const requiredFields = { technical, tools };
     for (const [key, value] of Object.entries(requiredFields)) {
-      if (value.length ===0) {
+      if (value.length === 0) {
         logger.error(`Missing field '${key}' in resume skill creation`);
         return res.status(400).json({
           success: false,
@@ -287,5 +293,149 @@ export const resumeSkills = async (req, res) => {
       message: "Resume skill updated",
       data: resume,
     });
-  } catch (error) {}
+  } catch (error) {
+    logger.error(`Error In Resume Skill Update: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// ! Adding Experience
+export const resumeExperince = async (req, res) => {
+  try {
+    const { id, title, role, start, end, location, points } = req.body;
+
+    const resume = await resumeModel.findById(id);
+
+    if (!resume) {
+      logger.error(`No resume found for resume id: ${id}`);
+      return res.status(404).json({
+        success: false,
+        message: `Resume not found id: ${id}`,
+      });
+    }
+
+    const requiredField = { title, role, start, end, location, points };
+
+    for (const [key, value] of Object.entries(requiredField)) {
+      if (!value) {
+        logger.error(`Missing field '${key}' in resume Experience creation`);
+        return res.status(400).json({
+          success: false,
+          message: `${key} is required`,
+        });
+      }
+    }
+
+    resume.experience = {
+      title,
+      role,
+      start,
+      end,
+      location,
+      points,
+    };
+
+    await resume.save();
+
+    logger.info(`Resume Experience updated successfully for resume id: ${id}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "Resume Experience updated",
+      data: resume,
+    });
+  } catch (error) {
+    logger.error(`Error In Resume Experience Update: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+// !updateProjects
+export const updateProjects = async (req, res) => {
+  try {
+    const { id } = req.params; // resume id
+    const { projects } = req.body; // array of updates
+
+    // Fetch Resume
+    const resume = await resumeModel.findById(id);
+    if (!resume) {
+      return res.status(404).json({
+        success: false,
+        message: "Resume not found",
+      });
+    }
+
+    // !Check if resume already has exactly 3 projects
+    if (!resume.projects || resume.projects.length !== 3) {
+      resume.projects = [
+        {
+          name: "",
+          about: "",
+          start: null,
+          end: null,
+          points: [],
+          techStack: [],
+          live: "",
+          github: "",
+        },
+        {
+          name: "",
+          about: "",
+          start: null,
+          end: null,
+          points: [],
+          techStack: [],
+          live: "",
+          github: "",
+        },
+        {
+          name: "",
+          about: "",
+          start: null,
+          end: null,
+          points: [],
+          techStack: [],
+          live: "",
+          github: "",
+        },
+      ];
+
+      await resume.save();
+    }
+
+    //! Check if request contains more or less than 3 updates
+    if (projects.length !== 3) {
+      return res.status(400).json({
+        success: false,
+        message: "You must send exactly 3 projects for update",
+      });
+    }
+
+    //! Update only the matching projects
+     const updatedProjects = resume.projects.map((existing, index) => {
+      const updated = projects[index];
+      return { ...existing, ...updated };
+    });
+
+    resume.projects = updatedProjects;
+    await resume.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "All 3 projects updated successfully",
+      data: resume,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
 };

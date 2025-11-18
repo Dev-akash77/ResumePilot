@@ -32,8 +32,7 @@ const ResumeSchema = new mongoose.Schema({
     tools: { type: [String], default: [] },
   },
   //   experiences
-  experience: [
-    {
+  experience: {
       title: { type: String, default: "" },
       role: { type: String, default: "" },
       start: { type: Date, default: null },
@@ -41,7 +40,7 @@ const ResumeSchema = new mongoose.Schema({
       location: { type: String, default: "" },
       points: { type: [String], default: [] },
     },
-  ],
+
   //   projects
   projects: [
     {
