@@ -27,7 +27,7 @@ const Profile = () => {
   };
 
   // ! GET SUMMARY DATA FOM DATABASE AND SET IN REDUX STATE
-  const { data: summaryDataRead } = usePerticularResume(id);
+  const { data: summaryDataRead } = usePerticularResume(id); 
   const { summary } = summaryDataRead?.data || {};
 
   useEffect(() => {

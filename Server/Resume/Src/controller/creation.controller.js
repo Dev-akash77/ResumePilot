@@ -10,7 +10,6 @@ import axios from "axios";
 export const getAllResume = async (req, res) => {
   try {
     const resume = await resumeModel.find();
-
     return res.status(200).json({ success: true, data: resume });
   } catch (error) {
     logger.error(`Error Geting Resume: ${error.message}`);
@@ -329,6 +328,17 @@ export const resumeExperince = async (req, res) => {
       }
     }
 
+    if (points.length < 5) {
+      logger.error("Experience points exceed the allowed limit (max: 5)");
+      return res.status(400).json({
+        success: false,
+        message: "Maximum of 5 Bbullet Points.",
+      });
+    }
+
+    console.log(points.length);
+    
+
     resume.experience = {
       title,
       role,
@@ -418,7 +428,7 @@ export const updateProjects = async (req, res) => {
     }
 
     //! Update only the matching projects
-     const updatedProjects = resume.projects.map((existing, index) => {
+    const updatedProjects = resume.projects.map((existing, index) => {
       const updated = projects[index];
       return { ...existing, ...updated };
     });

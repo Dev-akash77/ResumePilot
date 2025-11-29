@@ -38,7 +38,7 @@ const Education = () => {
         setEducationData({ college, degree, location, start, end, cgpa })
       );
     }
-  }, [educationDataRead?.data?.[0], dispatch]);
+  }, [educationDataRead?.data?.education[0], dispatch]);
 
   // ! CHECK NEXT SECTION
   useEffect(() => {

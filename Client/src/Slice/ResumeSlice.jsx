@@ -22,7 +22,27 @@ const initialState = {
     technical: [],
     tools: [],
   },
-  experince:{},
+  experince: {
+    title: "",
+    role: "",
+    start: "",
+    end: "",
+    location: "",
+    points: [],
+  },
+  projects: [
+    {
+      count: 1,
+      name: "",
+      about: "",
+      start: "",
+      end: "",
+      points: [""],
+      techStack: "",
+      live: "",
+      github: "",
+    },
+  ],
   openDialog: false,
   nextSection: true,
 };
@@ -92,6 +112,24 @@ const resumeSlice = createSlice({
     // ? ==========================================================================
 
     // ! ==========================================================================
+    // * ONCHANGE RESUME EXPERIENCE FROM DATA
+    // ! ==========================================================================
+    experienceChange: (state, action) => {
+      const { name, value } = action.payload;
+      state.experince[name] = value;
+    },
+    // ! ==========================================================================
+
+    // * ONCHANGE RESUME EXPERIENCE BULLET DATA
+    // ! ==========================================================================
+    experienceBulletChange: (state, action) => {
+      state.experince.points = action.payload;
+    },
+    // ! ==========================================================================
+
+    // ? ==========================================================================
+
+    // ! ==========================================================================
     // * TOOGLE DIALOG BOX
     // ! ==========================================================================
     toogleDialogBox: (state) => {
@@ -103,6 +141,44 @@ const resumeSlice = createSlice({
     },
 
     // ? ==========================================================================
+
+    // ! ==========================================================================
+    // * Added Projects
+    // ! ==========================================================================
+    addedProjects: (state) => {
+      state.projects.push({
+        count: state.projects.length + 1,
+        name: "",
+        about: "",
+        start: "",
+        end: "",
+        points: [""],
+        techStack: "",
+        live: "",
+        github: "",
+      });
+    },
+
+    // ! REMOVE PROJECTS
+    removeProjects: (state, action) => {
+      const index = action.payload;
+      state.projects.splice(index, 1);
+    },
+    // ! POINTS
+    updateProjectPoints: (state, action) => {
+      const { index, points } = action.payload;
+      if (state.projects[index]) {
+        state.projects[index].points = points;
+      }
+    },
+
+    // ! UPDATE PROJECT DATA
+    updateProject:(state,action)=>{
+      const {index,key,value} = action.payload;
+      if (state.projects[index]) {
+        state.projects[index][key] = value;
+      }
+    },
 
     // ? ==========================================================================
 
@@ -128,8 +204,8 @@ const resumeSlice = createSlice({
     // * SET EDUCATION DATA FETCH FROM BACKEND
     // ! ==========================================================================
     setEducationData: (state, action) => {
-      state.education = {...state.education,...action.payload};
-    }, 
+      state.education = { ...state.education, ...action.payload };
+    },
 
     // ? ==========================================================================
 
@@ -137,8 +213,19 @@ const resumeSlice = createSlice({
     // * SET SKILL DATA FETCH FROM BACKEND
     // ! ==========================================================================
     setSkillsData: (state, action) => {
-      state.skills = {...state.skills,...action.payload};
-    }, 
+      state.skills = { ...state.skills, ...action.payload };
+    },
+
+    // ? ==========================================================================
+
+    // ? ==========================================================================
+
+    // ! ==========================================================================
+    // * SET EXPERIENCE DATA FETCH FROM BACKEND
+    // ! ==========================================================================
+    setExperienceData: (state, action) => {
+      state.experince = { ...state.experince, ...action.payload };
+    },
 
     // ? ==========================================================================
   },
@@ -152,13 +239,20 @@ export const {
   toolsSkillAdd,
   toolsSkillRemove,
   technicalSkillRemove,
+  experienceChange,
+  experienceBulletChange,
   toogleDialogBox,
   setNextSection,
+  addedProjects,
+  removeProjects,
+  updateProjectPoints,
+  updateProject,
   // ! SET RESUME DATA
   seHeaderData,
   setSummaryData,
   setEducationData,
-  setSkillsData
+  setSkillsData,
+  setExperienceData,
 } = resumeSlice.actions;
 
 export const resumeSlices = resumeSlice.reducer;

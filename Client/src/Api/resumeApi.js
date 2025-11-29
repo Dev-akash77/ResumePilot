@@ -78,3 +78,15 @@ export const updateResumeSkill = async (fromData) => {
     console.log(error?.response?.data?.message || error.message);
   }
 };
+
+
+// ! UPDATE SKILL DATA
+export const updateResumeExperience = async (fromData) => {
+  try {
+    const {data} = await api.post(`/resume/experince`,fromData);
+    return data || {};
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+};

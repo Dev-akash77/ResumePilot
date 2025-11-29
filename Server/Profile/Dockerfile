@@ -3,7 +3,7 @@ FROM node:20-alpine
 
 # SET WORKING DIRECTORY
 WORKDIR /app
-
+ 
 # COPY PACKAGE FILE
 COPY package*.json ./
 
@@ -16,8 +16,9 @@ COPY . .
 # Ensure the Logs directory exists
 RUN mkdir -p ./src/Logs
 
-# EXPOSE PORT 4001
-EXPOSE 4000
+# EXPOSE PORT 4002
+EXPOSE 4002
 
 # START THE SERVICE
-CMD ["node","server.js"]
+# CMD [ "node","server.js" ]
+CMD ["npm","run","dev"]

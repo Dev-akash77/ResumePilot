@@ -20,4 +20,4 @@ RUN mkdir -p ./src/Logs
 EXPOSE 4001
 
 # START THE SERVICE
-CMD [ "node","server.js" ]
+CMD ["npm","run","dev"]

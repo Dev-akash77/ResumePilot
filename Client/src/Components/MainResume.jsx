@@ -4,6 +4,22 @@ import { useSelector } from "react-redux";
 const MainResume = () => {
   const resume = useSelector((state) => state.resume);
 
+  const formatExperienceDuration = (start, end) => {
+    if (!start && !end) return "";
+
+    const format = (date) =>
+      new Date(date).toLocaleDateString("en-US", {
+        month: "short",
+        year: "numeric",
+      });
+
+    if (start && end) return `${format(start)} – ${format(end)}`;
+    if (start && !end) return `${format(start)} – Present`;
+    if (!start && end) return `${format(end)}`;
+
+    return "";
+  };
+
   const fullName = resume.header.name?.trim() || "";
   const [firstName, lastName] = fullName.split(" ");
 
@@ -21,6 +37,25 @@ const MainResume = () => {
 
   // ! SKILLS SECTION OF RESUMPILOT // TECHNICAL & TOLLS \\
   const { skills } = resume;
+
+  // ! EXPERIENCE SECTION OF RESUMEPILOT
+  const {
+    title,
+    role,
+    start: startExperience,
+    end: endExperience,
+    location: locationExperience,
+    points,
+  } = resume?.experince;
+
+  // ! Check if any education field has a non-empty value
+  const hasExperience =
+    title ||
+    role ||
+    startExperience ||
+    endExperience ||
+    locationExperience ||
+    points.length > 0;
 
   return (
     <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative">
@@ -126,101 +161,97 @@ const MainResume = () => {
         )}
 
         {/* EXPERIENCE */}
-        <div className="mt-3 flex flex-col text-[.85rem] ">
-          <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
-            EXPERIENCE
-          </h2>
-          {/* Experience Name */}
-          <div className="fcb">
-            <p>Freelance Project – Painting E-Commerce Application</p>
-            <p className="italic">Remote (India)</p>
+        {hasExperience && (
+          <div className="mt-3 flex flex-col text-[.85rem] ">
+            <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
+              EXPERIENCE
+            </h2>
+            {/* Experience Name */}
+            <div className="fcb">
+              <p>{title}</p>
+              <p className="italic">{locationExperience}</p>
+            </div>
+            {/* Experience IN Tech */}
+            <div className="fcb">
+              <p className="font-semibold">{role}</p>
+
+              {(startExperience || endExperience) && (
+                <p>
+                  {formatExperienceDuration(startExperience, endExperience)}
+                </p>
+              )}
+            </div>
+            <ul className="list-disc ml-6">
+              {points.map((cur, id) => {
+                return <li key={id}>{cur}</li>;
+              })}
+            </ul>
           </div>
-          {/* Experience IN Tech */}
-          <div className="fcb">
-            <p className="font-semibold">Frontend Developer</p>
-            <p>Aug 2024 – Sep 2024</p>
-          </div>
-          <ul className="list-disc ml-6">
-            <li>
-              Developed a responsive and interactive UI using React and Tailwind
-              CSS, ensuring seamless experience devices.
-            </li>
-            <li>
-              Integrated REST APIs for authentication, product management, and
-              cart features, improving data flow efficiency.
-            </li>
-            <li>
-              Built reusable, modular components, reducing development time for
-              future enhancements by 30%.
-            </li>
-            <li>
-              Optimized rendering and implemented best practices for performance
-              and maintainability
-            </li>
-            <li>
-              Improved page load speed by 25% through optimized rendering and
-              code-splitting.
-            </li>
-          </ul>
-        </div>
+        )}
 
         {/* PROJECTS */}
-        <div className="mt-3 flex flex-col text-[.85rem] ">
-          {/* All Projects */}
+        {resume.projects?.length > 0 && (
+          <div className="mt-3 flex flex-col text-[.85rem] ">
+            <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
+              PROJECTS
+            </h2>
 
-          <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
-            PROJECTS
-          </h2>
-
-          {/* PROJECT NAME */}
-          <div className="flex flex-col gap-3">
-            {[1, 2, 3].map((cur, id) => {
-              return (
+            <div className="flex flex-col gap-3">
+              {resume.projects.map((proj, id) => (
                 <div key={id}>
+                  {/* Project Name & Duration */}
                   <div className="fcb">
                     <p className="font-semibold">
-                      Qubiko – AI-Powered Chat Assistant
+                      {proj.name || "Project Name"}
                     </p>
-                    <p>02/2025 – 05/2025</p>
+                    {(proj.start || proj.end) && (
+                      <p>{formatExperienceDuration(proj.start, proj.end)}</p>
+                    )}
                   </div>
+
+                  {/* Points & Tech Stack */}
                   <ul className="list-disc ml-6">
-                    <li>
-                      Developed a real-time AI chat assistant capable of
-                      handling structured and professional conversations
-                      efficiently.
-                    </li>
-                    <li>
-                      Enhanced user engagement and response accuracy by
-                      implementing structured prompts and multi-tools.
-                    </li>
-                    <li>
-                      Improved response speed by 3x and increased user
-                      satisfaction through seamless real-time updates.
-                    </li>
-                    <li>
-                      <span className="font-bold">Tech Stack:</span> MERN,
-                      WebSocket, LangChain, Google Gemini LLM, Cloudinary
-                    </li>
-                    <li>
-                      <div className="flex">
-                        <span className="font-bold">Live & Github:</span>
-                        <p className="flex items-center gap-1 text-blue-700 ml-1">
-                          <u>
-                            <a href="">Live Demo</a>
-                          </u>
-                          |
-                          <u>
-                            <a href="">Github</a>
-                          </u>
-                        </p>
-                      </div>
-                    </li>
+                    {proj.points?.map((point, idx) => (
+                      <li key={idx}>{point}</li>
+                    ))}
+
+                    {proj.techStack?.length > 0 && (
+                      <li>
+                        <span className="font-bold">Tech Stack:</span>{" "}
+                        {proj.techStack}
+                      </li>
+                    )}
+
+                    {(proj.live || proj.github) && (
+                      <li>
+                        <div className="flex">
+                          <span className="font-bold">Live & Github:</span>
+                          <p className="flex items-center gap-1 text-blue-700 ml-1">
+                            {proj.live && (
+                              <u>
+                                <a href={proj.live} target="_blank">
+                                  Live Demo
+                                </a>
+                              </u>
+                            )}
+                            {proj.live && proj.github && <span>|</span>}
+                            {proj.github && (
+                              <u>
+                                <a href={proj.github} target="_blank">
+                                  Github
+                                </a>
+                              </u>
+                            )}
+                          </p>
+                        </div>
+                      </li>
+                    )}
                   </ul>
                 </div>
-              );
-            })}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
