@@ -1,11 +1,11 @@
 version: "3.9"
 
 services:
+
   gateway:
     build:
       context: ./api
       dockerfile: Dockerfile
-    command: npm run dev
     ports:
       - "4000:4000"
     volumes:
@@ -19,15 +19,15 @@ services:
       - rabbitmq
       - resume
     env_file:
-      - ./api/.env   # Gateway ka env file
+      - ./api/.env
     networks:
       - app-network
+
 
   auth:
     build:
       context: ./auth
       dockerfile: Dockerfile
-    command: npm run dev
     ports:
       - "4001:4001"
     volumes:
@@ -38,11 +38,11 @@ services:
     networks:
       - app-network
 
+
   profile:
     build:
       context: ./profile
       dockerfile: Dockerfile
-    command: npm run dev
     ports:
       - "4002:4002"
     volumes:
@@ -53,11 +53,11 @@ services:
     networks:
       - app-network
 
+
   notification:
     build:
       context: ./notification
       dockerfile: Dockerfile
-    command: npm run dev
     ports:
       - "4003:4003"
     volumes:
@@ -68,11 +68,11 @@ services:
     networks:
       - app-network
 
+
   resume:
     build:
       context: ./resume
       dockerfile: Dockerfile
-    command: npm run dev
     ports:
       - "4004:4004"
     volumes:
@@ -83,21 +83,23 @@ services:
     networks:
       - app-network
 
+
   redis:
     image: redis/redis-stack:latest
     container_name: redis
     ports:
-      - "6379:6379"   # Redis port
-      - "8001:8001"   # Redis Stack GUI
+      - "6379:6379"
+      - "8001:8001"
     networks:
       - app-network
+
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
     ports:
-      - "5672:5672"    # AMQP
-      - "15672:15672"  # RabbitMQ GUI
+      - "5672:5672"
+      - "15672:15672"
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin123

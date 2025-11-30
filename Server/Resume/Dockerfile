@@ -8,7 +8,8 @@ WORKDIR /app
 COPY package*.json ./
 
 # INSTALL DEPENDENCIES
-RUN npm install --production
+# RUN npm install --production
+RUN npm install 
 
 # COPY APP SOURCE CODE
 COPY . .
