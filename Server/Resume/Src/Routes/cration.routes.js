@@ -16,7 +16,7 @@ router.post("/summary", resumeSummary);
 router.post("/education", resumeEducation);
 router.post("/skills", resumeSkills);
 router.post("/experince",resumeExperince);
-router.post("/project/:id",updateProjects);
+router.post("/project",updateProjects);
 
 
 export const creationRoutes = router;

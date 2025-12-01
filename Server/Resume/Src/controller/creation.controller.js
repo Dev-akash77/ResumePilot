@@ -366,82 +366,70 @@ export const resumeExperince = async (req, res) => {
   }
 };
 
-// !updateProjects
+
+
+
+
+
+
+// ! Check if project is empty
+const isProjectEmpty = (proj) => {
+  const { name, about, start, end, points, techStack, live, github } = proj;
+
+  const emptyPoints =
+    !points || points.length === 0 || points.every(p => !p || p.trim() === "");
+
+  const emptyTech =
+    !techStack || (typeof techStack === "string" && techStack.trim() === "") ||
+    (Array.isArray(techStack) && techStack.every(t => !t || t.trim() === ""));
+
+  return (
+    (!name || name.trim() === "") &&
+    (!about || about.trim() === "") &&
+    (!start || start.trim() === "") &&
+    (!end || end.trim() === "") &&
+    emptyPoints &&
+    emptyTech &&
+    (!live || live.trim() === "") &&
+    (!github || github.trim() === "")
+  );
+};
+
+// ! Update Projects
 export const updateProjects = async (req, res) => {
   try {
-    const { id } = req.params; // resume id
-    const { projects } = req.body; // array of updates
+    const { projects, id } = req.body;
 
-    // Fetch Resume
+    if (!Array.isArray(projects)) {
+      return res.status(400).json({ success: false, message: "Projects must be an array" });
+    }
+
     const resume = await resumeModel.findById(id);
     if (!resume) {
-      return res.status(404).json({
-        success: false,
-        message: "Resume not found",
-      });
+      return res.status(404).json({ success: false, message: "Resume not found" });
     }
 
-    // !Check if resume already has exactly 3 projects
-    if (!resume.projects || resume.projects.length !== 3) {
-      resume.projects = [
-        {
-          name: "",
-          about: "",
-          start: null,
-          end: null,
-          points: [],
-          techStack: [],
-          live: "",
-          github: "",
-        },
-        {
-          name: "",
-          about: "",
-          start: null,
-          end: null,
-          points: [],
-          techStack: [],
-          live: "",
-          github: "",
-        },
-        {
-          name: "",
-          about: "",
-          start: null,
-          end: null,
-          points: [],
-          techStack: [],
-          live: "",
-          github: "",
-        },
-      ];
-
-      await resume.save();
-    }
-
-    //! Check if request contains more or less than 3 updates
-    if (projects.length !== 3) {
-      return res.status(400).json({
-        success: false,
-        message: "You must send exactly 3 projects for update",
-      });
-    }
-
-    //! Update only the matching projects
-    const updatedProjects = resume.projects.map((existing, index) => {
-      const updated = projects[index];
-      return { ...existing, ...updated };
+    // Remove any `count` or extra keys from incoming data
+    const cleanProjects = projects.map(p => {
+      const { count, ...rest } = p;
+      return rest;
     });
 
-    resume.projects = updatedProjects;
+    // Filter out empty projects
+    const validProjects = cleanProjects.filter(p => !isProjectEmpty(p));
+
+    // Always update the DB with valid projects
+    resume.projects = validProjects;
+
     await resume.save();
 
     return res.status(200).json({
       success: true,
-      message: "All 3 projects updated successfully",
-      data: resume,
+      message: "Projects updated successfully",
+      data: resume.projects,
     });
   } catch (error) {
+    console.error(error);
     return res.status(500).json({
       success: false,
       message: "Server error",

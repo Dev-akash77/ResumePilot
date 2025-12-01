@@ -14,6 +14,10 @@ import {
   updateProject,
 } from "../../../Slice/ResumeSlice";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { updateResumeProjects } from "../../../Api/resumeApi";
+import Button_Loader from "../../../UI/Button_Loader";
 
 const Projects = () => {
   const [htmlHFrom, setHtmlFrom] = useState("<ul><li></li></ul>");
@@ -50,6 +54,40 @@ const Projects = () => {
     }
     dispatch(addedProjects());
   };
+
+
+  // ! resume id
+    const { id } = useParams();
+
+    // ! SET SUMMARY MUTATION
+    const resumeProjectsMutation = useMutation({
+      mutationFn: updateResumeProjects,
+      onSuccess: (data) => {
+        if (data?.success) {
+          toast.success(data?.message);
+          queryClient.removeQueries({ queryKey: ["perticularResume"] });
+          dispatch(setNextSection(false));
+        }
+      },
+      onError: () => {
+        dispatch(setNextSection(true));
+      },
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   return (
     <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
       {/* Header of the from */}
@@ -280,10 +318,12 @@ const Projects = () => {
         </div>
 
         <div className="flex items-end justify-end">
-          <button className="bg-blue w-[6rem] h-[2.5rem] text-white cc rounded-md cursor-pointer" onClick={(e)=>{
+          <button className="bg-blue w-[8rem] h-[2.5rem] text-white cc rounded-md cursor-pointer" onClick={(e)=>{
             e.preventDefault();
+            resumeProjectsMutation.mutate({id,projects});
+            
           }}>
-            Save
+             {resumeProjectsMutation.isPending ? <Button_Loader /> : "Save"}
           </button>
         </div>
       </form>

@@ -57,6 +57,26 @@ const MainResume = () => {
     locationExperience ||
     points.length > 0;
 
+const isProjectEmpty = (proj) => {
+  const { name, start, end, points, techStack, live, github } = proj;
+
+  return (
+    !name &&
+    !start &&
+    !end &&
+    (!points || points.length === 1) &&
+    (!techStack || techStack.length === 0) &&
+    !live &&
+    !github
+  );
+};
+
+const validProjects = resume?.projects?.some(proj => !isProjectEmpty(proj));
+
+
+
+    
+
   return (
     <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative">
       <div className="w-[92%] h-full">
@@ -190,7 +210,7 @@ const MainResume = () => {
         )}
 
         {/* PROJECTS */}
-        {resume.projects?.length > 0 && (
+        {validProjects && (
           <div className="mt-3 flex flex-col text-[.85rem] ">
             <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
               PROJECTS

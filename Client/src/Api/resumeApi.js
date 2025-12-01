@@ -80,10 +80,21 @@ export const updateResumeSkill = async (fromData) => {
 };
 
 
-// ! UPDATE SKILL DATA
+// ! UPDATE EXPERIENCE DATA
 export const updateResumeExperience = async (fromData) => {
   try {
     const {data} = await api.post(`/resume/experince`,fromData);
+    return data || {};
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+};
+
+// ! UPDATE PROJECTS DATA
+export const updateResumeProjects = async (Projects) => {
+  try {
+    const {data} = await api.post(`/resume/project`,Projects);
     return data || {};
   } catch (error) {
     toast.error(error?.response?.data?.message);
