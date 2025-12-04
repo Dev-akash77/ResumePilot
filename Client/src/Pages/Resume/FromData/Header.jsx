@@ -4,7 +4,6 @@ import FromHeaders from "../../../Common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
 import {
   headerOnChange,
-  seHeaderData,
   setNextSection,
 } from "../../../Slice/ResumeSlice";
 import { usePerticularResume } from "../../../Hook/ResumeHooks";
@@ -32,13 +31,6 @@ const Header = () => {
     linkedin = "",
   } = headerDataRead?.data || {};
 
-  useEffect(() => {
-    if (headerDataRead?.data) {
-      dispatch(
-        seHeaderData({ name, email, number, portfolio, github, linkedin })
-      );
-    }
-  }, [headerDataRead, dispatch]);
 
   // ! CHECK NEXT SECTION
   useEffect(() => {

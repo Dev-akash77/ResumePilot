@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   setNextSection,
-  setSkillsData,
   technicalSkillAdd,
   technicalSkillRemove,
   toolsSkillAdd,
@@ -60,18 +59,6 @@ const Skill = () => {
   const skillDataRead = apiSkills ?? { technical: [], tools: [] };
 
   const { technical, tools } = skillDataRead;
-
-
-  //! ---------------------------------------------------------
-  // !SET BACKEND DATA INTO REDUX (RUN ONLY WHEN API CHANGES)
-  //! ---------------------------------------------------------
-  useEffect(() => {
-    if (apiSkills) {
-      dispatch(setSkillsData(apiSkills));
-    }
-  }, [apiSkills, dispatch]);
-
-
 
 
   // ! CHECK NEXT SECTION
@@ -191,7 +178,7 @@ const Skill = () => {
               required
               value={inputTools}
               onChange={(e) => setInputTools(e.target.value)}
-              placeholder="React, Node, C++, Python, Java, Javacript, Etc.."
+              placeholder=" Git, GitHub, Docker, Redis, Postman Etc.."
               className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal w-full"
             />
             <button

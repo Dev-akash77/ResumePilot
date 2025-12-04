@@ -57,29 +57,27 @@ const MainResume = () => {
     locationExperience ||
     points.length > 0;
 
-const isProjectEmpty = (proj) => {
-  const { name, start, end, points, techStack, live, github } = proj;
+  // ! Check if any projects field has a non-empty value
 
-  return (
-    !name &&
-    !start &&
-    !end &&
-    (!points || points.length === 1) &&
-    (!techStack || techStack.length === 0) &&
-    !live &&
-    !github
-  );
-};
+  const isProjectEmpty = (proj) => {
+    const { name, start, end, points, techStack, live, github } = proj;
 
-const validProjects = resume?.projects?.some(proj => !isProjectEmpty(proj));
+    return (
+      !name &&
+      !start &&
+      !end &&
+      (!points || points.length === 1) &&
+      (!techStack || techStack.length === 0) &&
+      !live &&
+      !github
+    );
+  };
 
-
-
-    
+  const validProjects = resume?.projects?.some((proj) => !isProjectEmpty(proj));
 
   return (
     <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative">
-      <div className="w-[92%] h-full">
+      <div className="w-[93%] h-full">
         {/* resume header section */}
         <header>
           <h1 className="text-[1.6rem] font-bold fc gap-2">
@@ -221,9 +219,11 @@ const validProjects = resume?.projects?.some(proj => !isProjectEmpty(proj));
                 <div key={id}>
                   {/* Project Name & Duration */}
                   <div className="fcb">
-                    <p className="font-semibold">
-                      {proj.name || "Project Name"}
-                    </p>
+                    <div className="flex gap-2 items-center">
+                      <p className="font-semibold">{proj.name}</p>
+                      <p className="text-2xl font-light">-</p>
+                      <p className="font-semibold">{proj.about}</p>
+                    </div>
                     {(proj.start || proj.end) && (
                       <p>{formatExperienceDuration(proj.start, proj.end)}</p>
                     )}

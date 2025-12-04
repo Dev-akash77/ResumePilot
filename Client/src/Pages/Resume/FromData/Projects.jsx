@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FromHeaders from "../../../Common/FromHeaders";
 import {
   Editor,
@@ -12,39 +12,19 @@ import {
   removeProjects,
   updateProjectPoints,
   updateProject,
+  setProjectsData,
 } from "../../../Slice/ResumeSlice";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { updateResumeProjects } from "../../../Api/resumeApi";
 import Button_Loader from "../../../UI/Button_Loader";
+import { usePerticularResume } from "../../../Hook/ResumeHooks";
 
 const Projects = () => {
-  const [htmlHFrom, setHtmlFrom] = useState("<ul><li></li></ul>");
+  const { id } = useParams();
   const projects = useSelector((state) => state.resume)?.projects;
   const dispatch = useDispatch();
-
-  const [projectsPoint, setProjectsPoint] = useState([]);
-
-  // ! EXTRACTS POINT FROM LI LIST
-  const extractPoints = (html) =>
-    (html.match(/<li>(.*?)<\/li>/g) || [])
-      .map((li) => li.replace(/<\/?li>/g, "").trim())
-      .filter((text) => text !== "");
-
-  // // ! HANDLE CHANGE FROM DATA
-  // const handlefromChange = (e) => {
-  //   setHtmlFrom(e.target.value);
-  //   if (e.target.value === "" || e.target.value === "<div><br></div>") {
-  //     setHtmlFrom("<ul><li>&nbsp;</li></ul>");
-  //   } else {
-  //     setHtmlFrom(e.target.value);
-  //   }
-
-  //   const points = extractPoints(e.target.value);
-
-  //   setProjectsPoint(points);
-  // };
 
   // ! ADDING NEW PROJECT
 
@@ -55,37 +35,23 @@ const Projects = () => {
     dispatch(addedProjects());
   };
 
+  // ! SET Projects MUTATION
+  const resumeProjectsMutation = useMutation({
+    mutationFn: updateResumeProjects,
+    onSuccess: (data) => {
+      if (data?.success) {
+        toast.success(data?.message);
+        queryClient.removeQueries({ queryKey: ["perticularResume"] });
+        dispatch(setNextSection(false));
+      }
+    },
+    onError: () => {
+      dispatch(setNextSection(true));
+    },
+  });
 
-  // ! resume id
-    const { id } = useParams();
-
-    // ! SET SUMMARY MUTATION
-    const resumeProjectsMutation = useMutation({
-      mutationFn: updateResumeProjects,
-      onSuccess: (data) => {
-        if (data?.success) {
-          toast.success(data?.message);
-          queryClient.removeQueries({ queryKey: ["perticularResume"] });
-          dispatch(setNextSection(false));
-        }
-      },
-      onError: () => {
-        dispatch(setNextSection(true));
-      },
-    });
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // Format dates helpers
+  const formatDate = (iso) => (iso ? iso.split("T")[0] : "");
 
 
   return (
@@ -176,7 +142,7 @@ const Projects = () => {
                     <input
                       type="date"
                       name="start"
-                      value={cur.start}
+                     value={formatDate(cur.start)}
                       onChange={(e) =>
                         dispatch(
                           updateProject({
@@ -196,7 +162,7 @@ const Projects = () => {
                     <input
                       type="date"
                       name="end"
-                      value={cur.end}
+                      value={formatDate(cur.end)}
                       onChange={(e) =>
                         dispatch(
                           updateProject({
@@ -318,12 +284,14 @@ const Projects = () => {
         </div>
 
         <div className="flex items-end justify-end">
-          <button className="bg-blue w-[8rem] h-[2.5rem] text-white cc rounded-md cursor-pointer" onClick={(e)=>{
-            e.preventDefault();
-            resumeProjectsMutation.mutate({id,projects});
-            
-          }}>
-             {resumeProjectsMutation.isPending ? <Button_Loader /> : "Save"}
+          <button
+            className="bg-blue w-[8rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault();
+              resumeProjectsMutation.mutate({ id, projects });
+            }}
+          >
+            {resumeProjectsMutation.isPending ? <Button_Loader /> : "Save"}
           </button>
         </div>
       </form>

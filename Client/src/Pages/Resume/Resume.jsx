@@ -11,8 +11,11 @@ import { GrLinkNext } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
 import { usePerticularResume } from "../../Hook/ResumeHooks";
 import {
+  resetResume,
   seHeaderData,
   setEducationData,
+  setExperienceData,
+  setProjectsData,
   setSkillsData,
   setSummaryData,
 } from "../../Slice/ResumeSlice";
@@ -86,6 +89,7 @@ const Resume = () => {
     summary = "",
   } = resumeData?.data || {};
 
+  // ! FETCH DATA FROM DATABASE AND SAVE INTO RESUX
   useEffect(() => {
     if (resumeData?.data) {
       // ! Header DATA SET
@@ -101,8 +105,19 @@ const Resume = () => {
       if (resumeData?.data?.skills) {
         dispatch(setSkillsData(resumeData.data.skills));
       }
+          if (resumeData?.data?.experience) {
+            dispatch(setExperienceData(resumeData?.data?.experience));
+          }
+      if (resumeData?.data.projects[0]) {
+        dispatch(setProjectsData(resumeData?.data.projects));
+      }
     }
   }, [resumeData, dispatch]);
+
+  // ! WHEN USER OPEN NEW RESUME ALL VALUS OF RESUME SHOULD BE INITIAL STATE
+  useEffect(()=>{
+    dispatch(resetResume())
+  },[id])
 
   return (
     <div className="w-screen">
@@ -135,7 +150,7 @@ const Resume = () => {
       <div className="cc py-10">
         <div className="w-[87%] flex justify gap-5">
           {/* left side from data */}
-          <div className="w-[45%]">
+          <div className="w-[40%]">
             <div className="fcb mb-7">
               <button
                 className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md"

@@ -173,8 +173,8 @@ const resumeSlice = createSlice({
     },
 
     // ! UPDATE PROJECT DATA
-    updateProject:(state,action)=>{
-      const {index,key,value} = action.payload;
+    updateProject: (state, action) => {
+      const { index, key, value } = action.payload;
       if (state.projects[index]) {
         state.projects[index][key] = value;
       }
@@ -228,7 +228,37 @@ const resumeSlice = createSlice({
     },
 
     // ? ==========================================================================
+
+    // ? ==========================================================================
+
+    // ! ==========================================================================
+    // * SET PROJECTS DATA FETCH FROM BACKEND
+    // ! ==========================================================================
+
+    setProjectsData: (state, action) => {
+      const projects = action.payload;
+      state.projects = projects?.map((cur, count) => ({
+        count: count + 1,
+        name: cur.name,
+        about: cur.about,
+        start: cur.start,
+        end: cur.end,
+        points: cur.points,
+        techStack: cur.techStack,
+        live: cur.live,
+        github: cur.github,
+        _id: cur._id,
+      }));
+    },
+
+    // ? ==========================================================================
+
+    // ! ==========================================================================
+    // *  RESET FULL RESUME STATE
+    // ! ==========================================================================
+    resetResume: () => initialState,
   },
+  // ? ==========================================================================
 });
 
 export const {
@@ -253,6 +283,10 @@ export const {
   setEducationData,
   setSkillsData,
   setExperienceData,
+  setProjectsData,
+
+  // ! RESET RESUME
+  resetResume
 } = resumeSlice.actions;
 
 export const resumeSlices = resumeSlice.reducer;

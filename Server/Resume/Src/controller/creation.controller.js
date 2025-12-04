@@ -193,7 +193,7 @@ export const resumeEducation = async (req, res) => {
     const { id, college, degree, location, start, end, cgpa } = req.body;
 
     // ! Required Fields
-    const requiredFields = { id, college, degree, location, start, end, cgpa };
+    const requiredFields = { id, college, degree, location, cgpa };
     for (const [key, value] of Object.entries(requiredFields)) {
       if (!value) {
         logger.error(`Missing field '${key}' in resume education creation`);
@@ -202,6 +202,23 @@ export const resumeEducation = async (req, res) => {
           message: `${key} is required`,
         });
       }
+    }
+
+    // !start & end MUST be valid dates
+    if (!start || isNaN(Date.parse(start))) {
+      logger.error(`Missing field start in resume education creation`);
+      return res.status(400).json({
+        success: false,
+        message: "Start date is required",
+      });
+    }
+
+    if (!end || isNaN(Date.parse(end))) {
+      logger.error(`Missing field end in resume education creation`);
+      return res.status(400).json({
+        success: false,
+        message: "End date is required",
+      });
     }
 
     const resume = await resumeModel.findById(id);
@@ -304,7 +321,7 @@ export const resumeSkills = async (req, res) => {
 // ! Adding Experience
 export const resumeExperince = async (req, res) => {
   try {
-    const { id, title, role, start, end, location, points } = req.body;
+    const { id, title, role, location, points,start,end } = req.body;
 
     const resume = await resumeModel.findById(id);
 
@@ -316,7 +333,7 @@ export const resumeExperince = async (req, res) => {
       });
     }
 
-    const requiredField = { title, role, start, end, location, points };
+    const requiredField = { title, role, location, points };
 
     for (const [key, value] of Object.entries(requiredField)) {
       if (!value) {
@@ -328,6 +345,25 @@ export const resumeExperince = async (req, res) => {
       }
     }
 
+    
+    // !start & end MUST be valid dates
+    if (!start || isNaN(Date.parse(start))) {
+       logger.error(`Missing field start in resume education creation`);
+      return res.status(400).json({
+        success: false,
+        message: "Start date is required",
+      });
+    }
+
+    if (!end || isNaN(Date.parse(end))) {
+      logger.error(`Missing field end in resume education creation`);
+      return res.status(400).json({
+        success: false,
+        message: "End date is required",
+      });
+    }
+
+
     if (points.length < 5) {
       logger.error("Experience points exceed the allowed limit (max: 5)");
       return res.status(400).json({
@@ -337,7 +373,6 @@ export const resumeExperince = async (req, res) => {
     }
 
     console.log(points.length);
-    
 
     resume.experience = {
       title,
@@ -366,22 +401,19 @@ export const resumeExperince = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
 // ! Check if project is empty
 const isProjectEmpty = (proj) => {
   const { name, about, start, end, points, techStack, live, github } = proj;
 
   const emptyPoints =
-    !points || points.length === 0 || points.every(p => !p || p.trim() === "");
+    !points ||
+    points.length === 0 ||
+    points.every((p) => !p || p.trim() === "");
 
   const emptyTech =
-    !techStack || (typeof techStack === "string" && techStack.trim() === "") ||
-    (Array.isArray(techStack) && techStack.every(t => !t || t.trim() === ""));
+    !techStack ||
+    (typeof techStack === "string" && techStack.trim() === "") ||
+    (Array.isArray(techStack) && techStack.every((t) => !t || t.trim() === ""));
 
   return (
     (!name || name.trim() === "") &&
@@ -401,24 +433,28 @@ export const updateProjects = async (req, res) => {
     const { projects, id } = req.body;
 
     if (!Array.isArray(projects)) {
-      return res.status(400).json({ success: false, message: "Projects must be an array" });
+      return res
+        .status(400)
+        .json({ success: false, message: "Projects must be an array" });
     }
 
     const resume = await resumeModel.findById(id);
     if (!resume) {
-      return res.status(404).json({ success: false, message: "Resume not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Resume not found" });
     }
 
-    // Remove any `count` or extra keys from incoming data
-    const cleanProjects = projects.map(p => {
+    //! Remove any `count` or extra keys from incoming data
+    const cleanProjects = projects.map((p) => {
       const { count, ...rest } = p;
       return rest;
     });
 
-    // Filter out empty projects
-    const validProjects = cleanProjects.filter(p => !isProjectEmpty(p));
+    //! Filter out empty projects
+    const validProjects = cleanProjects.filter((p) => !isProjectEmpty(p));
 
-    // Always update the DB with valid projects
+    //! Always update the DB with valid projects
     resume.projects = validProjects;
 
     await resume.save();

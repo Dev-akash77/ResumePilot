@@ -3,7 +3,6 @@ import { LuBrain } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setNextSection,
-  setSummaryData,
   summaryChange,
 } from "../../../Slice/ResumeSlice";
 import { useEffect } from "react";
@@ -28,13 +27,7 @@ const Profile = () => {
 
   // ! GET SUMMARY DATA FOM DATABASE AND SET IN REDUX STATE
   const { data: summaryDataRead } = usePerticularResume(id); 
-  const { summary } = summaryDataRead?.data || {};
 
-  useEffect(() => {
-    if (summaryDataRead?.data) {
-      dispatch(setSummaryData(summary));
-    }
-  }, [summaryDataRead, dispatch]);
 
   // ! CHECK NEXT SECTION
   useEffect(() => {

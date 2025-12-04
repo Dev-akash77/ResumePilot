@@ -3,7 +3,6 @@ import FromHeaders from "../../../Common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
 import {
   educationChange,
-  setEducationData,
   setNextSection,
 } from "../../../Slice/ResumeSlice";
 import { useParams } from "react-router-dom";
@@ -31,14 +30,6 @@ const Education = () => {
   const { data: educationDataRead } = usePerticularResume(id);
   const { college, degree, location, start, end, cgpa } =
     educationDataRead?.data?.education[0] || {};
-
-  useEffect(() => {
-    if (educationDataRead?.data?.education[0]) {
-      dispatch(
-        setEducationData({ college, degree, location, start, end, cgpa })
-      );
-    }
-  }, [educationDataRead?.data?.education[0], dispatch]);
 
   // ! CHECK NEXT SECTION
   useEffect(() => {
