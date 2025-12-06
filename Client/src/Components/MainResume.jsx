@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const MainResume = () => {
+const MainResume = ({ref}) => {
   const resume = useSelector((state) => state.resume);
 
   const formatExperienceDuration = (start, end) => {
@@ -76,7 +76,7 @@ const MainResume = () => {
   const validProjects = resume?.projects?.some((proj) => !isProjectEmpty(proj));
 
   return (
-    <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative">
+    <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative" ref={ref}>
       <div className="w-[93%] h-full">
         {/* resume header section */}
         <header>

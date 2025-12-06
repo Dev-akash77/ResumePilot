@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
+import { MdFileDownload } from "react-icons/md";
 import MainResume from "../../Components/MainResume";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginStatus } from "../../Hook/useLoginStatus";
@@ -19,6 +20,7 @@ import {
   setSkillsData,
   setSummaryData,
 } from "../../Slice/ResumeSlice";
+import useDownloadResume from "../../Hook/useDownloadResume";
 
 const Resume = () => {
   const navigate = useNavigate();
@@ -105,9 +107,9 @@ const Resume = () => {
       if (resumeData?.data?.skills) {
         dispatch(setSkillsData(resumeData.data.skills));
       }
-          if (resumeData?.data?.experience) {
-            dispatch(setExperienceData(resumeData?.data?.experience));
-          }
+      if (resumeData?.data?.experience) {
+        dispatch(setExperienceData(resumeData?.data?.experience));
+      }
       if (resumeData?.data.projects[0]) {
         dispatch(setProjectsData(resumeData?.data.projects));
       }
@@ -115,9 +117,14 @@ const Resume = () => {
   }, [resumeData, dispatch]);
 
   // ! WHEN USER OPEN NEW RESUME ALL VALUS OF RESUME SHOULD BE INITIAL STATE
-  useEffect(()=>{
-    dispatch(resetResume())
-  },[id])
+  useEffect(() => {
+    dispatch(resetResume());
+  }, [id]);
+
+  // ! REFERENCE FOR DOWNLOADING RESUME
+  const ref = useRef(null);
+
+  const { downloadPDF } = useDownloadResume(ref);
 
   return (
     <div className="w-screen">
@@ -135,14 +142,23 @@ const Resume = () => {
             </h2>
           </div>
 
-          <button
-            className="bg-blue text-white rounded-md md:px-10 px-3 py-3 cursor-pointer fc gap-2"
-            onClick={() => {
-              navigate("/dashboard");
-            }}
-          >
-            Dashboard <MdDashboard className="text-xl text-gray-100" />
-          </button>
+          <div className="fc gap-2">
+            <button
+              className="bg-blue text-white rounded-md md:px-10 px-3 py-3 cursor-pointer fc gap-2"
+              onClick={() => {
+                navigate("/dashboard");
+              }}
+            >
+              Dashboard <MdDashboard className="text-xl text-gray-100" />
+            </button>
+            <button
+              className="bg-blue text-white rounded-md md:px-8 px-3 py-3 cursor-pointer fc gap-2"
+              onClick={()=>{downloadPDF()
+              }}
+            >
+              Download <MdFileDownload className="text-xl text-gray-100" />
+            </button>
+          </div>
         </div>
       </header>
 
@@ -196,7 +212,7 @@ const Resume = () => {
           </div>
 
           {/* main resume */}
-          <MainResume />
+          <MainResume ref={ref} />
         </div>
       </div>
     </div>
