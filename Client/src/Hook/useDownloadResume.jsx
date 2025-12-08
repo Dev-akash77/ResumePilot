@@ -6,9 +6,7 @@ const useDownloadResume = (ref) => {
     const element = ref.current;
     // ! IF NO COMPONENT FOUND TO BE DOWNLOAD THEN SIMPLY RETURN
     if (!element) return;
-
-
-    
+     window.print(); 
     
   }, [ref]);
 

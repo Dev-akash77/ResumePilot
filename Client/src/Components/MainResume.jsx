@@ -76,7 +76,7 @@ const MainResume = ({ref}) => {
   const validProjects = resume?.projects?.some((proj) => !isProjectEmpty(proj));
 
   return (
-    <div className="bs w-[8.7in] h-[11in] pt-10 pb-5 cc relative" ref={ref}>
+    <div className="bs w-[8.27in] h-[11.69in] pt-[20px] cc relative print-area" ref={ref}>
       <div className="w-[93%] h-full">
         {/* resume header section */}
         <header>
