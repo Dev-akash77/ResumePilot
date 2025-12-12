@@ -26,7 +26,7 @@ redisConnection();
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.UPDATE_USER_RESUME_CREATION,updateResumeCount);
 })();
 
-//! Common Middleware
+//! Common Middleware 
 app.use(express.json());
 
 app.use(

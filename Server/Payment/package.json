@@ -10,17 +10,21 @@
   ],
   "license": "ISC",
   "author": "Akash Biswas",
-  "type": "module",
-  "main": "server.js",
+  "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "migrate:generate": "drizzle-kit generate --config drizzle.config.ts",
+    "migrate:push": "drizzle-kit push --config drizzle.config.ts"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "drizzle-orm": "^0.45.1",
     "express": "^5.2.1",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
