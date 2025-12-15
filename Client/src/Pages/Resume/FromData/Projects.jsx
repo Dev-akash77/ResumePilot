@@ -13,24 +13,39 @@ import {
   updateProjectPoints,
   updateProject,
   setProjectsData,
+  setNextSection,
 } from "../../../Slice/ResumeSlice";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateResumeProjects } from "../../../Api/resumeApi";
 import Button_Loader from "../../../UI/Button_Loader";
 import { usePerticularResume } from "../../../Hook/ResumeHooks";
+
+// Icons
+import { 
+  LuFolderGit2, 
+  LuLayers, 
+  LuInfo, 
+  LuLink, 
+  LuGithub, 
+  LuCalendar, 
+  LuList, 
+  LuPlus, 
+  LuTrash2, 
+  LuSave 
+} from "react-icons/lu";
 
 const Projects = () => {
   const { id } = useParams();
   const projects = useSelector((state) => state.resume)?.projects;
   const dispatch = useDispatch();
+  const queryClient = useQueryClient();
 
   // ! ADDING NEW PROJECT
-
   const handleAddProject = () => {
     if (projects.length >= 3) {
-      return toast.error("Maximam 3 projects");
+      return toast.error("Maximum 3 projects allowed");
     }
     dispatch(addedProjects());
   };
@@ -53,250 +68,230 @@ const Projects = () => {
   // Format dates helpers
   const formatDate = (iso) => (iso ? iso.split("T")[0] : "");
 
-
   return (
-    <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
-      {/* Header of the from */}
-      <FromHeaders
-        title={"Add Your Projects"}
-        des={"Highlight Your Top Projects That Reflect Your Skills"}
-      />
+    <div className="w-full mx-auto bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      
+      {/* 1. Header Section */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <FromHeaders
+          title={"Add Your Projects"}
+          des={"Highlight your top projects that reflect your skills."}
+        />
+      </div>
 
-      {/* from  */}
-      <form className="w-full mt-3 flex flex-col gap-5">
-        {/*  ALL FROM DATA RELATED Project */}
-        {/* phase 1 */}
-        {projects?.map((cur, id) => {
-          return (
-            <div key={id}>
-              <p>#{id + 1}</p>
-              <div className="border-2 border-gray-300 p-3 rounded-md flex flex-col gap-2">
-                {/* PROJECT NAME AND PROJECT ABOUT */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex flex-col text-[1rem] font-medium w-full">
-                    <p>Project Name</p>
-                    <input
-                      type="text"
-                      name="name"
-                      placeholder="ResumePilot"
-                      value={cur.name}
-                      onChange={(e) =>
-                        dispatch(
-                          updateProject({
-                            index: id,
-                            key: "name",
-                            value: e.target.value,
-                          })
-                        )
-                      }
-                      required
-                      className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-                    />
-                  </div>
-                  <div className="flex flex-col text-[1rem] font-medium w-full">
-                    <p>Project About</p>
-                    <input
-                      type="text"
-                      name="about"
-                      value={cur.about}
-                      onChange={(e) =>
-                        dispatch(
-                          updateProject({
-                            index: id,
-                            key: "about",
-                            value: e.target.value,
-                          })
-                        )
-                      }
-                      placeholder="AI-Driven Resume Builder"
-                      required
-                      className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-                    />
-                  </div>
-                </div>
-                {/* TECHSTACK */}
-                <div className="flex flex-col text-[1rem] font-medium w-full">
-                  <p>Tech Stack</p>
-                  <input
-                    type="text"
-                    name="techStack"
-                    value={cur.techStack}
-                    onChange={(e) =>
-                      dispatch(
-                        updateProject({
-                          index: id,
-                          key: "techStack",
-                          value: e.target.value,
-                        })
-                      )
-                    }
-                    placeholder=" MERN, Redux, LangChain, Google Gemini LLM, Docker, Redis"
-                    required
-                    className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-                  />
-                </div>
-                {/*START DATE AND END DATE */}
-                <div className="flex w-full gap-3">
-                  <div className="flex flex-col text-[1rem] font-medium w-full">
-                    <p>Start Date</p>
-                    <input
-                      type="date"
-                      name="start"
-                     value={formatDate(cur.start)}
-                      onChange={(e) =>
-                        dispatch(
-                          updateProject({
-                            index: id,
-                            key: "start",
-                            value: e.target.value, // yyyy-mm-dd
-                          })
-                        )
-                      }
-                      required
-                      className="outline-0 border-gray-300 py-1 px-2 rounded-sm border text-gray-500 cursor-pointer"
-                    />
-                  </div>
-
-                  <div className="flex flex-col text-[1rem] font-medium w-full">
-                    <p>End Date</p>
-                    <input
-                      type="date"
-                      name="end"
-                      value={formatDate(cur.end)}
-                      onChange={(e) =>
-                        dispatch(
-                          updateProject({
-                            index: id,
-                            key: "end",
-                            value: e.target.value, // yyyy-mm-dd
-                          })
-                        )
-                      }
-                      required
-                      className="outline-0 border-gray-300 py-1 px-2 rounded-sm border text-gray-500 cursor-pointer"
-                    />
-                  </div>
-                </div>
-
-                {/* PROJECT LINK AND GITHUB LINK */}
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex flex-col text-[1rem] font-medium w-full">
-                    <p>Live Link</p>
-                    <input
-                      type="url"
-                      name="live"
-                      placeholder="https://resume-pilot...."
-                      value={cur.live} // bind Redux state
-                      onChange={(e) =>
-                        dispatch(
-                          updateProject({
-                            index: id,
-                            key: "live",
-                            value: e.target.value,
-                          })
-                        )
-                      }
-                      required
-                      className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-                    />
-                  </div>
-                  <div className="flex flex-col text-[1rem] font-medium w-full">
-                    <p>Github Link</p>
-                    <input
-                      type="url"
-                      name="github"
-                      placeholder="https://github.com/Dev-akash77."
-                      value={cur.github} // bind Redux state
-                      onChange={(e) =>
-                        dispatch(
-                          updateProject({
-                            index: id,
-                            key: "github",
-                            value: e.target.value,
-                          })
-                        )
-                      }
-                      required
-                      className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-                    />
-                  </div>
-                </div>
-
-                {/* BULLET EDITOR */}
-                <div>
-                  <p className="text-[1rem] font-medium">
-                    Add Points For Projects{" "}
-                    <span className="text-gray-300 ml-5">MAX - 3</span>
-                  </p>
-                  <div className="[&_.rsw-editor_ul]:list-disc [&_.rsw-editor_ol]:list-decimal [&_.rsw-editor_ul]:ml-6 [&_.rsw-editor_ol]:ml-6 rounded-md border border-gray-200">
-                    <EditorProvider>
-                      <Toolbar className="hidden">
-                        <BtnBulletList />
-                      </Toolbar>
-
-                      <Editor
-                        value={
-                          cur.points?.length
-                            ? `<ul>${cur.points
-                                .map((p) => `<li>${p}</li>`)
-                                .join("")}</ul>`
-                            : "<ul><li></li></ul>"
-                        }
-                        onChange={(e) => {
-                          const html = e.target.value;
-                          const points = (html.match(/<li>(.*?)<\/li>/g) || [])
-                            .map((li) => li.replace(/<\/?li>/g, "").trim())
-                            .filter((text) => text !== "");
-
-                          dispatch(updateProjectPoints({ index: id, points }));
-                        }}
-                      />
-                    </EditorProvider>
-                  </div>
-                </div>
-              </div>
-
-              {cur.count != 1 && (
-                <div className="flex items-center justify-end mt-5">
-                  <button
-                    className=" w-[9rem] h-[2.5rem] text-red-500 cc rounded-full border border-red-text-red-500 border-dashed cursor-pointer"
-                    onClick={() => {
-                      dispatch(removeProjects(id));
-                    }}
-                  >
-                    Remove Project
-                  </button>
-                </div>
+      {/* 2. Form Section */}
+      <form className="p-8 flex flex-col gap-8">
+        
+        {projects?.map((cur, index) => (
+          <div 
+            key={index} 
+            className="relative p-6 rounded-xl border border-gray-200 bg-gray-50/30 hover:bg-white hover:shadow-sm transition-all duration-300 group"
+          >
+            {/* Project Header & Remove Button */}
+            <div className="flex justify-between items-center mb-6 border-b border-gray-100 pb-2">
+              <h3 className="text-sm font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                 <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">
+                    {index + 1}
+                 </span>
+                 Project Details
+              </h3>
+              
+              {projects.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => dispatch(removeProjects(index))}
+                  className="text-gray-400 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50 flex items-center gap-1 text-xs font-medium"
+                >
+                  <LuTrash2 className="w-4 h-4" />
+                  <span>Remove</span>
+                </button>
               )}
             </div>
-          );
-        })}
 
-        <div className="flex items-center justify-end">
-          <button
-            className=" w-[9rem] h-[2.5rem] text-blue cc rounded-full border border-blue border-dashed cursor-pointer"
-            onClick={() => {
-              handleAddProject();
-            }}
-          >
-            Add Project
-          </button>
-        </div>
+            <div className="flex flex-col gap-6">
+                
+                {/* Row 1: Name & About */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CleanInput 
+                        label="Project Name"
+                        value={cur.name}
+                        onChange={(e) => dispatch(updateProject({ index, key: "name", value: e.target.value }))}
+                        placeholder="e.g. ResumePilot"
+                        icon={LuFolderGit2}
+                        required
+                    />
+                    <CleanInput 
+                        label="Project Tagline / About"
+                        value={cur.about}
+                        onChange={(e) => dispatch(updateProject({ index, key: "about", value: e.target.value }))}
+                        placeholder="e.g. AI-Driven Resume Builder"
+                        icon={LuInfo}
+                        required
+                    />
+                </div>
 
-        <div className="flex items-end justify-end">
+                {/* Row 2: Tech Stack (Full Width) */}
+                <CleanInput 
+                    label="Tech Stack Used"
+                    value={cur.techStack}
+                    onChange={(e) => dispatch(updateProject({ index, key: "techStack", value: e.target.value }))}
+                    placeholder="e.g. MERN, Redux, LangChain, Docker, Redis"
+                    icon={LuLayers}
+                    required
+                />
+
+                {/* Row 3: Links */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CleanInput 
+                        label="Live Demo Link"
+                        type="url"
+                        value={cur.live}
+                        onChange={(e) => dispatch(updateProject({ index, key: "live", value: e.target.value }))}
+                        placeholder="https://resume-pilot.com"
+                        icon={LuLink}
+                        required
+                    />
+                    <CleanInput 
+                        label="GitHub Repository"
+                        type="url"
+                        value={cur.github}
+                        onChange={(e) => dispatch(updateProject({ index, key: "github", value: e.target.value }))}
+                        placeholder="https://github.com/username/project"
+                        icon={LuGithub}
+                        required
+                    />
+                </div>
+
+                {/* Row 4: Dates */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <CleanInput 
+                        label="Start Date"
+                        type="date"
+                        value={formatDate(cur.start)}
+                        onChange={(e) => dispatch(updateProject({ index, key: "start", value: e.target.value }))}
+                        icon={LuCalendar}
+                        required
+                    />
+                    <CleanInput 
+                        label="End Date"
+                        type="date"
+                        value={formatDate(cur.end)}
+                        onChange={(e) => dispatch(updateProject({ index, key: "end", value: e.target.value }))}
+                        icon={LuCalendar}
+                        required
+                    />
+                </div>
+
+                {/* Row 5: Bullet Points */}
+                <div className="flex flex-col gap-2">
+                     <div className="flex justify-between items-end">
+                        <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+                            <LuList className="w-4 h-4 text-gray-400" />
+                            Key Features & Achievements
+                        </label>
+                        <span className="text-[10px] uppercase font-bold text-gray-400 tracking-wider bg-gray-50 px-2 py-0.5 rounded">
+                            Max 3 Points
+                        </span>
+                     </div>
+
+                     <div className="rounded-lg border border-gray-300 overflow-hidden focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 transition-all shadow-sm bg-white min-h-[130px]">
+                         <div className="prose prose-sm max-w-none p-2 [&_.rsw-editor]:min-h-[120px] [&_.rsw-editor]:outline-none [&_ul]:list-disc [&_ul]:pl-5 [&_li]:text-gray-700 [&_li]:mb-1">
+                            <EditorProvider>
+                                <Toolbar className="hidden">
+                                    <BtnBulletList />
+                                </Toolbar>
+                                <Editor
+                                    value={cur.points?.length ? `<ul>${cur.points.map((p) => `<li>${p}</li>`).join("")}</ul>` : "<ul><li></li></ul>"}
+                                    onChange={(e) => {
+                                        const html = e.target.value;
+                                        const points = (html.match(/<li>(.*?)<\/li>/g) || [])
+                                            .map((li) => li.replace(/<\/?li>/g, "").trim())
+                                            .filter((text) => text !== "");
+                                        dispatch(updateProjectPoints({ index, points }));
+                                    }}
+                                />
+                            </EditorProvider>
+                         </div>
+                     </div>
+                </div>
+
+            </div>
+          </div>
+        ))}
+
+        {/* Add Project Button */}
+        {projects.length < 3 && (
+             <button
+                type="button"
+                onClick={handleAddProject}
+                className="w-full py-4 border-2 border-dashed border-blue-200 rounded-xl flex flex-col items-center justify-center gap-2 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 group"
+            >
+                <div className="p-2 bg-blue-100 rounded-full group-hover:scale-110 transition-transform">
+                    <LuPlus className="w-5 h-5" />
+                </div>
+                <span className="font-medium text-sm">Add Another Project</span>
+            </button>
+        )}
+
+        {/* 3. Footer Action */}
+        <div className="flex justify-end pt-6 border-t border-gray-100 mt-2">
           <button
-            className="bg-blue w-[8rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
             onClick={(e) => {
               e.preventDefault();
               resumeProjectsMutation.mutate({ id, projects });
             }}
+            disabled={resumeProjectsMutation.isPending}
+            className="relative inline-flex items-center justify-center px-8 py-2.5 text-sm font-medium text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {resumeProjectsMutation.isPending ? <Button_Loader /> : "Save"}
+            {resumeProjectsMutation.isPending ? (
+              <div className="flex items-center gap-2">
+                <Button_Loader text={"saving..."} />
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 cursor-pointer">
+                <LuSave className="w-4 h-4" />
+                <span>Save Projects</span>
+              </div>
+            )}
           </button>
         </div>
       </form>
     </div>
   );
 };
+
+// --- Reusable Clean Input Component ---
+const CleanInput = ({ label, name, type = "text", value, placeholder, onChange, icon: Icon, required }) => {
+    return (
+      <div className="flex flex-col gap-1.5 group">
+        <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+          {label}
+          {required && <span className="text-red-500 text-xs">*</span>}
+        </label>
+        
+        <div className="relative flex items-center">
+          {/* Icon */}
+          <div className="absolute left-3 text-gray-400 group-focus-within:text-blue-600 transition-colors duration-200 pointer-events-none">
+            <Icon className="w-4 h-4" />
+          </div>
+          
+          {/* Input */}
+          <input
+            type={type}
+            name={name}
+            value={value || ""}
+            onChange={onChange}
+            placeholder={placeholder}
+            required={required}
+            className={`w-full pl-10 pr-4 py-2.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg outline-none transition-all duration-200 
+                       placeholder:text-gray-400 
+                       hover:border-gray-400 
+                       focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm
+                       ${type === 'date' ? 'text-gray-500' : ''}`} 
+          />
+        </div>
+      </div>
+    );
+  };
 
 export default Projects;

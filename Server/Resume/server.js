@@ -21,7 +21,7 @@ redisConnection();
 })()
  
 //! rabitmq connection and consume event
-
+ 
 //! Common Middleware
 app.use(express.json());
 
@@ -35,7 +35,6 @@ app.use(
 
 app.use("/resume",creationRoutes);
 app.use("/resume",readRoutes);
-
 
 
 

@@ -12,7 +12,7 @@
   "author": "Akash Biswas",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "nodemon --legacy-watch",
     "build": "tsc",
     "start": "node dist/server.js",
     "migrate:generate": "drizzle-kit generate --config drizzle.config.ts",

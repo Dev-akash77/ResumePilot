@@ -1,11 +1,11 @@
+import React, { useEffect } from "react";
 import FromHeaders from "../../../Common/FromHeaders";
-import { LuBrain } from "react-icons/lu";
+import { LuBrain, LuSave, LuSparkles } from "react-icons/lu"; // Added Sparkles for UX
 import { useDispatch, useSelector } from "react-redux";
 import {
   setNextSection,
   summaryChange,
 } from "../../../Slice/ResumeSlice";
-import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { usePerticularResume } from "../../../Hook/ResumeHooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -26,8 +26,7 @@ const Profile = () => {
   };
 
   // ! GET SUMMARY DATA FOM DATABASE AND SET IN REDUX STATE
-  const { data: summaryDataRead } = usePerticularResume(id); 
-
+  const { data: summaryDataRead } = usePerticularResume(id);
 
   // ! CHECK NEXT SECTION
   useEffect(() => {
@@ -53,7 +52,6 @@ const Profile = () => {
     },
   });
 
-
   // ! AFTER SAVING
   const handleClickSave = (e) => {
     e.preventDefault();
@@ -61,39 +59,82 @@ const Profile = () => {
   };
 
   return (
-    <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
-      {/* Header of the from */}
-      <FromHeaders title={"Profile"} des={"Add Summary For your job title"} />
+    <div className="w-full bg-white rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-slate-100 overflow-hidden">
+      
+      {/* Top Decor Line */}
+      <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 to-purple-500"></div>
 
-      {/* from  */}
-      <form className="w-full mt-3 flex flex-col gap-5">
-        {/* !generate summary via AI */}
-        <div className="flex justify-between items-center">
-          <p className="text-lg font-medium">Add Summary</p>
-          <button className="w-[10rem] text-blue text-[.9rem] rounded-md cursor-pointer h-[2.5rem] border-2 border-blue fc gap-2">
-            <LuBrain /> Generate from AI
-          </button>
+      <div className="p-8">
+        {/* Header of the form */}
+        <div className="mb-8">
+            <FromHeaders 
+                title={"Professional Summary"} 
+                des={"Write a short summary of your career to catch recruiter's attention."} 
+            />
         </div>
 
-        {/* PROFILE FROMDATA */}
-        <textarea
-          name="summary"
-          value={resume.summary || ""}
-          onChange={handleChange}
-          placeholder="Add Summary"
-          className="p-2 border-2 rounded-md outline-0 focus-0"
-          rows={3}
-        ></textarea>
+        {/* Form Container */}
+        <form className="w-full flex flex-col gap-6">
+          
+          {/* ! Toolbar: Label + AI Button */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <label className="text-slate-700 font-semibold text-sm tracking-wide uppercase">
+                Your Summary
+            </label>
+            
+            <button 
+                type="button" // Prevent form submit
+                className="group relative inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-purple-700 bg-purple-50 border border-purple-100 rounded-lg hover:bg-purple-100 hover:border-purple-200 transition-all duration-300 shadow-sm hover:shadow-md active:scale-95"
+            >
+              <LuSparkles className="text-purple-500 group-hover:animate-pulse" />
+              <span>Generate with AI</span>
+              {/* Optional: AI Badge */}
+              <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-purple-500"></span>
+              </span>
+            </button>
+          </div>
 
-        <div className="flex items-end justify-end">
-          <button
-            className="bg-blue w-[8rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
-            onClick={handleClickSave}
-          >
-             {resumeSummaryMutation.isPending ? <Button_Loader /> : "Save"}
-          </button>
-        </div>
-      </form>
+          {/* PROFILE FORM DATA - Textarea */}
+          <div className="relative group">
+            <textarea
+              name="summary"
+              value={resume.summary || ""}
+              onChange={handleChange}
+              placeholder="Ex: Passionate Software Engineer with 3 years of experience in React and Node.js..."
+              className="w-full p-4 text-slate-700 leading-relaxed bg-white border border-slate-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all duration-300 resize-y min-h-[180px] hover:border-slate-300 placeholder:text-slate-400 text-base"
+            ></textarea>
+            
+            {/* Visual Helper text inside bottom right */}
+            <div className="absolute bottom-3 right-3 text-xs text-slate-400 pointer-events-none bg-white px-1">
+                {resume.summary ? resume.summary.length : 0} characters
+            </div>
+          </div>
+
+          {/* Action Footer */}
+          <div className="flex items-center justify-between pt-4 border-t border-slate-100 mt-2">
+            <p className="text-xs text-slate-400 hidden sm:block">
+                Tip: Keep it between 2-4 sentences.
+            </p>
+
+            <button
+              onClick={handleClickSave}
+              disabled={resumeSummaryMutation.isPending}
+              className="inline-flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white min-w-[140px] px-6 py-3 rounded-xl font-medium shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 transition-all duration-300 active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+            >
+              {resumeSummaryMutation.isPending ? (
+                <Button_Loader text={"saving..."}/>
+              ) : (
+                <>
+                    <span>Save Summary</span>
+                </>
+              )}
+            </button>
+          </div>
+
+        </form>
+      </div>
     </div>
   );
 };

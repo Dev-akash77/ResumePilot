@@ -12,6 +12,9 @@ import { updateResumeEducation } from "../../../Api/resumeApi";
 import Button_Loader from "../../../UI/Button_Loader";
 import toast from "react-hot-toast";
 
+// Icons
+import { LuGraduationCap, LuScroll, LuCalendar, LuMapPin, LuPercent, LuSave } from "react-icons/lu";
+
 const Education = () => {
   const { id } = useParams();
 
@@ -48,7 +51,7 @@ const Education = () => {
     onError: () => {
       dispatch(setNextSection(true));
     },
-    onSuccess: (data) => { 
+    onSuccess: (data) => {
       if (data?.success) {
         toast.success(data?.message);
         queryClient.removeQueries({ queryKey: ["perticularResume"] });
@@ -62,109 +65,143 @@ const Education = () => {
   // ! HANDLE SAVE HEADER DATA
   const handleSaveEducation = (e) => {
     e.preventDefault();
-
     resumeEducationMutation.mutate({ ...resume.education, id });
   };
 
   return (
-    <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
-      {/* Header of the from */}
-      <FromHeaders title={"Education"} des={"Add Your Education Details"} />
+    <div className="w-full mx-auto bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      
+      {/* 1. Header Section (Badge Removed) */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <FromHeaders title={"Education"} des={"Add your educational background and achievements."} />
+      </div>
 
-      {/* from  */}
-      <form className="w-full mt-3 flex flex-col gap-5">
-        {/* UNIVERSITY NAME */}
-        <div className="flex flex-col text-[1rem] font-medium w-full">
-          <p>University & Board Name</p>
-          <input
-            type="text"
+      {/* 2. Form Section */}
+      <form className="p-8 flex flex-col gap-6">
+        
+        {/* University & Degree - Full Width for better readability */}
+        <div className="space-y-6">
+          <CleanInput 
+            label="University / Board Name" 
             name="college"
             value={resume.education.college}
             onChange={handleChange}
             placeholder="Kalna Polytechnic, WBSCTE"
+            icon={LuGraduationCap}
             required
-            className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
           />
-        </div>
 
-        {/* Degree NAME */}
-        <div className="flex flex-col text-[1rem] font-medium w-full">
-          <p>Degree</p>
-          <input
-            type="text"
+          <CleanInput 
+            label="Degree / Stream" 
             name="degree"
             value={resume.education.degree}
             onChange={handleChange}
             placeholder="Btech in Computer Science"
+            icon={LuScroll}
             required
-            className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
           />
         </div>
 
-        {/*START DATE AND END DATE */}
-        <div className="flex w-full gap-3">
-          <div className="flex flex-col text-[1rem] font-medium w-full">
-            <p>Start Date</p>
-            <input
-              type="date"
-              name="start"
-              value={formatDate(resume.education.start)}
-              onChange={handleChange}
-              required
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border text-gray-500 cursor-pointer"
-            />
-          </div>
+        {/* Grid for compact fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Start & End Date */}
+          <CleanInput 
+            label="Start Date" 
+            name="start"
+            type="date"
+            value={formatDate(resume.education.start)}
+            onChange={handleChange}
+            icon={LuCalendar}
+            required
+          />
 
-          <div className="flex flex-col text-[1rem] font-medium w-full">
-            <p>End Date</p>
-            <input
-              type="date"
-              name="end"
-              value={formatDate(resume.education.end)}
-              onChange={handleChange}
-              required
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border text-gray-500 cursor-pointer"
-            />
-          </div>
+          <CleanInput 
+            label="End Date (or Expected)" 
+            name="end"
+            type="date"
+            value={formatDate(resume.education.end)}
+            onChange={handleChange}
+            icon={LuCalendar}
+            required
+          />
+
+          {/* CGPA & Location */}
+          <CleanInput 
+            label="CGPA / Percentage" 
+            name="cgpa"
+            type="number"
+            value={resume.education.cgpa}
+            onChange={handleChange}
+            placeholder="8.0"
+            icon={LuPercent}
+            required
+          />
+
+          <CleanInput 
+            label="Location" 
+            name="location"
+            value={resume.education.location}
+            onChange={handleChange}
+            placeholder="West Bengal, India"
+            icon={LuMapPin}
+          />
         </div>
 
-        {/*CGPA & LOCATION */}
-        <div className="flex w-full gap-3">
-          <div className="flex flex-col text-[1rem] font-medium w-full">
-            <p>CGPA</p>
-            <input
-              type="number"
-              name="cgpa"
-              value={resume.education.cgpa}
-              onChange={handleChange}
-              required
-              placeholder="8.0"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-            />
-          </div>
-
-          <div className="flex flex-col text-[1rem] font-medium w-full">
-            <p>Location</p>
-            <input
-              type="text"
-              name="location"
-              value={resume.education.location}
-              onChange={handleChange}
-              placeholder="West Bengal, India"
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal"
-            />
-          </div>
-        </div>
-
-        <div className="flex items-end justify-end">
+        {/* 3. Footer Action */}
+        <div className="flex justify-end pt-6 border-t border-gray-100 mt-2">
           <button
-            className="bg-blue w-[10rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
             onClick={handleSaveEducation}
+            disabled={resumeEducationMutation.isPending}
+            className="relative inline-flex items-center justify-center px-8 py-2.5 text-sm font-medium text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {resumeEducationMutation.isPending ? <Button_Loader /> : "Save"}
+            {resumeEducationMutation.isPending ? (
+              <div className="flex items-center gap-2">
+                <Button_Loader text={"saving..."}/>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <LuSave className="w-4 h-4" />
+                <span>Save Education</span>
+              </div>
+            )}
           </button>
         </div>
       </form>
+    </div>
+  );
+};
+
+// --- Reusable Clean Input Component ---
+const CleanInput = ({ label, name, type = "text", value, placeholder, onChange, icon: Icon, required }) => {
+  return (
+    <div className="flex flex-col gap-1.5 group">
+      <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+        {label}
+        {required && <span className="text-red-500 text-xs">*</span>}
+      </label>
+      
+      <div className="relative flex items-center">
+        {/* Icon */}
+        <div className="absolute left-3 text-gray-400 group-focus-within:text-blue-600 transition-colors duration-200 pointer-events-none">
+          <Icon className="w-4 h-4" />
+        </div>
+        
+        {/* Input */}
+        <input
+          type={type}
+          name={name}
+          value={value || ""}
+          onChange={onChange}
+          placeholder={placeholder}
+          required={required}
+          className={`w-full pl-10 pr-4 py-2.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg outline-none transition-all duration-200 
+                     placeholder:text-gray-400 
+                     hover:border-gray-400 
+                     focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm
+                     ${type === 'date' ? 'text-gray-500' : ''}`} 
+        />
+      </div>
     </div>
   );
 };

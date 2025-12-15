@@ -1,7 +1,6 @@
 version: "3.9"
 
 services:
-
   gateway:
     build:
       context: ./api
@@ -18,11 +17,11 @@ services:
       - redis
       - rabbitmq
       - resume
+      - payment
     env_file:
       - ./api/.env
     networks:
       - app-network
-
 
   auth:
     build:
@@ -38,7 +37,6 @@ services:
     networks:
       - app-network
 
-
   profile:
     build:
       context: ./profile
@@ -52,7 +50,6 @@ services:
       - ./profile/.env
     networks:
       - app-network
-
 
   notification:
     build:
@@ -68,7 +65,6 @@ services:
     networks:
       - app-network
 
-
   resume:
     build:
       context: ./resume
@@ -83,6 +79,19 @@ services:
     networks:
       - app-network
 
+  payment:
+    build:
+      context: ./payment
+      dockerfile: Dockerfile
+    ports:
+      - "4005:4005"
+    volumes:
+      - ./payment:/app
+      - /app/node_modules
+    env_file: 
+      - ./payment/.env
+    networks:
+      - app-network
 
   redis:
     image: redis/redis-stack:latest
@@ -92,7 +101,6 @@ services:
       - "8001:8001"
     networks:
       - app-network
-
 
   rabbitmq:
     image: rabbitmq:3-management

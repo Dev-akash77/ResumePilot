@@ -9,6 +9,8 @@ import Features from "./Features";
 import { useLoginStatus } from "./../../Hook/useLoginStatus";
 import useLenisScroll from './../../Animation/Lenis';
 import Main_Loader from "../../UI/Main_Loader";
+import Payment from "./Payment";
+import Testimonials from "./Testimonials";
 
 const Home = () => {
     const lenisRef = useLenisScroll();
@@ -140,6 +142,10 @@ const Home = () => {
 
       {/* Features Section */}
       <Features />
+      {/* Testimonial Section */}
+      <Testimonials />
+      {/* Payment and Billing Section */}
+      <Payment />
     </>
   );
 };

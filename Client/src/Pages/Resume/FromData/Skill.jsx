@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FromHeaders from "../../../Common/FromHeaders";
-import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -11,25 +10,29 @@ import {
   toolsSkillRemove,
 } from "../../../Slice/ResumeSlice";
 import { usePerticularResume } from "../../../Hook/ResumeHooks";
-import { useEffect } from "react";
 import { updateResumeSkill } from "../../../Api/resumeApi";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Button_Loader from "../../../UI/Button_Loader";
 
+// Icons
+import { LuCpu, LuWrench, LuPlus, LuX, LuSave } from "react-icons/lu";
+
 const Skill = () => {
   const { id } = useParams();
   const [input, setInput] = useState("");
+  const [inputTools, setInputTools] = useState("");
+  
   const resume = useSelector((state) => state.resume);
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  //   ! delete skill
+  // --- Handlers ---
+
   const handleDeletSkill = (id) => {
     dispatch(technicalSkillRemove({ id }));
   };
 
-  //   ! Add skill
   const handleAddSkill = (e) => {
     e.preventDefault();
     if (input.trim() !== "") {
@@ -38,14 +41,10 @@ const Skill = () => {
     }
   };
 
-  const [inputTools, setInputTools] = useState("");
-
-  //   ! delete skill
   const handleDeletTools = (id) => {
     dispatch(toolsSkillRemove({ id }));
   };
 
-  //   ! Add skill
   const handleAddTools = (e) => {
     e.preventDefault();
     if (inputTools.trim() !== "") {
@@ -54,29 +53,23 @@ const Skill = () => {
     }
   };
 
-  // ! GET SKILLS DATA
+  // --- Data Fetching & Validation ---
+
   const apiSkills = usePerticularResume(id)?.data?.data?.skills;
   const skillDataRead = apiSkills ?? { technical: [], tools: [] };
-
   const { technical, tools } = skillDataRead;
 
-
-  // ! CHECK NEXT SECTION
   useEffect(() => {
     const allFilled = technical.length > 0 && tools.length > 0;
-
     dispatch(setNextSection(!allFilled));
   }, [technical, tools, dispatch]);
 
-
-
-
-    const resumeSkillMutation = useMutation({
+  const resumeSkillMutation = useMutation({
     mutationFn: updateResumeSkill,
     onError: () => {
       dispatch(setNextSection(true));
     },
-    onSuccess: (data) => { 
+    onSuccess: (data) => {
       if (data?.success) {
         toast.success(data?.message);
         queryClient.removeQueries({ queryKey: ["perticularResume"] });
@@ -87,119 +80,138 @@ const Skill = () => {
     },
   });
 
-  // ! HANDLE SAVE SKILLS DATA
   const handleSaveSkills = (e) => {
     e.preventDefault();
-
     resumeSkillMutation.mutate({ ...resume.skills, id });
   };
 
   return (
-    <div className="border-t-5 border-t-blue overflow-hidden rounded-lg p-3 pb-10 bss bg-white">
-      {/* Header of the form */}
-      <FromHeaders
-        title={"Skills"}
-        des={"Add Your Top Professional Key Skills"}
-      />
+    <div className="w-full mx-auto bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+      
+      {/* 1. Header */}
+      <div className="px-8 py-6 border-b border-gray-100">
+        <FromHeaders
+          title={"Skills"}
+          des={"Highlight your top professional technical skills and tools."}
+        />
+      </div>
 
-      {/* form */}
-      <form className="w-full mt-3 flex flex-col gap-5">
-        {/* Add Technical Skills */}
-        <div className="flex flex-col gap-2">
-          <h2 className="font-medium text-xl flex items-center text-gray-700">
-            Technical
-          </h2>
+      {/* 2. Form Content */}
+      <form className="p-8 flex flex-col gap-8">
+        
+        {/* --- Section 1: Technical Skills --- */}
+        <SkillGroup 
+          title="Technical Skills"
+          icon={LuCpu}
+          skills={resume.skills?.technical}
+          inputValue={input}
+          setInputValue={setInput}
+          onAdd={handleAddSkill}
+          onRemove={handleDeletSkill}
+          placeholder="e.g. React, Node.js, Python, Java..."
+        />
 
-          <div className="flex flex-wrap gap-y-3 gap-x-2">
-            {resume.skills?.technical.map((cur, id) => {
-              return (
-                <div
-                  key={id}
-                  className="rounded-md capitalize text-gray-700 bg-gray-200 py-[.2rem] gap-2 px-2 text-[.7rem] text-center flex w-max items-center justify-center"
-                >
-                  {cur}
-                  <RxCross2
-                    className="cursor-pointer"
-                    onClick={() => {
-                      handleDeletSkill(id);
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
+        {/* Divider */}
+        <div className="h-px bg-gray-100 w-full" />
 
-          <div className="fcb gap-4">
-            <input
-              type="text"
-              required
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="React, Node, C++, Python, Java, Javacript, Etc.."
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal w-full"
-            />
-            <button
-              className="py-2 px-5 rounded-md cursor-pointer bg-blue cc text-white"
-              onClick={handleAddSkill}
-            >
-              Add
-            </button>
-          </div>
-        </div>
+        {/* --- Section 2: Tools --- */}
+        <SkillGroup 
+          title="Tools & Platforms"
+          icon={LuWrench}
+          skills={resume.skills?.tools}
+          inputValue={inputTools}
+          setInputValue={setInputTools}
+          onAdd={handleAddTools}
+          onRemove={handleDeletTools}
+          placeholder="e.g. Git, Docker, AWS, Figma..."
+        />
 
-        {/* Add Tools */}
-        <div className="flex flex-col gap-2">
-          <h2 className="font-medium text-xl flex items-center text-gray-700">
-            Tools
-          </h2>
-
-          <div className="flex flex-wrap gap-y-3 gap-x-2">
-            {resume.skills?.tools.map((cur, id) => {
-              return (
-                <div
-                  key={id}
-                  className="rounded-md capitalize text-gray-700 bg-gray-200 py-[.2rem] gap-2 px-2 text-[.7rem] text-center flex w-max items-center justify-center"
-                >
-                  {cur}
-                  <RxCross2
-                    className="cursor-pointer"
-                    onClick={() => {
-                      handleDeletTools(id);
-                    }}
-                  />
-                </div>
-              );
-            })}
-          </div>
-
-          <div className="fcb gap-4">
-            <input
-              type="text"
-              required
-              value={inputTools}
-              onChange={(e) => setInputTools(e.target.value)}
-              placeholder=" Git, GitHub, Docker, Redis, Postman Etc.."
-              className="outline-0 border-gray-300 py-1 px-2 rounded-sm border placeholder:text-gray-300 placeholder:font-normal w-full"
-            />
-            <button
-              className="py-2 px-5 rounded-md cursor-pointer bg-blue cc text-white"
-              onClick={handleAddTools}
-            >
-              Add
-            </button>
-          </div>
-        </div>
-
-        <div className="flex items-end justify-end">
+        {/* 3. Footer Action */}
+        <div className="flex justify-end pt-2">
           <button
-            type="button"
-            className="bg-blue w-[10rem] h-[2.5rem] text-white cc rounded-md cursor-pointer"
             onClick={handleSaveSkills}
+            disabled={resumeSkillMutation.isPending}
+            className="relative inline-flex items-center justify-center px-8 py-2.5 text-sm font-medium text-white transition-all duration-200 bg-blue-600 border border-transparent rounded-lg shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-70 disabled:cursor-not-allowed"
           >
-             {resumeSkillMutation.isPending ? <Button_Loader /> : "Save"}
+            {resumeSkillMutation.isPending ? (
+              <div className="flex items-center gap-2">
+                <Button_Loader text={"saving..."}/>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <span>Save Skills</span>
+              </div>
+            )}
           </button>
         </div>
       </form>
+    </div>
+  );
+};
+
+// --- Reusable Component for Skill Sections ---
+const SkillGroup = ({ title, icon: Icon, skills, inputValue, setInputValue, onAdd, onRemove, placeholder }) => {
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Label */}
+      <label className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+        <div className="p-1.5 rounded-md bg-blue-50 text-blue-600">
+             <Icon className="w-4 h-4" />
+        </div>
+        {title}
+      </label>
+
+      {/* Tags Display Container */}
+      <div className="min-h-[50px] p-4 rounded-lg border border-gray-200 bg-gray-50/50 flex flex-wrap gap-2 transition-all hover:border-gray-300 hover:bg-gray-50">
+        {(!skills || skills.length === 0) ? (
+          <span className="text-sm text-gray-400 italic">No skills added yet. Type below to add.</span>
+        ) : (
+          skills.map((skill, index) => (
+            <div
+              key={index}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 shadow-sm group transition-all hover:border-blue-300 hover:text-blue-600"
+            >
+              <span className="capitalize">{skill}</span>
+              <button
+                type="button"
+                onClick={() => onRemove(index)}
+                className="p-0.5 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+              >
+                <LuX className="w-3 h-3" />
+              </button>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Input Area */}
+      <div className="flex gap-2">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          onKeyDown={(e) => {
+              if(e.key === 'Enter') {
+                  e.preventDefault(); 
+                  onAdd(e);
+              }
+          }}
+          placeholder={placeholder}
+          className="flex-grow px-4 py-2.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg outline-none transition-all duration-200 
+                     placeholder:text-gray-400 
+                     hover:border-gray-400 
+                     focus:border-blue-600 focus:ring-1 focus:ring-blue-600 shadow-sm"
+        />
+        <button
+          type="button"
+          onClick={onAdd}
+          disabled={!inputValue.trim()}
+          className="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95"
+        >
+          <LuPlus className="w-4 h-4 mr-1.5" />
+          Add
+        </button>
+      </div>
     </div>
   );
 };
