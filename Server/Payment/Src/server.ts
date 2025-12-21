@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config";
 import logger from "./config/logger.config";
 import { pg_onnection } from "./config/db.config";
+import { paymentRoutes } from "./routes/payment.routes";
 
 const app = express();
 const PORT = Number(process.env.PORT)||4005;
@@ -12,6 +13,9 @@ app.use(express.json());
 // ! DEFINE ALL CONFIG FN
 pg_onnection();
 
+
+// ! DEFINE ROUTES
+app.use("/payment",paymentRoutes);
 
 // ! START THE SERVER ON PORT 4005
 app.listen(PORT, () => {

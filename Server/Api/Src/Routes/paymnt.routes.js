@@ -16,7 +16,7 @@ router.use(
     on: {
       proxyReq: (proxyReq, req) => {
         proxyReq.setHeader("x-auth-data", req.user?.authId);
-      },
+      }, 
 
       error: (err, req, res) => {
         logger.error("Proxy Error", err);
