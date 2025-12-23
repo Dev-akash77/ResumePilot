@@ -13,7 +13,7 @@ export const payment = async (req: Request, res: Response) => {
     const { amount } = req.body;
     const authId = req.header("x-auth-data");
 
-    if (!amount || amount.length < 0) {
+    if (!amount ) {
       return res
         .status(400)
         .json({ success: false, message: "Valid amount is required" });
@@ -40,6 +40,38 @@ export const payment = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     logger.error(`Error in payment controller: ${error.message}`);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: error.message,
+    });
+  }
+};
+
+export const verifyPayment = async (req: Request, res: Response) => {
+  try {
+    const { razorpay_order_id, cradit } = req.body;
+    const authId = req.header("x-auth-data");
+
+    if (!razorpay_order_id || !cradit) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Something Went Wrong" });
+    }
+
+    const orderInfo = await razorpay.orders.fetch(razorpay_order_id);
+
+    if (!orderInfo) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Order not verify" });
+    }
+
+
+    res.status(200).json({ success: true, message: "Payment Successful",data:orderInfo });
+  } catch (error: any) {
+    logger.error(`Error in Verify payment controller: ${error.message}`);
 
     return res.status(500).json({
       success: false,
