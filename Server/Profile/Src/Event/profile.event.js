@@ -90,3 +90,35 @@ export const updateResumeCount = async (data) => {
     );
   }
 };
+
+export const ubdateCradit = async (data) => {
+  try {
+    if (!data || (Array.isArray(data) && data.length === 0)) {
+      logger.warn("Cradit Added : No data received");
+      return;
+    }
+
+    const { authId, cradit } = data;
+
+    if (!authId || !cradit) {
+      return logger.warn("Cradit Added : No data received");
+    }
+    // ! atomic credit increment
+    const updatedProfile = await profileModel.findOneAndUpdate(
+      { authId },
+      { $inc: { cradit } },
+      { new: true }
+    );
+
+    if (!updatedProfile) {
+      logger.warn(`Credit update failed: user not found (${authId})`);
+      return;
+    }
+
+    logger.info(
+      `Credit added successfully | user=${authId} | +${cradit} | total=${updatedProfile.cradit}`
+    );
+  } catch (error) {
+    logger.error("Error in Cradit Added ubdateCradit", error.message || error);
+  }
+};

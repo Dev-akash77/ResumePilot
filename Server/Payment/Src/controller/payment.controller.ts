@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import logger from "../config/logger.config";
 import Razorpay from "razorpay";
+import { publishEvent } from "../config/rabitmq.config";
+import { EXCHANGES, ROUTING_KEYS } from "../constant/rabitmq.constant";
 
 // ! Creat Instance
 const razorpay = new Razorpay({
@@ -13,7 +15,7 @@ export const payment = async (req: Request, res: Response) => {
     const { amount } = req.body;
     const authId = req.header("x-auth-data");
 
-    if (!amount ) {
+    if (!amount) {
       return res
         .status(400)
         .json({ success: false, message: "Valid amount is required" });
@@ -68,8 +70,21 @@ export const verifyPayment = async (req: Request, res: Response) => {
         .json({ success: false, message: "Order not verify" });
     }
 
+    const eventPayload = {
+      authId,
+      cradit,
+    };
 
-    res.status(200).json({ success: true, message: "Payment Successful",data:orderInfo });
+    // ! PUBLISH EVENT
+    await publishEvent(
+      EXCHANGES.PROFILE,
+      ROUTING_KEYS.PROFILE.ADDED_CRADIT,
+      eventPayload
+    );
+
+    res
+      .status(200)
+      .json({ success: true, message: "Payment Successful", data: orderInfo });
   } catch (error: any) {
     logger.error(`Error in Verify payment controller: ${error.message}`);
 

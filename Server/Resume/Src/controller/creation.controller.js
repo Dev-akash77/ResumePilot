@@ -69,7 +69,7 @@ export const createResume = async (req, res) => {
     await publishEvent(
       EXCHANGES.PROFILE,
       ROUTING_KEYS.PROFILE.UPDATE_USER_RESUME_CREATION,
-      { creator: authId, resumeId: resume._id }
+      { creator: authId, resumeId: resume._id } 
     );
 
     // ! DELET REDIS CACHING FILE

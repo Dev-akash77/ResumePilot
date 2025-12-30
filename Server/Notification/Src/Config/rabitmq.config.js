@@ -22,7 +22,7 @@ export const connectRabbitMQ = async (exchangeName) => {
 export const publishEvent = async (exchange, routingKey, message) => {
   try {
     if (!channel) {
-      await connectRabbitMQ(exchange);
+      await connectRabbitMQ(exchange); 
     }
 
     await channel.publish(
@@ -45,7 +45,7 @@ export const publishEvent = async (exchange, routingKey, message) => {
 export const consumeEvent = async (exchange, routingKey, callback) => {
   try {
     if (!channel) {
-      await connectRabbitMQ();
+      await connectRabbitMQ(exchange);
     }
 
     const q = await channel.assertQueue("", { exclusive: true });
