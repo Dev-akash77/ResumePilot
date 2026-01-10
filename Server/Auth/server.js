@@ -16,14 +16,14 @@ const PORT = process.env.PORT;
 
 // ! config and connection fn 
 mongo_connection();
-redisConnection();
+redisConnection(); 
 (async () => {
   await connectRabbitMQ(EXCHANGES.AUTH);
   await consumeEvent(EXCHANGES.AUTH,ROUTING_KEYS.AUTH.UPDATE_USER_ID,updaProfileId)
 })();
 
 //! Common Middleware
-app.use(cookieParser());
+app.use(cookieParser());  
 app.use(express.json());
 
 app.use(

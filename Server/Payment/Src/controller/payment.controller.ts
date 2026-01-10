@@ -3,6 +3,9 @@ import logger from "../config/logger.config";
 import Razorpay from "razorpay";
 import { publishEvent } from "../config/rabitmq.config";
 import { EXCHANGES, ROUTING_KEYS } from "../constant/rabitmq.constant";
+import { database } from "../config/db.config";
+import { payments } from "../database/schema";
+import { eq } from "drizzle-orm";
 
 // ! Creat Instance
 const razorpay = new Razorpay({
@@ -10,10 +13,10 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET as string,
 });
 
-export const payment = async (req: Request, res: Response) => {
+export const payment = async (req: Request, res: Response) => { 
   try {
     const { amount } = req.body;
-    const authId = req.header("x-auth-data");
+    const authId = req.header("x-auth-data");    
 
     if (!amount) {
       return res
@@ -34,6 +37,16 @@ export const payment = async (req: Request, res: Response) => {
     });
 
     logger.info(`Razorpay order created: ${order.id}`);
+    
+
+    await database.insert(payments).values({
+      auth_id:authId,
+      payment_id:'PENDING',
+      order_id:order.id,
+      creditsPurchased: 0,
+      amount:amount,
+    })
+
 
     return res.status(201).json({
       success: true,
@@ -74,14 +87,21 @@ export const verifyPayment = async (req: Request, res: Response) => {
       authId,
       cradit,
     };
-
+    
     // ! PUBLISH EVENT
     await publishEvent(
       EXCHANGES.PROFILE,
       ROUTING_KEYS.PROFILE.ADDED_CRADIT,
       eventPayload
     );
-
+  
+    await database.update(payments).set({
+      payment_id:razorpay_order_id,
+      creditsPurchased:cradit,
+      success:true,
+      currency:orderInfo.currency
+    }).where(eq(payments.order_id,razorpay_order_id));
+    
     res
       .status(200)
       .json({ success: true, message: "Payment Successful", data: orderInfo });
@@ -95,3 +115,4 @@ export const verifyPayment = async (req: Request, res: Response) => {
     });
   }
 };
+ 

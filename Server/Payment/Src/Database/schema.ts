@@ -1,22 +1,20 @@
-import { pgTable, varchar, integer, boolean, timestamp, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, varchar, integer, boolean, timestamp, pgEnum,uuid } from "drizzle-orm/pg-core";
 
-export const currencyEnum = pgEnum("currency", ["INR", "USD"]);
 export const gatewayEnum = pgEnum("gateway", ["Razorpay", "Stripe"]);
 
 
 // ! PAYMENT SCHEMA
 export const payments = pgTable("payments", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-
-  user_id: varchar("user_id", { length: 255 }).notNull(),
+  id: uuid('id').primaryKey().defaultRandom().notNull(),
+  auth_id: varchar("auth_id", { length: 255 }).notNull(),
   payment_id: varchar("payment_id", { length: 255 }).notNull(),
   order_id: varchar("order_id", { length: 255 }).notNull(),
 
-  creditsPurchased: varchar("credits_purchased", { length: 255 }).notNull(),
+  creditsPurchased: integer("credits_purchased").notNull(),
 
   amount: integer("amount").notNull(),
 
-  currency: currencyEnum("currency").default("INR"),
+  currency: varchar("currency").default("INR"),
 
   gateway: gatewayEnum("gateway").default("Razorpay"),
 

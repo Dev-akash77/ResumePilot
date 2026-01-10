@@ -16,22 +16,21 @@ const PORT = process.env.PORT;
 // ! config and connection fn
 mongo_connection();
 redisConnection(); 
-   
+    
   
 //! rabitmq connection and consume event
 (async () => {
   await connectRabbitMQ(EXCHANGES.PROFILE);
-  await connectRabbitMQ(EXCHANGES.PAYMENT);
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.CREATE,profileCreate);
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.VERIFY,verifyProfile);
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.UPDATE_USER_RESUME_CREATION,updateResumeCount);
   await consumeEvent(EXCHANGES.PROFILE,ROUTING_KEYS.PROFILE.ADDED_CRADIT,ubdateCradit);
 })();
-
+ 
 //! Common Middleware 
 app.use(express.json());
 
-app.use(
+app.use( 
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,

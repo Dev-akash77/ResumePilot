@@ -7,13 +7,13 @@ import { creationRoutes } from "./Src/Routes/cration.routes.js";
 import { connectRabbitMQ } from "./Src/Config/rabitmq.config.js";
 import { EXCHANGES } from "./Src/Constant/rabitmq.constant.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
-import { readRoutes } from "./Src/Routes/read.routes.js";
+import { readRoutes } from "./Src/Routes/read.routes.js"; 
 
 
 const app = express();
 const PORT = process.env.PORT; 
-
-// ! config and connection fn
+ 
+// ! config and connection fn 
 mongo_connection();
 redisConnection();
 (async()=>{

@@ -34,6 +34,9 @@ services:
       - /app/node_modules
     env_file:
       - ./auth/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -48,6 +51,9 @@ services:
       - /app/node_modules
     env_file:
       - ./profile/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -62,6 +68,9 @@ services:
       - /app/node_modules
     env_file:
       - ./notification/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -76,6 +85,9 @@ services:
       - /app/node_modules
     env_file:
       - ./resume/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -90,6 +102,9 @@ services:
       - /app/node_modules
     env_file: 
       - ./payment/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     networks:
       - app-network
 
@@ -111,9 +126,20 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin123
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
+    
+volumes:
+  rabbitmq_data:

@@ -55,7 +55,7 @@ export const send_otp_verify = async () => {
     const res = await api.post(`/auth/otp/send`);
     return res?.data;
   } catch (error) {
-     toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message);
     console.log(error?.response?.data?.message || error.message);
   }
 };
@@ -66,7 +66,7 @@ export const verify_account = async (otp) => {
     const res = await api.post(`/auth/otp/verify`, { otp });
     return res?.data;
   } catch (error) {
-     toast.error(error?.response?.data?.message);
+    toast.error(error?.response?.data?.message);
     console.log(error?.response?.data?.message || error.message);
   }
 };

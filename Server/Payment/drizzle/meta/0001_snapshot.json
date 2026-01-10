@@ -1,6 +1,6 @@
 {
-  "id": "3d1be188-63dc-45b0-bcdd-b84089c6d1de",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "c0b1b40e-1a28-4309-9a12-3781b7729cca",
+  "prevId": "3d1be188-63dc-45b0-bcdd-b84089c6d1de",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -10,20 +10,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "payments_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
+          "default": "gen_random_uuid()"
         },
         "auth_id": {
           "name": "auth_id",

@@ -6,7 +6,7 @@ export let connection, channel;
 // ! connect rabitmq
 export const connectRabbitMQ = async (exchangeName) => {
   try {
-    connection = await amqp.connect(process.env.RABITMQ_URI);
+    connection = await amqp.connect(process.env.RABBITMQ_URI);
     channel = await connection.createChannel();
     await channel.assertExchange(exchangeName, "topic", { durable: true });
     logger.info(`RabbitMQ connected with exchange name:"${exchangeName}"`);

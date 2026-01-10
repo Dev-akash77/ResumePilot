@@ -1,6 +1,7 @@
 import logger from "../Config/logger.config.js";
 import { publishEvent } from "../Config/rabitmq.config.js";
 import { EXCHANGES, ROUTING_KEYS } from "../Constant/rabitmq.constant.js";
+import { REDIS_KEYS } from "../Constant/redis.constant.js";
 import { profileModel } from "../Model/profile.model.js";
 import { deleteCached } from "../Utils/cached.utils.js";
 
@@ -55,7 +56,7 @@ export const verifyProfile = async (data) => {
     result.isVerified = true;
     await result.save();
 
-    await deleteCached(authId);
+    await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
     logger.info(`profile verified : ${result._id}`);
   } catch (error) {
     logger.error("Error in profile Verify:", error.message || error);
@@ -81,6 +82,7 @@ export const updateResumeCount = async (data) => {
     user.resume.push(resumeId);
 
     await user.save();
+    await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
 
     logger.info("Credit deducted & resume added successfully");
   } catch (error) {
@@ -114,6 +116,8 @@ export const ubdateCradit = async (data) => {
       logger.warn(`Credit update failed: user not found (${authId})`);
       return;
     }
+
+    await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
 
     logger.info(
       `Credit added successfully | user=${authId} | +${cradit} | total=${updatedProfile.cradit}`

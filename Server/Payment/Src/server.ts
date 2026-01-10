@@ -15,14 +15,14 @@ app.use(express.json());
 
 // ! DEFINE ALL CONFIG FN
 pg_onnection();
-
-// ! RABITMQ
+ 
+// ! RABITMQ 
 (async()=>{
   await connectRabbitMQ(EXCHANGES.PAYMENT);
 })()
  
 // ! DEFINE ROUTES
-app.use("/payment",paymentRoutes);
+app.use("/payment",paymentRoutes); 
 
 // ! START THE SERVER ON PORT 4005
 app.listen(PORT, () => {

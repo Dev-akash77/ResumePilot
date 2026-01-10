@@ -8,11 +8,11 @@ import cookieParser from "cookie-parser";
 import { resumeRoutes } from "./Src/Routes/resume.routes.js";
 import { paymentRoutes } from "./Src/Routes/paymnt.routes.js";
 
-const app = express();
+const app = express(); 
 
 // ! SERVER PORT
-const PORT = process.env.PORT;
-
+const PORT = process.env.PORT; 
+  
 //! CROS SETUP 
 app.use(
   cors({
@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 // ! PROXY ROUTES STUP
 app.use(authRoutes);
-app.use(profileRoutes);
+app.use(profileRoutes); 
 app.use(resumeRoutes);
 app.use(paymentRoutes);
 
