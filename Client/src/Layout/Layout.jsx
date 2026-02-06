@@ -35,9 +35,9 @@ const Layout = () => {
         </div>
       </header>
 
-      <div className="flex w-screen h-full items-center">
+      <div className="flex max-w-screen h-full items-center">
         <Sidebar />
-        <div className="w-full bg-backgroundGray h-screen">{<Outlet />}</div>
+        <div className="md:w-full max-w-screen bg-backgroundGray h-screen overflow-y-auto">{<Outlet />}</div>
       </div>
       {resume.openDialog && <ResumeDailogBox />}
     </div>
