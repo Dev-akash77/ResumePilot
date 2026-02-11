@@ -11,7 +11,7 @@ import { paymentRoutes } from "./Src/Routes/paymnt.routes.js";
 const app = express(); 
 
 // ! SERVER PORT
-const PORT = process.env.PORT; 
+const PORT = process.env.PORT;  
   
 //! CROS SETUP 
 app.use(

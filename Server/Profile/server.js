@@ -10,7 +10,7 @@ import { profileRoutes } from "./Src/Routes/profile.routes.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
 
 
-const app = express();
+const app = express(); 
 const PORT = process.env.PORT; 
 
 // ! config and connection fn
