@@ -16,8 +16,6 @@ import {
 } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { GoUnverified } from "react-icons/go";
-import { RiPencilFill } from "react-icons/ri";
-import { IoMdKey } from "react-icons/io";
 import { IoPower } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
 import { useGetProfile } from "./../../Hook/useProfile";
@@ -74,7 +72,12 @@ const Profile = () => {
   const { data: profileData, isLoading: loadingProfile } = useGetProfile();
 
   if (loadingProfile) {
-    return <div className="h-screen w-screen cc"> <Main_Loader /></div>;
+    return (
+      <div className="h-screen w-screen cc">
+        {" "}
+        <Main_Loader />
+      </div>
+    );
   }
 
   const {
@@ -104,7 +107,7 @@ const Profile = () => {
     const intervals = {
       year: 31536000,
       month: 2592000,
-      day: 86400, 
+      day: 86400,
       hour: 3600,
       minute: 60,
     };
@@ -218,10 +221,10 @@ const Profile = () => {
         </div>
 
         <div className=" w-[75%] mt-5 fc gap-5">
-          <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
+          {/* <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
             <RiPencilFill />
             Edit Profile
-          </button>
+          </button> */}
           <button
             className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md"
             onClick={handleVerifyEmail}
@@ -229,10 +232,10 @@ const Profile = () => {
             <MdOutlineSecurity />
             {"Verify Email"}
           </button>
-          <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
+          {/* <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
             <IoMdKey className="text-lg" />
             Set Password
-          </button>
+          </button> */}
           <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
             {isLoading ? (
               <Button_Loader />

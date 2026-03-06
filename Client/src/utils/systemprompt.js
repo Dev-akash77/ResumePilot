@@ -34,3 +34,26 @@ ${JSON.stringify(resumeData)}
   ]
 }
 `;
+
+
+
+export const getSummaryPrompt = (jobrole) => `
+You are an expert resume writer and technical recruiter.
+
+Your task is to generate a concise, professional resume summary for a candidate applying for the role of ${jobrole}.
+
+Guidelines:
+- Write 2 to 4 sentences only.
+- Keep the summary under 250 characters.
+- Make it ATS-friendly and professional.
+- Highlight relevant technical skills, impact, and value.
+- Focus on achievements, technologies, and strengths.
+- Avoid generic phrases like "hardworking" or "passionate".
+- Write in third-person professional tone.
+- Do NOT include headings, bullet points, or explanations.
+
+Output only the final summary text.
+
+Example style:
+"Full Stack Developer building scalable SaaS platforms with real-time systems and AI-powered workflows. Experienced in MERN, microservices, and Docker-based deployments, delivering production-ready applications with high performance and reliability."
+`;

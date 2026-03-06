@@ -46,6 +46,8 @@ const Home = () => {
     return <div className="h-screen w-screen cc"><Main_Loader/></div>;
   }
 
+  
+
 
   return (
     <>
@@ -77,14 +79,12 @@ const Home = () => {
               </button>
             ) : (
               <div
-                className="rounded-full overflow-hidden w-[2.5rem] h-[2.5rem] cursor-pointer"
+                className="rounded-md overflow-hidden w-[2.5rem] h-[2.5rem] cursor-pointer"
                 onClick={() => navigate("/profile")}
               >
-                <img
-                  src="https://avatars.githubusercontent.com/u/130483894?v=4"
-                  alt="user"
-                  className="w-full"
-                />
+                <div className="w-full h-full overflow-hidden bg-blue cc text-3xl text-white">
+                  {data?.user?.name?.split("")[0]}
+                </div>
               </div>
             )}
           </div>
