@@ -11,9 +11,9 @@ import { paymentRoutes } from "./Src/Routes/paymnt.routes.js";
 const app = express(); 
 
 // ! SERVER PORT
-const PORT = process.env.PORT;  
+const PORT = process.env.PORT;    
   
-//! CROS SETUP 
+//! CROS SETUP  
 app.use(
   cors({
     origin: process.env.CLIENT_URL,

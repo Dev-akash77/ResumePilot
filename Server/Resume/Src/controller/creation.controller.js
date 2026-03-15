@@ -9,8 +9,22 @@ import axios from "axios";
 // ! GET ALL RESUME
 export const getAllResume = async (req, res) => {
   try {
-    const resume = await resumeModel.find();
-    return res.status(200).json({ success: true, data: resume });
+    const authId = req.header("x-auth-data");
+    const { data } = await axios.get(
+      `${process.env.PROFILE_URL}/profile/resume`,
+      {
+        headers: { "x-auth-data": authId },
+      }
+    );
+    
+
+    const resumeIds = data.data;
+
+    const resumes = await resumeModel.find({
+      _id: { $in: resumeIds },
+    });
+
+    return res.status(200).json({ success: true, data: resumes });
   } catch (error) {
     logger.error(`Error Geting Resume: ${error.message}`);
     return res.status(500).json({
@@ -27,7 +41,7 @@ export const createResume = async (req, res) => {
     const authId = req.header("x-auth-data");
 
     const { data: creditResponse } = await axios.get(
-      `${process.env.PROFILE_URL}/profile/credit/${authId}`
+      `${process.env.PROFILE_URL}/profile/credit/${authId}`,
     );
 
     if (!creditResponse.success) {
@@ -46,7 +60,7 @@ export const createResume = async (req, res) => {
 
     if (!title?.trim()) {
       logger.error(
-        `Resume Title Not Found — Missing field 'title' in resume creation`
+        `Resume Title Not Found — Missing field 'title' in resume creation`,
       );
       return res.status(400).json({
         success: false,
@@ -69,7 +83,7 @@ export const createResume = async (req, res) => {
     await publishEvent(
       EXCHANGES.PROFILE,
       ROUTING_KEYS.PROFILE.UPDATE_USER_RESUME_CREATION,
-      { creator: authId, resumeId: resume._id } 
+      { creator: authId, resumeId: resume._id },
     );
 
     // ! DELET REDIS CACHING FILE
@@ -261,7 +275,7 @@ export const resumeEducation = async (req, res) => {
     });
   } catch (error) {
     logger.error(
-      `Error In Resume Education Update Controller: ${error.message}`
+      `Error In Resume Education Update Controller: ${error.message}`,
     );
     return res.status(500).json({
       success: false,
@@ -321,7 +335,7 @@ export const resumeSkills = async (req, res) => {
 // ! Adding Experience
 export const resumeExperince = async (req, res) => {
   try {
-    const { id, title, role, location, points,start,end } = req.body;
+    const { id, title, role, location, points, start, end } = req.body;
 
     const resume = await resumeModel.findById(id);
 
@@ -345,10 +359,9 @@ export const resumeExperince = async (req, res) => {
       }
     }
 
-    
     // !start & end MUST be valid dates
     if (!start || isNaN(Date.parse(start))) {
-       logger.error(`Missing field start in resume education creation`);
+      logger.error(`Missing field start in resume education creation`);
       return res.status(400).json({
         success: false,
         message: "Start date is required",
@@ -362,7 +375,6 @@ export const resumeExperince = async (req, res) => {
         message: "End date is required",
       });
     }
-
 
     if (points.length < 5) {
       logger.error("Experience points exceed the allowed limit (max: 5)");
@@ -473,3 +485,5 @@ export const updateProjects = async (req, res) => {
     });
   }
 };
+
+

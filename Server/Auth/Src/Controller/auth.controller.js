@@ -11,7 +11,7 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    //! Validate input
+    //! Validate input 
     if (!name || !email || !password) {
       logger.error("Missing Field in Register");
       return res
@@ -50,7 +50,7 @@ export const register = async (req, res) => {
     });
     await authData.save();
 
-    // ! publish Event
+    // ! publish Event for creating user profile
     await publishEvent(
       EXCHANGES.PROFILE,
       ROUTING_KEYS.PROFILE.CREATE,

@@ -21,6 +21,7 @@ export const profileCreate = async (data) => {
       authId,
       lastActivity: lastLogin || new Date(),
     });
+    
 
     // ! publish event to auth service to update user_profolie id
     await publishEvent(EXCHANGES.AUTH, ROUTING_KEYS.AUTH.UPDATE_USER_ID, {

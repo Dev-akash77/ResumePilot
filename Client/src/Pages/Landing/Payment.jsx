@@ -57,7 +57,7 @@ const Payment = () => {
       id: "premium",
       name: "Business",
       credits: 300,
-      price: 14.99,
+      price: 15,
       icon: <FaCrown className="text-2xl" />,
       features: [
         "30 Resumes",

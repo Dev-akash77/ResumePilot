@@ -11,6 +11,16 @@ const Sidebar = () => {
 
   const { avatar, name } = profileData?.data || {};
 
+  // Safe initials generator
+  const initials = name
+    ? name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .slice(0, 2)
+        .toUpperCase()
+    : "";
+
   const menuItems = [
     { name: "Dashboard", icon: <FiHome />, to: "/dashboard" },
     {
@@ -22,68 +32,79 @@ const Sidebar = () => {
     { name: "About", icon: <LuBadgeInfo className="text-xl" />, to: "about" },
   ];
 
-  const navLinkClass = ({ isActive }) => {
-    return `w-full rounded-sm ${
+  const navLinkClass = ({ isActive }) =>
+    `w-full rounded-sm ${
       isActive
         ? "bg-gradient-to-r from-[#5577f4] to-[#8a46ec] text-white"
         : "text-black"
     } flex py-2 px-3 items-center gap-2 cursor-pointer text-md`;
-  };
 
   return (
     <div className="w-[15%] bg-background border-r border-gray-200 h-full cc overflow-hidden relative">
+      
       <div className="px-5 h-full w-full">
         <div className="pt-5 cc">
+          
+          {/* Avatar */}
           {avatar ? (
             <img
               src={avatar}
               alt={`${name}'s avatar`}
-              className="w-full h-full overflow-hidden"
+              className="w-[3.3rem] h-[3.3rem] rounded-full object-cover"
             />
           ) : (
-            <div className="w-[3.3rem] h-[3.3rem] overflow-hidden bg-blue cc text-2xl text-white rounded-full">
-              {name?.split("")[0]}
-              {name?.split(" ")[1].split("")[0]}
+            <div className="w-[3.3rem] h-[3.3rem] bg-blue cc text-2xl text-white rounded-full">
+              {initials}
             </div>
           )}
-          <p className="w-full text-center mt-1 text-lg">{name}</p>
 
+          <p className="w-full text-center mt-1 text-lg">{name || "User"}</p>
+
+          {/* Menu */}
           <div className="flex flex-col mt-7 gap-3 w-full">
-            {menuItems.map((cur, id) => {
-              return (
-                <NavLink
-                  key={id}
-                  end={cur.to === "/dashboard"}
-                  to={cur.to}
-                  className={navLinkClass}
-                >
-                  {cur.icon}
-                  {cur.name}
-                </NavLink>
-              );
-            })}
+            {menuItems.map((cur, id) => (
+              <NavLink
+                key={id}
+                end={cur.to === "/dashboard"}
+                to={cur.to}
+                className={navLinkClass}
+              >
+                {cur.icon}
+                {cur.name}
+              </NavLink>
+            ))}
           </div>
+
         </div>
       </div>
 
-      <div className="absolute bottom-15 fcb  h-[5rem] w-full border-t-2 border-t-gray-200 gap-2 px-5">
-        <NavLink to={"/profile"} className="fc gap-2">
+      {/* Bottom Profile */}
+      <div className="absolute bottom-0 flex justify-between items-center h-[5rem] w-full border-t border-gray-200 px-5">
+
+        <NavLink to={"/profile"} className="flex items-center gap-2">
+
           {avatar ? (
             <img
               src={avatar}
               alt={`${name}'s avatar`}
-              className="w-[2rem] h-[2rem] overflow-hidden"
+              className="w-[2rem] h-[2rem] rounded-full object-cover"
             />
           ) : (
-            <div className="w-[2rem] h-[2rem] overflow-hidden bg-blue cc text-[1rem] text-white rounded-full">
-              {name?.split("")[0]}
-              {name?.split(" ")[1].split("")[0]}
+            <div className="w-[2rem] h-[2rem] bg-blue cc text-[1rem] text-white rounded-full">
+              {initials}
             </div>
           )}
-          <div className="text-[.8rem] font-semibold">{name}</div>
+
+          <div className="text-[.8rem] font-semibold">
+            {name || "User"}
+          </div>
+
         </NavLink>
-        <IoIosLogOut className="text-2xl cursor-pointer hover:text-black duration-75 text-gray-400"/>
+
+        <IoIosLogOut className="text-2xl cursor-pointer hover:text-black duration-75 text-gray-400" />
+
       </div>
+
     </div>
   );
 };

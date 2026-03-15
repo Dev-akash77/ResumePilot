@@ -8,7 +8,7 @@ export const updaProfileId = async (data) => {
       return;
     }
     const { authId, profileId } = data;
-
+  
     await authModel.updateOne({ _id: authId }, { userId: profileId });
 
     logger.info(`Auth user ${authId} updated with userId ${profileId}`);
