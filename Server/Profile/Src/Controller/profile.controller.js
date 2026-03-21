@@ -81,23 +81,3 @@ export const getUserCredit = async (req, res) => {
     });
   }
 };
-
-//! get specefic controller
-export const getSpeceficProfileResume = async (req, res) => {
-  try {
-     const authId = req.header("x-auth-data");
-     const profileData = await profileModel.findOne({authId});
-     
-     if (!profileData) {
-      return res.status(400).json({success:false,message:'profile data not found'})
-     }
-
-     return res.status(200).json({success:true,data:profileData.resume})
-  } catch (error) {
-    logger.error(`Error fetching specific profile: ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-};

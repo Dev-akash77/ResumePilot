@@ -10,7 +10,6 @@ const PrfoileSchema = new Schema(
     },
     authId: { type: String, required: true },
     cradit: { type: Number, default: 20 },
-    resume: [],
     role: { type: String, enum: ["admin", "user"], default: "user" },
     lastActivity: { type: Date, default: Date.now },
     isVerified: { type: Boolean, default: false },

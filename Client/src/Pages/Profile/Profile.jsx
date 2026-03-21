@@ -18,7 +18,7 @@ import { FaCheckCircle } from "react-icons/fa";
 import { GoUnverified } from "react-icons/go";
 import { IoPower } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
-import { useGetProfile } from "./../../Hook/useProfile";
+import { getUserAllResume, useGetProfile } from "./../../Hook/useProfile";
 import Otp from "../../Components/Otp";
 import Main_Loader from "../../UI/Main_Loader";
 
@@ -70,8 +70,10 @@ const Profile = () => {
 
   // ! get user profile data
   const { data: profileData, isLoading: loadingProfile } = useGetProfile();
+  
+  const { data: resumeData, isLoading: loadingResume } = getUserAllResume();
 
-  if (loadingProfile) {
+  if (loadingProfile && loadingResume) {
     return (
       <div className="h-screen w-screen cc">
         {" "}
@@ -86,10 +88,13 @@ const Profile = () => {
     avatar,
     cradit,
     isVerified,
-    resume,
     lastActivity,
     createdAt,
   } = profileData?.data || {};
+
+  const resume = resumeData?.data || {};
+
+  
 
   const dateObj = new Date(createdAt);
   const formattedDateJoined = `${

@@ -1,7 +1,7 @@
 import express from "express";
 import {
   createResume,
-  getAllResume,
+  deleteResume,
   resumeEducation,
   resumeExperince,
   resumeHeader,
@@ -12,8 +12,6 @@ import {
 
 const router = express.Router();
 
-// ! GET ALL RESUME
-router.get("/", getAllResume);
 
 // ! Create Resume
 router.post("/", createResume);
@@ -23,5 +21,8 @@ router.post("/education", resumeEducation);
 router.post("/skills", resumeSkills);
 router.post("/experince", resumeExperince);
 router.post("/project", updateProjects);
+
+// ! Delete Resume
+router.delete('/',deleteResume);
 
 export const creationRoutes = router;

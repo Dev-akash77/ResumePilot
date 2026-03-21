@@ -21,3 +21,23 @@ export const getPerticularResume = async (req, res) => {
     });
   }
 };
+
+
+// ! GET ALL RESUME INDIVIDUAL USER
+export const getAllResume = async (req, res) => {
+  try {
+    const authId = req.header("x-auth-data");
+
+    const resumes = await resumeModel.find({
+      creator: { $in: authId },
+    });
+
+    return res.status(200).json({ success: true, data: resumes });
+  } catch (error) {
+    logger.error(`Error Geting Resume: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};

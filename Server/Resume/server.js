@@ -9,7 +9,7 @@ import { EXCHANGES } from "./Src/Constant/rabitmq.constant.js";
 import { redisConnection } from "./Src/Config/redis.config.js";
 import { readRoutes } from "./Src/Routes/read.routes.js"; 
 
-
+ 
 const app = express();
 const PORT = process.env.PORT; 
  

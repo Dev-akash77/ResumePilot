@@ -3,9 +3,9 @@ import ResumeCard from "../../Common/ResumeCard";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginStatus } from "./../../Hook/useLoginStatus";
+import { getUserAllResume } from "../../Hook/useProfile";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { toogleDialogBox } from "../../Slice/ResumeSlice";
-import { useAllResume } from "../../Hook/ResumeHooks";
 
 // Icons
 import { LuPlus, LuFileX } from "react-icons/lu";
@@ -19,8 +19,7 @@ const Dashboard = () => {
   const { data: loginData, isLoading: isAuthLoading, isError } = useLoginStatus();
 
   // Resume Data
-  const { data: allResume, isLoading: isResumeLoading } = useAllResume();
-
+  const { data: allResume, isLoading: isResumeLoading } = getUserAllResume();
   // ! Authentication Logic
   useEffect(() => {
     if (isAuthLoading) return;
@@ -81,8 +80,8 @@ const Dashboard = () => {
             </div>
 
             {/* Resume Cards Loop */}
-            {allResume?.data && allResume.data.length > 0 ? (
-              allResume.data.map((cur, id) => (
+            {allResume?.data || {} && allResume?.data?.length > 0 ? (
+              allResume?.data.map((cur, id) => (
                 <ResumeCard data={cur} key={id} />
               ))
             ) : null}

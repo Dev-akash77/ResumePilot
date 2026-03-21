@@ -1,16 +1,6 @@
 import toast from "react-hot-toast";
 import { api } from "./api";
 
-// ! GET ALL REUSME
-export const getAllResume = async () => {
-  try {
-    const { data } = await api.get(`/resume/`);
-    return data;
-  } catch (error) {
-    toast.error(error?.response?.data?.message);
-    console.log(error?.response?.data?.message || error.message);
-  }
-};
 
 // ! Create Resume
 export const creatResume = async ({ title, color }) => {
@@ -45,7 +35,7 @@ export const updateResumeHeader = async (fromData) => {
     console.log(error?.response?.data?.message || error.message);
   }
 };
-
+ 
 // ! UPDATE SUMMARY DATA
 export const updatResumeSummary = async (fromData) => {
   try {
@@ -95,6 +85,18 @@ export const updateResumeExperience = async (fromData) => {
 export const updateResumeProjects = async (Projects) => {
   try {
     const {data} = await api.post(`/resume/project`,Projects);
+    return data || {};
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+};
+
+
+// ! DELETE RESUME
+export const deleteResume = async (id) => {
+  try {    
+    const { data } = await api.delete(`/resume`, {data:{id}});
     return data || {};
   } catch (error) {
     toast.error(error?.response?.data?.message);

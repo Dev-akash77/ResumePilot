@@ -71,7 +71,7 @@ export const updateResumeCount = async (data) => {
       return;
     }
 
-    const { creator, resumeId } = data;
+    const { creator } = data;
     const user = await profileModel.findOne({ authId: creator });
 
     if (!user || (Array.isArray(user) && user.length === 0)) {
@@ -80,16 +80,14 @@ export const updateResumeCount = async (data) => {
 
     user.cradit = (user.cradit ?? 0) - 5;
 
-    user.resume.push(resumeId);
-
     await user.save();
-    await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(authId));
+    await deleteCached(REDIS_KEYS.PROFILE_BY_AUTHID(creator));
 
     logger.info("Credit deducted & resume added successfully");
   } catch (error) {
     logger.error(
-      "Error in profile update resume count:",
-      error.message || error
+      `Error in profile update resume count:
+      ${error.message || error}`
     );
   }
 };

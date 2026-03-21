@@ -6,34 +6,6 @@ import { deleteCached } from "../Utils/cached.utils.js";
 import { publishEvent } from "./../Config/rabitmq.config.js";
 import axios from "axios";
 
-// ! GET ALL RESUME
-export const getAllResume = async (req, res) => {
-  try {
-    const authId = req.header("x-auth-data");
-    const { data } = await axios.get(
-      `${process.env.PROFILE_URL}/profile/resume`,
-      {
-        headers: { "x-auth-data": authId },
-      }
-    );
-    
-
-    const resumeIds = data.data;
-
-    const resumes = await resumeModel.find({
-      _id: { $in: resumeIds },
-    });
-
-    return res.status(200).json({ success: true, data: resumes });
-  } catch (error) {
-    logger.error(`Error Geting Resume: ${error.message}`);
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error",
-    });
-  }
-};
-
 // ! Create Resume
 export const createResume = async (req, res) => {
   try {
@@ -486,4 +458,30 @@ export const updateProjects = async (req, res) => {
   }
 };
 
+// ! DELETE RESUME
+export const deleteResume = async (req, res) => {
+  try {
+    const { id } = req.body;
+  
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Resume Not Found",
+      });
+    }
+    await resumeModel.findByIdAndDelete(id);
 
+    logger.info(`Resume deleted successfully | ID: ${id}`);
+    return res.status(200).json({
+      success: true,
+      message: "Resume Deleted",
+    });
+  } catch (error) {
+    logger.error(`Error Deleting Resume: ${error.message}`);
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+      error: error.message,
+    });
+  }
+};

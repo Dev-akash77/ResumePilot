@@ -11,3 +11,16 @@ export const getProfileData = async () => {
     console.log(error?.response?.data?.message || error.message);
   }
 };
+// ! get all resume data
+export const getResumeData = async () => {
+  try {
+    const {data} = await api.get(`/resume/`);
+    return data
+  } catch (error) {
+    toast.error(error?.response?.data?.message);
+    console.log(error?.response?.data?.message || error.message);
+  }
+};
+
+
+

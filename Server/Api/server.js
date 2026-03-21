@@ -12,7 +12,7 @@ const app = express();
 
 // ! SERVER PORT
 const PORT = process.env.PORT;    
-  
+   
 //! CROS SETUP  
 app.use(
   cors({
