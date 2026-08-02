@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { useEffect } from "react";
 import Features from "./Features";
-import { useLoginStatus } from "../../hook/useLoginStatus";
 import useLenisScroll from './../../Animation/Lenis';
 import Main_Loader from "../../UI/Main_Loader";
 import Payment from "./Payment";
 import Testimonials from "./Testimonials";
 import Footer from "./Footer";
+import { useLoginStatus } from './../../Hook/useLoginStatus';
 
 const Home = () => {
     const lenisRef = useLenisScroll();
