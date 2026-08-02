@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FromHeaders from "../../../Common/FromHeaders";
+import FromHeaders from "../../../common/FromHeaders";
 import {
   Editor,
   Toolbar,
@@ -16,7 +16,7 @@ import {
 
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../../hook/ResumeHooks";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updateResumeExperience } from "../../../Api/resumeApi";
 import toast from "react-hot-toast";

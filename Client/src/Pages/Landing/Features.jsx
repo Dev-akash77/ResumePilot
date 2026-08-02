@@ -1,6 +1,6 @@
 import React from "react";
-import Heading from "../../Common/Heading";
-import SubHeading from "../../Common/SubHeading";
+import Heading from "../../common/Heading";
+import SubHeading from "../../common/SubHeading";
 import { FEATURES } from "./../../Data/data";
 import * as FaIcons from "react-icons/fa";
 

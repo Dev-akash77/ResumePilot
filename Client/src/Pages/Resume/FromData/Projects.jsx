@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import FromHeaders from "../../../Common/FromHeaders";
+import FromHeaders from "../../../common/FromHeaders";
 import {
   Editor,
   Toolbar,
@@ -20,7 +20,7 @@ import { useParams } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateResumeProjects } from "../../../Api/resumeApi";
 import Button_Loader from "../../../UI/Button_Loader";
-import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../../hook/ResumeHooks";
 
 // Icons
 import { 

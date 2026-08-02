@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import FromHeaders from "../../../Common/FromHeaders";
+import FromHeaders from "../../../common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
 import { setNextSection, summaryChange } from "../../../Slice/ResumeSlice";
 import { useParams } from "react-router-dom";
-import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../../hook/ResumeHooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updatResumeSummary } from "../../../Api/resumeApi";
 import toast from "react-hot-toast";
 import Button_Loader from "../../../UI/Button_Loader";
-import useResumeSummary from "../../../Hook/useResumeSummary";
+import useResumeSummary from "../../../hook/useResumeSummary";
 import { LuSparkles, LuLoader } from "react-icons/lu";
 
 const Profile = () => {

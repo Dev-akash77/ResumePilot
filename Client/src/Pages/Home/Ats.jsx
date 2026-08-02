@@ -9,7 +9,7 @@ import {
   LuFileText,
   LuBriefcase,
 } from "react-icons/lu";
-import { useGeminiAts } from "../../Hook/useResumeReview";
+import { useGeminiAts } from "../../hook/useResumeReview";
 
 const Ats = () => {
   const [resumeId, setResumeId] = useState("");

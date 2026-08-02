@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Auth from "./Auth/Auth";
 import { Toaster } from "react-hot-toast";
 import Profile from "./Pages/Profile/Profile";
-import Layout from "./Layout/layout";
 import Dashboard from './Pages/Home/Dashboard';
 import About from './Pages/Home/About';
 import All_resume from './Pages/Home/All_resume';
@@ -19,6 +18,7 @@ import Skill from "./Pages/Resume/FromData/Skill";
 import Experince from "./Pages/Resume/FromData/Experince";
 import Projects from "./Pages/Resume/FromData/Projects";
 import Preview from "./Pages/Resume/preview";
+import Layout from './layout/Layout';
 
 const App = () => {
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { FiFileText, FiHome } from "react-icons/fi";
 import { LuBadgeInfo } from "react-icons/lu";
-import { useGetProfile } from "../Hook/useProfile";
+import { useGetProfile } from "../hook/useProfile";
 import { NavLink } from "react-router-dom";
 import { MdAlignHorizontalLeft } from "react-icons/md";
 import { IoIosLogOut } from "react-icons/io";

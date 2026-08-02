@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FaCheck, FaRocket, FaGem, FaCrown } from "react-icons/fa";
-import PaymentDialog from "../../Components/PaymentDialog";
+import PaymentDialog from "../../components/PaymentDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { openPaymentDialogBox, paymentSelection } from "../../Slice/PaymentSlice";
 

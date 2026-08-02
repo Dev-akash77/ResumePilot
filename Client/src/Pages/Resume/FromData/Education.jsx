@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import FromHeaders from "../../../Common/FromHeaders";
+import FromHeaders from "../../../common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
 import {
   educationChange,
   setNextSection,
 } from "../../../Slice/ResumeSlice";
 import { useParams } from "react-router-dom";
-import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../../hook/ResumeHooks";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateResumeEducation } from "../../../Api/resumeApi";
 import Button_Loader from "../../../UI/Button_Loader";

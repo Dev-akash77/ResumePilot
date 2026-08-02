@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import ResumeCard from "../../Common/ResumeCard";
+import ResumeCard from "../../common/ResumeCard";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginStatus } from "../../Hook/useLoginStatus";
-import { getUserAllResume } from "../../Hook/useProfile";
+import { useLoginStatus } from "../../hook/useLoginStatus";
+import { getUserAllResume } from "../../hook/useProfile";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 
 // Icons

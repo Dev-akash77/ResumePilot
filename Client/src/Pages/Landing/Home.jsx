@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { useEffect } from "react";
 import Features from "./Features";
-import { useLoginStatus } from "./../../Hook/useLoginStatus";
+import { useLoginStatus } from "../../hook/useLoginStatus";
 import useLenisScroll from './../../Animation/Lenis';
 import Main_Loader from "../../UI/Main_Loader";
 import Payment from "./Payment";

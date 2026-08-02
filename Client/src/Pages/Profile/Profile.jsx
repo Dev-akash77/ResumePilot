@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useLoginStatus } from "../../Hook/useLoginStatus";
+import { useLoginStatus } from "../../hook/useLoginStatus";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutApi } from "../../Api/api";
 import toast from "react-hot-toast";
@@ -18,8 +18,8 @@ import { FaCheckCircle } from "react-icons/fa";
 import { GoUnverified } from "react-icons/go";
 import { IoPower } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
-import { getUserAllResume, useGetProfile } from "./../../Hook/useProfile";
-import Otp from "../../Components/Otp";
+import { getUserAllResume, useGetProfile } from "../../hook/useProfile";
+import Otp from "../../components/Otp";
 import Main_Loader from "../../UI/Main_Loader";
 
 const Profile = () => {

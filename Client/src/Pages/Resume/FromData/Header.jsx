@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { headerOnChange, setNextSection } from "../../../Slice/ResumeSlice";
-import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../../hook/ResumeHooks";
 import { updateResumeHeader } from "../../../Api/resumeApi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";

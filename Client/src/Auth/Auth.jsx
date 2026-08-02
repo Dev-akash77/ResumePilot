@@ -3,7 +3,7 @@ import { MdKeyboardBackspace, MdOutlineEmail } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginStatus } from "./../Hook/useLoginStatus";
+import { useLoginStatus } from "../hook/useLoginStatus";
 import { FaRegUser } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { loginApi, registeredApi } from "../Api/api";

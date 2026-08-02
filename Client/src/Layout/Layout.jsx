@@ -3,9 +3,9 @@ import logo from "../assets/Images/favicon.svg";
 import { Outlet, useNavigate } from "react-router-dom";
 import { FaBarsStaggered, FaFireFlameSimple } from "react-icons/fa6";
 import Sidebar from "./Sidebar";
-import { useGetProfile } from "./../Hook/useProfile";
+import { useGetProfile } from "../hook/useProfile";
 import { useSelector } from "react-redux";
-import ResumeDailogBox from "../Components/ResumeDailogBox";
+import ResumeDailogBox from "../components/ResumeDailogBox";
 import { RxCross1 } from "react-icons/rx";
 
 const Layout = () => {

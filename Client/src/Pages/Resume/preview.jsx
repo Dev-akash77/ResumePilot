@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import MainResume from "../../Components/MainResume";
+import MainResume from "../../components/MainResume";
 import { useDispatch } from "react-redux";
 import {
   seHeaderData,
@@ -10,8 +10,8 @@ import {
   setSkillsData,
   setSummaryData,
 } from "../../Slice/ResumeSlice";
-import { usePerticularResume } from "../../Hook/ResumeHooks";
-import useDownloadResume from "../../Hook/useDownloadResume";
+import { usePerticularResume } from "../../hook/ResumeHooks";
+import useDownloadResume from "../../hook/useDownloadResume";
 import { MdFileDownload } from "react-icons/md";
 
 const Preview = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FromHeaders from "../../../Common/FromHeaders";
+import FromHeaders from "../../../common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -9,7 +9,7 @@ import {
   toolsSkillAdd,
   toolsSkillRemove,
 } from "../../../Slice/ResumeSlice";
-import { usePerticularResume } from "../../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../../hook/ResumeHooks";
 import { updateResumeSkill } from "../../../Api/resumeApi";
 import toast from "react-hot-toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";

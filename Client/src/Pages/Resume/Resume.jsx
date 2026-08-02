@@ -3,14 +3,14 @@ import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
 import { MdFileDownload } from "react-icons/md";
-import MainResume from "../../Components/MainResume";
+import MainResume from "../../components/MainResume";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginStatus } from "../../Hook/useLoginStatus";
+import { useLoginStatus } from "../../hook/useLoginStatus";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { IoHomeOutline } from "react-icons/io5";
 import { GrLinkNext } from "react-icons/gr";
 import { IoMdArrowBack } from "react-icons/io";
-import { usePerticularResume } from "../../Hook/ResumeHooks";
+import { usePerticularResume } from "../../hook/ResumeHooks";
 import {
   resetResume,
   seHeaderData,
@@ -20,7 +20,7 @@ import {
   setSkillsData,
   setSummaryData,
 } from "../../Slice/ResumeSlice";
-import useDownloadResume from "../../Hook/useDownloadResume";
+import useDownloadResume from "../../hook/useDownloadResume";
 
 const Resume = () => {
   const navigate = useNavigate();
