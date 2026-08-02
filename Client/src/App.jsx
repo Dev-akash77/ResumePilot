@@ -18,7 +18,7 @@ import Skill from "./Pages/Resume/FromData/Skill";
 import Experince from "./Pages/Resume/FromData/Experince";
 import Projects from "./Pages/Resume/FromData/Projects";
 import Preview from "./Pages/Resume/preview";
-import Layout from './layout/Layout';
+import Layout from "./Layout/Layout";
 
 const App = () => {
 
