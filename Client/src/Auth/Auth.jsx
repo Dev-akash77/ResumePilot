@@ -3,13 +3,13 @@ import { MdKeyboardBackspace, MdOutlineEmail } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginStatus } from "../hook/useLoginStatus";
 import { FaRegUser } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 import { loginApi, registeredApi } from "../Api/api";
 import toast from "react-hot-toast";
 import Button_Loader from "../UI/Button_Loader";
 import { GoLock } from "react-icons/go";
+import { useLoginStatus } from './../Hook/useLoginStatus';
 import {
   isAuthenticate,
   LoginAuth,
