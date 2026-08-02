@@ -82,7 +82,7 @@ const Otp = () => {
   return (
     <>
       {/* Overlay */}
-      <div className="fixed inset-0 bg-[rgba(0,0,0,.5)] flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-[rgba(0,0,0,.5)] flex items-center justify-center z-50 md:p-0 px-4 ">
         {/* OTP Box */}
         <div className="bg-white rounded-2xl shadow-lg w-[25rem] p-6 text-center relative">
           <h2 className="text-xl font-semibold mb-4">Enter OTP</h2>

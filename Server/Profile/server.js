@@ -39,7 +39,7 @@ app.use(
 
 
 app.use("/profile",profileRoutes)
-
+ 
 
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT} : {Profile Service}`);

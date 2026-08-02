@@ -18,6 +18,7 @@ import Education from "./Pages/Resume/FromData/Education";
 import Skill from "./Pages/Resume/FromData/Skill";
 import Experince from "./Pages/Resume/FromData/Experince";
 import Projects from "./Pages/Resume/FromData/Projects";
+import Preview from "./Pages/Resume/preview";
 
 const App = () => {
 
@@ -26,6 +27,10 @@ const App = () => {
       path: "/",
       element: <Home />,
     },
+    {
+  path: "/resume/:id/preview",
+  element: <Preview />,
+},
     {
       path: "/auth",
       element: <Auth />,

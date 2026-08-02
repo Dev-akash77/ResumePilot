@@ -70,7 +70,7 @@ const Profile = () => {
 
   // ! get user profile data
   const { data: profileData, isLoading: loadingProfile } = useGetProfile();
-  
+
   const { data: resumeData, isLoading: loadingResume } = getUserAllResume();
 
   if (loadingProfile && loadingResume) {
@@ -82,19 +82,10 @@ const Profile = () => {
     );
   }
 
-  const {
-    name,
-    email,
-    avatar,
-    cradit,
-    isVerified,
-    lastActivity,
-    createdAt,
-  } = profileData?.data || {};
+  const { name, email, avatar, cradit, isVerified, lastActivity, createdAt } =
+    profileData?.data || {};
 
   const resume = resumeData?.data || {};
-
-  
 
   const dateObj = new Date(createdAt);
   const formattedDateJoined = `${
@@ -159,31 +150,34 @@ const Profile = () => {
       </header>
 
       <div className="container flex flex-col items-center py-5">
-        <div className="w-[75%] py-2 bg-green-50 rounded-md mt-10 border border-green-600 flex items-center text-green-600 px-3 gap-1 capitalize">
+        <div className="md:w-[75%] w-full py-2 bg-green-50 rounded-md mt-10 border border-green-600 flex items-center text-green-600 px-3 gap-1 capitalize">
           <FaCheckCircle /> you are login
         </div>
 
-        <div className=" w-[75%] h-[20rem] mt-5 rounded-lg bs overflow-hidden bg-white">
-          <div className="h-[43%] w-full bg-blue flex items-center p-5 gap-3">
-            <div
-              className={`w-[6rem] h-[6rem] ${
-                !avatar && "border-3 border-blue-100"
-              } rounded-full  overflow-hidden`}
-            >
-              {avatar ? (
-                <img
-                  src={avatar}
-                  alt={`${name}'s avatar`}
-                  className="w-full h-full overflow-hidden"
-                />
-              ) : (
-                <div className="w-full h-full overflow-hidden bg-[rgba(255,255,255,.5)] cc text-4xl text-white">
-                  {name?.split("")[0]}
-                </div>
-              )}
+        <div className="md:w-[75%] w-full md:h-[20rem] h-full mt-5 rounded-lg bs overflow-hidden bg-white">
+          <div className="mdd:h-[43%] w-full bg-blue md:flex items-center p-5 gap-3">
+            <div className="flex items-center gap-5">
+              <div
+                className={`w-[6rem] h-[6rem] ${
+                  !avatar && "border-3 border-blue-100"
+                } rounded-full  overflow-hidden`}
+              >
+                {avatar ? (
+                  <img
+                    src={avatar}
+                    alt={`${name}'s avatar`}
+                    className="w-full h-full overflow-hidden"
+                  />
+                ) : (
+                  <div className="w-full h-full overflow-hidden bg-[rgba(255,255,255,.5)] cc text-4xl text-white">
+                    {name?.split("")[0]}
+                  </div>
+                )}
+              </div>
+              <p className="text-xl md:hidden text-gray-100">{name}</p>
             </div>
-            <div className="text-gray-100 flex flex-col items-start gap-1">
-              <p className="text-xl">{name}</p>
+            <div className="text-gray-100 flex flex-col items-start gap-1 mt-4 md:mt-0">
+              <p className="text-xl md:block hidden">{name}</p>
               <div className="fc gap-1 text-sm">
                 <MdEmail className="mt-1" /> {email}
               </div>
@@ -194,24 +188,22 @@ const Profile = () => {
             </div>
           </div>
 
-          <div className="h-[32%] w-full bg-gray-50 fcb px-7 gap-3">
-            <div className="cc gap-2">
-              <p className="text-black text-xl">{resume?.length}</p>
-              <p className="text-gray-400 text-lg">RESUME CREATED</p>
-            </div>
-            <div className="cc gap-2">
-              <p className="text-black text-xl">{cradit}</p>
-              <p className="text-gray-400 text-lg">TOTAL CRADIT</p>
-            </div>
-            <div className="cc gap-2">
-              <p className="text-black text-md capitalize">
-                {timeSince(lastActivity)}
-              </p>
-              <p className="text-gray-400 text-lg"> LAST ACTIVE</p>
-            </div>
-          </div>
+<div className="w-full bg-gray-50 flex md:flex-row md:items-center items-start md:justify-between flex-col md:px-7 px-5 gap-3 py-3 md:h-[32%] md:py-0">
+  <div className="flex flex-row-reverse items-end md:justify-center justify-end gap-2 md:flex-col md:items-center">
+    <p className="text-black text-xl">{resume?.length}</p>
+    <p className="text-gray-400 text-lg">RESUME CREATED</p>
+  </div>
+   <div className="flex flex-row-reverse items-end md:justify-center justify-end gap-2 md:flex-col md:items-center">
+    <p className="text-black text-xl">{cradit}</p>
+    <p className="text-gray-400 text-lg">TOTAL CRADIT</p>
+  </div>
+   <div className="flex flex-row-reverse items-end md:justify-center justify-end gap-2 md:flex-col md:items-center">
+    <p className="text-black text-md capitalize">{timeSince(lastActivity)}</p>
+    <p className="text-gray-400 text-lg">LAST ACTIVE</p>
+  </div>
+</div>
 
-          <div className="h-[24%] w-full flex items-center gap-2 px-5 text-black">
+          <div className="md:h-[24%] w-full flex items-center gap-2 px-5 text-black">
             Email Verification:{" "}
             {isVerified ? (
               <div className="px-5 text-green-500 py-1 rounded-full bg-green-50 text-sm fc gap-1">
@@ -225,7 +217,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className=" w-[75%] mt-5 fc gap-5">
+        <div className="md:w-[75%] w-76 mt-5 fc gap-5">
           {/* <button className="fc gap-1 text-white bg-blue w-[12rem] h-[2.5rem] cursor-pointer rounded-md">
             <RiPencilFill />
             Edit Profile

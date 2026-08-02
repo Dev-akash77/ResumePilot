@@ -5,8 +5,10 @@ import { useGetProfile } from "../Hook/useProfile";
 import { NavLink } from "react-router-dom";
 import { MdAlignHorizontalLeft } from "react-icons/md";
 import { IoIosLogOut } from "react-icons/io";
+import { isAction } from "@reduxjs/toolkit";
 
-const Sidebar = () => {
+const Sidebar = ({ menue,setMenue }) => {
+  
   const { data: profileData } = useGetProfile();
 
   const { avatar, name } = profileData?.data || {};
@@ -40,11 +42,9 @@ const Sidebar = () => {
     } flex py-2 px-3 items-center gap-2 cursor-pointer text-md`;
 
   return (
-    <div className="w-[15%] bg-background border-r border-gray-200 h-full cc overflow-hidden relative">
-      
+    <div className={`md:w-[15%] bg-background border-r border-gray-200 h-full felx flex-col justify-between items-center overflow-hidden  shadow z-300 md:static absolute ${menue?'left-0':'-left-100'} duration-200`}>
       <div className="px-5 h-full w-full">
         <div className="pt-5 cc">
-          
           {/* Avatar */}
           {avatar ? (
             <img
@@ -68,21 +68,21 @@ const Sidebar = () => {
                 end={cur.to === "/dashboard"}
                 to={cur.to}
                 className={navLinkClass}
+                onClick={()=>{
+                  setMenue(false);
+                }}
               >
                 {cur.icon}
                 {cur.name}
               </NavLink>
             ))}
           </div>
-
         </div>
       </div>
 
       {/* Bottom Profile */}
-      <div className="absolute bottom-0 flex justify-between items-center h-[5rem] w-full border-t border-gray-200 px-5">
-
+      <div className="flex justify-between items-center h-[5rem] w-fit gap-2 border-t border-gray-200 px-5 ">
         <NavLink to={"/profile"} className="flex items-center gap-2">
-
           {avatar ? (
             <img
               src={avatar}
@@ -95,16 +95,11 @@ const Sidebar = () => {
             </div>
           )}
 
-          <div className="text-[.8rem] font-semibold">
-            {name || "User"}
-          </div>
-
+          <div className="text-[.8rem] font-semibold">{name || "User"}</div>
         </NavLink>
 
         <IoIosLogOut className="text-2xl cursor-pointer hover:text-black duration-75 text-gray-400" />
-
       </div>
-
     </div>
   );
 };

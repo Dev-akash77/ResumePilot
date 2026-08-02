@@ -76,7 +76,7 @@ const MainResume = ({ref}) => {
   const validProjects = resume?.projects?.some((proj) => !isProjectEmpty(proj));
 
   return (
-    <div className="bs w-[8.27in] h-[11.69in] pt-[20px] cc relative print-area" ref={ref}>
+    <div className="bs md:w-[8.27in] w-full h-[11.69in] pt-[20px] cc relative print-area" ref={ref}>
       <div className="w-[93%] h-full">
         {/* resume header section */}
         <header>
@@ -85,7 +85,7 @@ const MainResume = ({ref}) => {
             <span className="text-gray-500 font-normal">{lastName}</span>
           </h1>
           {/* link */}
-          <div className="fc gap-2 text-[.88rem]">
+          <div className="fc gap-2 md:text-[.88rem] text-[.56rem]">
             {number && <p>+91-{number} |</p>}
             {email && <a href={`mailto:${email}`}>{email} |</a>}
             {github && (
@@ -110,10 +110,10 @@ const MainResume = ({ref}) => {
         {/* PROFILE */}
         {summary && (
           <div className="mt-2">
-            <h2 className="text-[1.2rem] text-[#7f7f7f] font-semibold uppercase">
+            <h2 className="text-[1.2rem]  text-[#7f7f7f] font-semibold uppercase">
               PROFILE
             </h2>
-            <p className="text-[.85rem]">
+            <p className="md:text-[.85rem]">
               {/* Self-taught Full Stack Developer crafting SaaS platforms with
               real-time systems, AI-driven workflows, and microservices
               architecture, leveraging Docker and advanced AI integration.
@@ -132,7 +132,7 @@ const MainResume = ({ref}) => {
             {/* college name */}
             <div className="fcb">
               {/* <p>Kalna Polytechnic, WBSCTE </p> */}
-              <p>{college} </p>
+              <p className="md:text-[.85rem] text-[.75rem]">{college} </p>
               <p className="italic">{location}</p>
             </div>
             {/* trade and course */}
@@ -220,7 +220,7 @@ const MainResume = ({ref}) => {
                   {/* Project Name & Duration */}
                   <div className="fcb">
                     <div className="flex gap-2 items-center">
-                      <p className="font-semibold">{proj.name}</p>
+                      <p className="font-semibold capitalize">{proj.name}</p>
                       <p className="text-2xl font-light">-</p>
                       <p className="font-semibold">{proj.about}</p>
                     </div>

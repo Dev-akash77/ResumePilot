@@ -11,6 +11,7 @@ import useLenisScroll from './../../Animation/Lenis';
 import Main_Loader from "../../UI/Main_Loader";
 import Payment from "./Payment";
 import Testimonials from "./Testimonials";
+import Footer from "./Footer";
 
 const Home = () => {
     const lenisRef = useLenisScroll();
@@ -146,6 +147,7 @@ const Home = () => {
       <Testimonials />
       {/* Payment and Billing Section */}
       <Payment />
+      <Footer />
     </>
   );
 };

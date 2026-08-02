@@ -30,13 +30,13 @@ app.use(
     await consumeEvent(EXCHANGES.NOTIFICATION, ROUTING_KEYS.NOTIFICATION.WELCOME_EMAIL, welcomeNotification);
     await consumeEvent(EXCHANGES.NOTIFICATION, ROUTING_KEYS.NOTIFICATION.VERIFICATION_EMAIL, sendOtpverification);
     
-    logger.info("✅ Notification Service connected to RabbitMQ");
+    logger.info("Notification Service connected to RabbitMQ");
   } catch (error) {
-    logger.error("❌ Failed to start RabbitMQ Consumers:", error);
+    logger.error("Failed to start RabbitMQ Consumers:", error);
     process.exit(1); // Docker restart karega
   }
 })();
-
+ 
 app.listen(PORT, () => {
   logger.info(`server listening on port ${PORT} : {Notification Service}`);
 });

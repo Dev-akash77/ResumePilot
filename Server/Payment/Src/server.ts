@@ -15,7 +15,7 @@ app.use(express.json());
 
 // ! DEFINE ALL CONFIG FN
 pg_onnection();
- 
+  
 // ! RABITMQ 
 (async()=>{
   await connectRabbitMQ(EXCHANGES.PAYMENT);

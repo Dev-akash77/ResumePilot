@@ -21,4 +21,5 @@ EXPOSE 4005
 
 # START APP
  # NOT FOR PRODUCTION
-CMD ["npm", "run", "dev"]
+# CMD [ "node","server.js" ]
+CMD ["npm", "start"]

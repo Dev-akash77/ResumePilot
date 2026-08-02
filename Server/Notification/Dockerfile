@@ -22,4 +22,4 @@ EXPOSE 4003
 
 # START THE SERVICE
 # CMD [ "node","server.js" ]
-CMD ["npm","run","dev"]
+CMD ["npm", "start"]

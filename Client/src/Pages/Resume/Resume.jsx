@@ -142,9 +142,9 @@ const Resume = () => {
             </h2>
           </div>
 
-          <div className="fc gap-2">
+          <div className="flex items-center justify-center gap-2">
             <button
-              className="bg-blue text-white rounded-md md:px-10 px-3 py-3 cursor-pointer fc gap-2"
+              className="bg-blue text-white rounded-md md:px-10 px-3 py-3 cursor-pointer md:flex items-center justify-center gap-2 hidden"
               onClick={() => {
                 navigate("/dashboard");
               }}
@@ -164,9 +164,9 @@ const Resume = () => {
 
       {/* main resume layout */}
       <div className="cc py-10">
-        <div className="w-[87%] flex justify gap-5">
+        <div className="md:w-[87%] w-[90%] flex flex-col md:flex-row justify gap-5">
           {/* left side from data */}
-          <div className="w-[40%]">
+          <div className="md:w-[40%]">
             <div className="fcb mb-7">
               <button
                 className="w-[3rem] h-[2.5rem] cc bg-blue text-white rounded-md"

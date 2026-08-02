@@ -1,0 +1,77 @@
+services:
+  gateway:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./api/.env
+    depends_on:
+      - auth
+      - profile
+      - notification
+      - resume
+      - payment
+    networks:
+      - app-network
+
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./auth/.env
+    networks:
+      - app-network
+
+  profile:
+    build:
+      context: ./profile
+      dockerfile: Dockerfile
+    ports:
+      - "4002:4002"
+    env_file:
+      - ./profile/.env
+    networks:
+      - app-network
+
+  notification:
+    build:
+      context: ./notification
+      dockerfile: Dockerfile
+    ports:
+      - "4003:4003"
+    env_file:
+      - ./notification/.env
+    networks:
+      - app-network
+
+  resume:
+    build:
+      context: ./resume
+      dockerfile: Dockerfile
+    ports:
+      - "4004:4004"
+    env_file:
+      - ./resume/.env
+    networks:
+      - app-network
+
+  payment:
+    build:
+      context: ./payment
+      dockerfile: Dockerfile
+    ports:
+      - "4005:4005"
+    env_file:
+      - ./payment/.env
+    networks:
+      - app-network
+
+
+networks:
+  app-network:
+    driver: bridge

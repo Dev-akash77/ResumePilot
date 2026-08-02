@@ -14,7 +14,7 @@ const app = express();
 const PORT = process.env.PORT; 
  
 // ! config and connection fn 
-mongo_connection();
+mongo_connection(); 
 redisConnection();
 (async()=>{
   await connectRabbitMQ(EXCHANGES.RESUME);

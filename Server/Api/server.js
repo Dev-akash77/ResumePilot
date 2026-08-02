@@ -19,8 +19,8 @@ app.use(
     origin: process.env.CLIENT_URL,
     credentials: true,
   }) 
-);  
-app.use(cookieParser());  
+);   
+app.use(cookieParser());   
 
 // ! PROXY ROUTES STUP
 app.use(authRoutes);
