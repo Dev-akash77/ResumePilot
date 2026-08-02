@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import ResumeCard from "../../common/ResumeCard";
+import ResumeCard from "../../Common/ResumeCard";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useLoginStatus } from "../../hook/useLoginStatus";

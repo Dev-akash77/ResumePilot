@@ -5,8 +5,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import { FaStar, FaQuoteRight } from "react-icons/fa";
-import Heading from "../../common/Heading"; 
-import SubHeading from "../../common/SubHeading";
+import Heading from "../../Common/Heading"; 
+import SubHeading from "../../Common/SubHeading";
 
 const TestimonialSlider = () => {
   

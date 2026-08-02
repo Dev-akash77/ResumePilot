@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import MainResume from "../../components/MainResume";
+import MainResume from "../../Components/MainResume";
 import { useDispatch } from "react-redux";
 import {
   seHeaderData,

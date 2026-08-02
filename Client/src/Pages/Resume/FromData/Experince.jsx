@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FromHeaders from "../../../common/FromHeaders";
+import FromHeaders from "../../../Common/FromHeaders";
 import {
   Editor,
   Toolbar,

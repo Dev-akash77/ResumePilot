@@ -19,7 +19,7 @@ import { GoUnverified } from "react-icons/go";
 import { IoPower } from "react-icons/io5";
 import { MdOutlineSecurity } from "react-icons/md";
 import { getUserAllResume, useGetProfile } from "../../hook/useProfile";
-import Otp from "../../components/Otp";
+import Otp from "../../Components/Otp";
 import Main_Loader from "../../UI/Main_Loader";
 
 const Profile = () => {

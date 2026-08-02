@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
-import ResumeCard from "../../common/ResumeCard";
+import ResumeCard from "../../Common/ResumeCard";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginStatus } from "../../hook/useLoginStatus";
-import { getUserAllResume } from "../../hook/useProfile";
+import { useLoginStatus } from "./../../Hook/useLoginStatus";
+import { getUserAllResume } from "../../Hook/useProfile";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { toogleDialogBox } from "../../Slice/ResumeSlice";
 
-// Icons
+// Icon
 import { LuPlus, LuFileX } from "react-icons/lu";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  
   // Auth State
   const isLogin = useSelector((state) => state.auth.isAuthenticated);
   const { data: loginData, isLoading: isAuthLoading, isError } = useLoginStatus();

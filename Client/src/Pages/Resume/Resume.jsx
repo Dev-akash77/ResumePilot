@@ -3,7 +3,7 @@ import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import logo from "../../assets/Images/favicon.svg";
 import { MdDashboard } from "react-icons/md";
 import { MdFileDownload } from "react-icons/md";
-import MainResume from "../../components/MainResume";
+import MainResume from "../../Components/MainResume";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginStatus } from "../../hook/useLoginStatus";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";

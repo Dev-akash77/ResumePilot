@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import FromHeaders from "../../../common/FromHeaders";
+import FromHeaders from "../../../Common/FromHeaders";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {

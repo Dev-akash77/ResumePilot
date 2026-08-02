@@ -5,7 +5,7 @@ import { FaBarsStaggered, FaFireFlameSimple } from "react-icons/fa6";
 import Sidebar from "./Sidebar";
 import { useGetProfile } from "../hook/useProfile";
 import { useSelector } from "react-redux";
-import ResumeDailogBox from "../components/ResumeDailogBox";
+import ResumeDailogBox from "../Components/ResumeDailogBox";
 import { RxCross1 } from "react-icons/rx";
 
 const Layout = () => {
