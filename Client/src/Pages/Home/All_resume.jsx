@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import ResumeCard from "../../Common/ResumeCard";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useLoginStatus } from "../../hook/useLoginStatus";
 import { getUserAllResume } from "../../hook/useProfile";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 
 // Icons
 import { LuFileX } from "react-icons/lu";
+import { useLoginStatus } from './../../Hook/useLoginStatus';
 
 const All_resume = () => {
   const dispatch = useDispatch();

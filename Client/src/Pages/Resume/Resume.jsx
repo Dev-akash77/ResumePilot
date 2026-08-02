@@ -5,7 +5,6 @@ import { MdDashboard } from "react-icons/md";
 import { MdFileDownload } from "react-icons/md";
 import MainResume from "../../Components/MainResume";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginStatus } from "../../hook/useLoginStatus";
 import { isAuthenticate, LogoutAuth } from "../../Slice/AuthSlice";
 import { IoHomeOutline } from "react-icons/io5";
 import { GrLinkNext } from "react-icons/gr";
@@ -21,6 +20,7 @@ import {
   setSummaryData,
 } from "../../Slice/ResumeSlice";
 import useDownloadResume from "../../hook/useDownloadResume";
+import { useLoginStatus } from './../../Hook/useLoginStatus';
 
 const Resume = () => {
   const navigate = useNavigate();

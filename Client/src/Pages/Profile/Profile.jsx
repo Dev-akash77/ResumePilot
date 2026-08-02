@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useLoginStatus } from "../../hook/useLoginStatus";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutApi } from "../../Api/api";
 import toast from "react-hot-toast";
@@ -21,6 +20,7 @@ import { MdOutlineSecurity } from "react-icons/md";
 import { getUserAllResume, useGetProfile } from "../../hook/useProfile";
 import Otp from "../../Components/Otp";
 import Main_Loader from "../../UI/Main_Loader";
+import { useLoginStatus } from './../../Hook/useLoginStatus';
 
 const Profile = () => {
   const dispatch = useDispatch();
